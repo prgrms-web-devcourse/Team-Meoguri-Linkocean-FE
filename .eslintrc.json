@@ -42,7 +42,11 @@
     "no-underscore-dangle": "off",
     "@typescript-eslint/quotes": "off",
     "no-use-before-define": "off",
+<<<<<<< HEAD
     "@typescript-eslint/no-use-before-define": "off",
+=======
+    "@typescript-eslint/no-use-before-define": ["error"],
+>>>>>>> 0172c262659e2cae2834bd1ce7e9b986ca379067
     "import/extensions": [
       "error",
       "ignorePackages",
