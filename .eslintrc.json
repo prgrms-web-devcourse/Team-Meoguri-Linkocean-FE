@@ -43,6 +43,7 @@
     "@typescript-eslint/quotes": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
+    "arrow-body-style": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
