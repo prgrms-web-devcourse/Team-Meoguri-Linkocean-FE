@@ -1,7 +1,8 @@
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 
-export interface ButtonProps {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType: "small" | "large" | "line";
   colorType: "main-color" | "skyblue" | "aqua" | "gray";
   width?: string;
@@ -64,6 +65,7 @@ const Button = ({
   height,
   buttonText,
   onClick,
+  ...props
 }: ButtonProps) => {
   return (
     <StyledButton
@@ -73,6 +75,7 @@ const Button = ({
       onClick={onClick}
       width={width}
       height={height}
+      {...props}
     >
       {buttonText}
     </StyledButton>
