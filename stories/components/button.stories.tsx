@@ -19,8 +19,12 @@ export default {
       control: { type: "text" },
     },
     width: {
-      defaultValue: 30,
-      control: { type: "number" },
+      defaultValue: "250",
+      control: { type: "text" },
+    },
+    height: {
+      defaultValue: "45",
+      control: { type: "text" },
     },
   },
 };
