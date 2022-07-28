@@ -41,6 +41,8 @@
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
     "no-underscore-dangle": "off",
     "@typescript-eslint/quotes": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
     "import/extensions": [
       "error",
       "ignorePackages",
