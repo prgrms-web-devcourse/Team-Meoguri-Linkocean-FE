@@ -1,22 +1,30 @@
-import Button from "@/components/common/button";
+import Button, { ButtonProps } from "@/components/common/button";
 
 export default {
-  title: "Component/Alarm",
-  component: Alarm,
-  argsTypes: {
-    // alarm: {
-    //   type: { name: "string", require: true },
-    //   defaultValue: "https://picsum.photos/200",
-    //   control: { type: "text" },
-    // },
-    type: {
-      defaultValue: "text",
-      options: ["text", "checkbox", "email", "password", "submit"],
+  title: "Component/Button",
+  component: Button,
+  argTypes: {
+    buttonType: {
+      defaultValue: "small",
+      options: ["small", "large", "line"],
       control: { type: "radio" },
+    },
+    colorType: {
+      defaultValue: "main-color",
+      options: ["main-color", "skyblue", "aqua", "gray"],
+      control: { type: "radio" },
+    },
+    buttonText: {
+      defaultValue: "button",
+      control: { type: "text" },
+    },
+    width: {
+      defaultValue: 30,
+      control: { type: "number" },
     },
   },
 };
 
-export function Default(args) {
-  return <Alarm {...args} />;
-}
+export const Default = (args: ButtonProps) => {
+  return <Button {...args} />;
+};
