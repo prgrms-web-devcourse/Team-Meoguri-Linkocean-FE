@@ -15,6 +15,7 @@ const customJestConfig = {
     "^@/hooks/(.*)$": "<rootDir>/hooks/$1",
     "^@/utils/(.*)$": "<rootDir>/utils/$1",
     "^@/store/(.*)$": "<rootDir>/store/$1",
+    "^@/types/(.*)$": "<rootDir>/types/$1",
   },
   testEnvironment: "jest-environment-jsdom",
 };

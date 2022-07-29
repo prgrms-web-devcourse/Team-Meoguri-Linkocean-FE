@@ -25,6 +25,7 @@ module.exports = {
     config.resolve.alias["@/hooks"] = path.resolve(__dirname, "../hooks");
     config.resolve.alias["@/utils"] = path.resolve(__dirname, "../utils");
     config.resolve.alias["@/store"] = path.resolve(__dirname, "../store");
+    config.resolve.alias["@/types"] = path.resolve(__dirname, "../types");
     return config;
   },
 };
