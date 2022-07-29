@@ -5,11 +5,18 @@ import { forwardRef } from "react";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   searchIcon?: boolean;
+  width?: string;
+  height?: string;
 }
 
 const Input = forwardRef(
   (
-    { searchIcon = false, ...props }: InputProps,
+    {
+      searchIcon = false,
+      width = "367px",
+      height = "45px",
+      ...props
+    }: InputProps,
     ref?: React.Ref<HTMLInputElement>
   ) => {
     return searchIcon ? (
@@ -23,20 +30,25 @@ const Input = forwardRef(
         />
         <DefaultInput
           placeholder="검색어를 입력해주세요."
-          style={{ width: "367px" }}
+          width={width}
+          height={height}
           {...props}
           ref={ref}
         />
       </SearchInput>
     ) : (
-      <DefaultInput {...props} ref={ref} />
+      <DefaultInput width={width} height={height} {...props} ref={ref} />
     );
   }
 );
 
 const DefaultInput = styled.input`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   border: 1px solid ${theme.color.$gray600};
   border-radius: 8px;
+  padding-left: 17px;
+  font-size: 16px;
   background-color: #fff;
   outline: 0;
   box-sizing: border-box;
@@ -57,7 +69,6 @@ const SearchInput = styled.div`
   }
 
   input {
-    height: 45px;
     padding-left: 48px;
   }
 `;
