@@ -1,18 +1,23 @@
 import styled from "@emotion/styled";
-// import LogoIcon from "@/pages/logo.svg";
-import { color, text } from "../../styles/theme";
-// import Logo from "./logo.svg";
-// import bell from "../../public/icon/bell.svg";
+import { color, text } from "@/styles/theme";
+import Image from "next/image";
 
 const Header: React.FC = () => (
   <StyledHeader>
-    <LogoArea />
+    <Logo>
+      <Image src="/icon/logo.svg" alt="logo" width={252} height={48} />
+    </Logo>
     <NavigatorWrapper>
       <Navigator>피드</Navigator>
       <Navigator>머구리 찾기</Navigator>
       <Navigator>마이페이지</Navigator>
     </NavigatorWrapper>
-    <UserInfo />
+    <UserWrapper>
+      <AlarmButton>
+        <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
+      </AlarmButton>
+      <UserName>username</UserName>
+    </UserWrapper>
   </StyledHeader>
 );
 
@@ -20,16 +25,14 @@ export default Header;
 
 const StyledHeader = styled.header`
   height: 62px;
-  margin: 0 auto;
-  border: 1px solid;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
+  border-bottom: 2px solid ${color.$gray400};
 `;
 
-const LogoArea = styled.div`
-  height: 62px;
-  width: 10px;
-  border: 1px solid;
+const Logo = styled.div`
+  cursor: pointer;
 `;
 
 const NavigatorWrapper = styled.div`
@@ -41,11 +44,22 @@ const NavigatorWrapper = styled.div`
 const Navigator = styled.div`
   margin: auto;
   color: ${color.$gray600};
-  font: ${text.$headline5};
+  ${text.$headline5};
+  cursor: pointer;
 `;
 
-const UserInfo = styled.div`
-  height: 62px;
-  width: 10px;
-  border: 1px solid;
+const UserWrapper = styled.div`
+  display: flex;
+`;
+
+const AlarmButton = styled.div`
+  margin: auto;
+  cursor: pointer;
+`;
+
+const UserName = styled.div`
+  margin: auto;
+  color: ${color.$gray600};
+  ${text.$headline5};
+  cursor: pointer;
 `;
