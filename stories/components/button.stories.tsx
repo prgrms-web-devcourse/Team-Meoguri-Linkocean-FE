@@ -14,12 +14,7 @@ export default {
       options: ["main-color", "skyblue", "aqua", "gray"],
       control: { type: "radio" },
     },
-    buttonText: {
-      defaultValue: "button",
-      control: { type: "text" },
-    },
     width: {
-      defaultValue: "250",
       control: { type: "text" },
     },
     height: {
@@ -30,5 +25,5 @@ export default {
 };
 
 export const Default = (args: ButtonProps) => {
-  return <Button {...args} />;
+  return <Button {...args}>button</Button>;
 };

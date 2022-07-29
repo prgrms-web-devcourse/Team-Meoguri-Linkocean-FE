@@ -7,30 +7,33 @@ export interface ButtonProps
   colorType: "main-color" | "skyblue" | "aqua" | "gray";
   width?: string;
   height?: string;
-  buttonText?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 const handleButton = (colorType: string, buttonType: string) => {
   let buttonColor = "";
+  let hoverColor = "";
   let textColor = "";
   switch (colorType) {
     case "main-color": {
       buttonColor = color.$mainColor;
+      hoverColor = color.$hoverMaincolor;
       textColor = "white";
       break;
     }
     case "skyblue": {
       buttonColor = color.$skyBlue;
+      hoverColor = color.$hoverSkyBlue;
       textColor = "white";
       break;
     }
     case "aqua": {
       buttonColor = color.$aqua;
+      hoverColor = color.$hoverAqua;
       textColor = "black";
       break;
     }
     case "gray": {
       buttonColor = color.$gray100;
+      hoverColor = color.$gray200;
       textColor = "black";
       break;
     }
@@ -45,6 +48,9 @@ const handleButton = (colorType: string, buttonType: string) => {
         height: 45px;
         background-color:${buttonColor};
         color:${textColor};
+        &:hover{
+          background-color:${hoverColor};
+        }
       `;
     case "large":
       return `
@@ -52,6 +58,9 @@ const handleButton = (colorType: string, buttonType: string) => {
         height:45px;
         background-color:${buttonColor};
         color:${textColor};
+        &:hover{
+          background-color:${hoverColor};
+        }
       `;
     case "line":
       return `
@@ -59,7 +68,10 @@ const handleButton = (colorType: string, buttonType: string) => {
         height:45px;
         background-color:white;
         border:1px solid ${buttonColor};
-        color:${textColor};
+        color:${buttonColor};
+        &:hover{
+          border:2px solid ${buttonColor}
+        }
       `;
     default:
       return ``;
@@ -71,8 +83,7 @@ const Button = ({
   colorType,
   width,
   height,
-  buttonText,
-  onClick,
+  children,
   ...props
 }: ButtonProps) => {
   return (
@@ -80,12 +91,11 @@ const Button = ({
       type="button"
       buttonType={buttonType}
       colorType={colorType}
-      onClick={onClick}
       width={width}
       height={height}
       {...props}
     >
-      {buttonText}
+      {children}
     </StyledButton>
   );
 };
@@ -97,6 +107,7 @@ const StyledButton = styled.button<ButtonProps>`
   ${(props) => handleButton(props.colorType, props.buttonType)};
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
+  cursor: pointer;
 `;
 
 export default Button;
