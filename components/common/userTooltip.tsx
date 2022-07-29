@@ -1,17 +1,20 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
-import Image from "next/image";
 
-const userTooltip = () => (
-  <Tooltip>
-    <Arrow />
-    <Logout>Logout</Logout>
-  </Tooltip>
-);
+const userTooltip = () => {
+  const handleLogout = () => {
+    // logout
+  };
+
+  return (
+    <>
+      <Arrow />
+      <Logout onClick={() => handleLogout}>Logout</Logout>
+    </>
+  );
+};
 
 export default userTooltip;
-
-const Tooltip = styled.div``;
 
 const Arrow = styled.div`
   width: 0;
