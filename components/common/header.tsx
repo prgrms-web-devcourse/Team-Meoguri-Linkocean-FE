@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
 import Image from "next/image";
+import ProfileImage from "@/components/common/profileImage";
 
 const Header: React.FC = () => (
   <StyledHeader>
@@ -16,6 +17,9 @@ const Header: React.FC = () => (
       <AlarmButton>
         <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
       </AlarmButton>
+      <UserImg>
+        <ProfileImage size="sm" />
+      </UserImg>
       <UserName>username</UserName>
     </UserWrapper>
   </StyledHeader>
@@ -36,13 +40,12 @@ const Logo = styled.div`
 `;
 
 const NavigatorWrapper = styled.div`
-  width: 300px;
   display: flex;
   justify-content: space-between;
 `;
 
 const Navigator = styled.div`
-  margin: auto;
+  margin: auto 20px;
   color: ${color.$gray600};
   ${text.$headline5};
   cursor: pointer;
@@ -57,9 +60,14 @@ const AlarmButton = styled.div`
   cursor: pointer;
 `;
 
+const UserImg = styled.div`
+  margin: auto 10px;
+  cursor: pointer;
+`;
+
 const UserName = styled.div`
-  margin: auto;
   color: ${color.$gray600};
   ${text.$headline5};
+  margin: auto;
   cursor: pointer;
 `;
