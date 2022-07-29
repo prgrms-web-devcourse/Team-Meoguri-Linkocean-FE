@@ -28,11 +28,8 @@ const profileSize = (size?: ImgSize) => {
   }
 };
 
-const ProfileImg = styled.div<ProfileImageProps>`
-  background-image: url(${(props) => props.src});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+const ProfileImg = styled.img<ProfileImageProps>`
+  object-fit: cover;
   width: ${(props) => profileSize(props.size)}px;
   height: ${(props) => profileSize(props.size)}px;
   border-radius: 50%;
