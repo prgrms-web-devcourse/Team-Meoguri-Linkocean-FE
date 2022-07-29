@@ -42,7 +42,6 @@ const StyledImage = styled.img`
 `;
 
 const StyledArrow = styled.img`
-  flex: flex-end;
   width: 22px;
   height: 16px;
   display: block;
