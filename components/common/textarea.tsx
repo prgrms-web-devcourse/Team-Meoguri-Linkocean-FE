@@ -25,6 +25,7 @@ const StyledTextarea = styled.textarea`
   background-color: #fff;
   outline: 0;
   box-sizing: border-box;
+  resize: none;
 
   &:focus {
     box-shadow: 0px 0px 1px 2px ${theme.color.$skyBlue};
