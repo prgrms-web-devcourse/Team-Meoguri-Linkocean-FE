@@ -3,16 +3,18 @@ import styled from "@emotion/styled";
 import Checkbox from "@/components/common/checkbox";
 
 interface FilterElementProps {
-  selected: boolean;
-  children: React.ReactNode;
-  count: number;
+  title: string;
+  count?: number;
+  type: "tag" | "category";
 }
 
-const FilterElement = ({ children, selected, count }: FilterElementProps) => {
+const FilterElement = ({ title, count, type }: FilterElementProps) => {
   return (
-    <Wrapper selected={selected} count={count}>
-      # {children}({count})
-      <StyledCheckbox />
+    <Wrapper count={count} type={type} title={title}>
+      {type === "tag" && count !== undefined
+        ? `# ${title}(${count})`
+        : `${title}`}
+      {type === "tag" ? <Checkbox /> : null}
     </Wrapper>
   );
 };
@@ -25,12 +27,6 @@ const Wrapper = styled.div<FilterElementProps>`
   color:${color.$gray600};
   margin: 6px 0px 6px 5px;
   border-radius: 8px;
-  ${(props) =>
-    props.selected
-      ? `background-color: ${color.$hoverSkyBlue}11;
-      `
-      : "background-color: white"}
 `;
 
-const StyledCheckbox = styled(Checkbox)``;
 export default FilterElement;
