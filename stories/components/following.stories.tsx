@@ -1,9 +1,11 @@
-import Following from "@/components/common/following";
+import Following, { FollowingProps } from "@/components/common/following";
 
 export default {
   title: "components/Following",
   component: Following,
-  argTypes: {},
+  argTypes: {
+    following: { control: "boolean", defaultValue: false },
+  },
 };
 
-export const Default = () => <Following />;
+export const Default = (args: FollowingProps) => <Following {...args} />;
