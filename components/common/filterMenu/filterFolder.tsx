@@ -12,7 +12,6 @@ interface WrapperProps {
   isOpen: boolean;
 }
 const FilterFolder = ({
-  // 카테고리랑 태그 값 겹치면 안됨.
   tagList,
   categoryList,
   getCategory,
@@ -43,7 +42,6 @@ const FilterFolder = ({
   const handleCategoryClick = (element: string) => {
     setSelectedElement(element);
     getCategory(element);
-    console.log(selectedElement);
   };
 
   return (
@@ -76,6 +74,7 @@ const FilterFolder = ({
             ) : (
               <StyledFilterElement
                 title={element}
+                key={element}
                 type="category"
                 onClick={() => handleCategoryClick(element)}
                 isSelected={false}
