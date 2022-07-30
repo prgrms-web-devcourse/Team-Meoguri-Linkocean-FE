@@ -26,10 +26,10 @@ const Header: React.FC = () => {
         <AlarmButton>
           <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
         </AlarmButton>
-        <UserImg onMouseEnter={toggle}>
+        <UserImg onClick={toggle}>
           <ProfileImage size="sm" />
         </UserImg>
-        <UserName onMouseEnter={toggle}>username</UserName>
+        <UserName onClick={toggle}>username</UserName>
         <LogoutTooltip
           onMouseLeave={toggle}
           style={{ display: show ? "block" : "none" }}
