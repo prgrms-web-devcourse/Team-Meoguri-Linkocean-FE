@@ -5,7 +5,7 @@ export default {
   component: Following,
   argTypes: {
     profileImg: { control: "text" },
-    userName: { control: { type: "text" }, defaultValue: "username" },
+    userName: { control: "text", defaultValue: "username" },
     following: { control: "boolean", defaultValue: false },
   },
 };
