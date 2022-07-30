@@ -31,6 +31,7 @@ const StyledItem = styled.li`
   list-style: none;
   cursor: pointer;
   box-sizing: border-box;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: ${theme.color.$skyBlue}20;
