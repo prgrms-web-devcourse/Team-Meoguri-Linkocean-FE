@@ -1,18 +1,36 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
-import Link from "next/link";
 import FilterBoarder from "./filterBoarder";
-import FilterElement from "./filterElement";
+import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
 
 export interface MyFilterMenuProps {
-  href: string;
+  tagList?: { name: string; count: number }[];
+  categoryList?: string[];
 }
 
-const MyFilterMenu = ({ href }: MyFilterMenuProps) => {
-  const handleClick = () => {
-    alert("click");
+const dummy = [
+  {
+    name: "JAVA",
+    count: 5,
+  },
+  {
+    name: "JAVASCRIPT",
+    count: 5,
+  },
+];
+const dummycategory = ["IT", "Security", "JPA"];
+
+const MyFilterMenu = ({ tagList, categoryList }: MyFilterMenuProps) => {
+  const openFolder = () => {
+    // 화살표바꾸기, bg 색바꾸기, 보여주기
   };
+
+  const selectElement = () => {
+    // bg 색 바꾸기,
+  };
+
+  const select;
 
   return (
     <FilterBoarder>
@@ -25,60 +43,17 @@ const MyFilterMenu = ({ href }: MyFilterMenuProps) => {
         북마크 추가
       </FilterHeader>
       <Seperator />
-      <FilterHeader src="/icon/full-star.svg" alt="star" arrow>
+      <FilterHeader src="/icon/full-star.svg" alt="star" arrow={false}>
         즐겨찾기 목록
       </FilterHeader>
       <FilterHeader src="/icon/label.svg" alt="tag" arrow>
         태그 목록
       </FilterHeader>
+      <FilterFolder tagList={tagList} />
       <FilterHeader src="/icon/folder.svg" alt="category" arrow>
         카테고리
       </FilterHeader>
-      <FilterElement count={23} selected={false}>
-        라이브러리
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        참고블로그
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        프로그래머스
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        라이브러리
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        참고블로그
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        프로그래머스
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        라이브러리
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        참고블로그
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        프로그래머스
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        라이브러리
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        참고블로그
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        프로그래머스
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        라이브러리
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        참고블로그
-      </FilterElement>
-      <FilterElement count={23} selected={false}>
-        프로그래머스
-      </FilterElement>
+      <FilterFolder categoryList={categoryList} />
     </FilterBoarder>
   );
 };

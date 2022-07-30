@@ -20,8 +20,6 @@ const OutterWrapper = styled.div`
   margin-top: 20px;
   padding: 12px 15px;
   max-height: 450px;
-  overflow: auto;
-  overflow-x: hidden;
 `;
 
 const Wrapper = styled.div`
