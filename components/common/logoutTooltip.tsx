@@ -1,20 +1,26 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
 
-const userTooltip = () => {
+const LogoutTooltip = ({ ...props }) => {
   const handleLogout = () => {
     // logout
   };
 
   return (
-    <>
+    <Tooltip {...props}>
       <Arrow />
-      <Logout onClick={() => handleLogout}>Logout</Logout>
-    </>
+      <Logout onClick={() => handleLogout}>logout</Logout>
+    </Tooltip>
   );
 };
 
-export default userTooltip;
+export default LogoutTooltip;
+
+const Tooltip = styled.div`
+  position: absolute;
+  margin-top: 57px;
+  right: 20px;
+`;
 
 const Arrow = styled.div`
   width: 0;
@@ -27,13 +33,15 @@ const Arrow = styled.div`
 `;
 
 const Logout = styled.div`
-  width: 180px;
-  height: 35px;
+  width: 177px;
+  height: 40px;
   border-radius: 8px;
-  border: 4px solid ${color.$skyBlue};
+  border: 3px solid ${color.$skyBlue};
   color: ${color.$skyBlue};
   ${text.$subtitle1};
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
 `;
