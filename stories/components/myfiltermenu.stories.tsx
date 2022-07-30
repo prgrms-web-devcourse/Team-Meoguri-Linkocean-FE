@@ -1,7 +1,7 @@
 import MyFilterMenu, {
   MyFilterMenuProps,
 } from "@/components/common/filterMenu/myFilterMenu";
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 
 export default {
   title: "Components/FilterMenu",
@@ -62,17 +62,11 @@ export default {
   },
 };
 
-export const Default = ({
-  tagList,
-  categoryList,
-}: // setSelectedCategory,
-// setSelectedTag,
-MyFilterMenuProps) => {
-  const [arr1, setArr] = useState<string[]>();
+export const Default = ({ tagList, categoryList }: MyFilterMenuProps) => {
+  const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
-  const getTags = (arr: string[]) => {
-    setArr(arr);
-    console.log(arr1);
+  const getTags = (elements: string[]) => {
+    setTags(elements);
   };
   const getCategory = (element: string) => {
     setCategory(element);
@@ -80,8 +74,8 @@ MyFilterMenuProps) => {
 
   return (
     <div>
-      {arr1?.map((e) => (
-        <div>{e}</div>
+      {tags?.map((element) => (
+        <div key={element}>{element}</div>
       ))}
       {category}
       <MyFilterMenu
@@ -89,8 +83,6 @@ MyFilterMenuProps) => {
         categoryList={categoryList}
         getTags={getTags}
         getData={getCategory}
-        // setSelectedCategory={setSelectedCategory}
-        // setSelectedTag={setSelectedTag}
       />
     </div>
   );

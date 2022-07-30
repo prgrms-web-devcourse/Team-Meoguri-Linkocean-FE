@@ -8,8 +8,6 @@ import FilterHeader from "./filterHeader";
 export interface MyFilterMenuProps {
   tagList?: { name: string; count: number }[];
   categoryList?: string[];
-  // setSelectedCategory: [];
-  // setSelectedTag: [];
   getTags: (arr: string[]) => void;
   getData: (arr: string) => void;
 }
@@ -48,11 +46,9 @@ const MyFilterMenu = ({
       if (element.checked) {
         checkedArr.push(element.id);
       }
-      console.log(element);
     });
     setSelectedTag(checkedArr);
     getTags(checkedArr);
-    console.log(document.getElementById("selected")?.title);
   };
 
   const getCategory = (element: string) => {
