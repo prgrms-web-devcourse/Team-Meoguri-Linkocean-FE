@@ -48,8 +48,6 @@ const Box = styled.div`
     margin: 0;
     cursor: pointer;
   }
-  &:hover li {
-  }
 `;
 const List = styled.ul`
   position: absolute;
