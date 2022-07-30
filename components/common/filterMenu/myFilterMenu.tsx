@@ -1,5 +1,6 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
+import { useState } from "react";
 import FilterBoarder from "./filterBoarder";
 import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
@@ -7,31 +8,57 @@ import FilterHeader from "./filterHeader";
 export interface MyFilterMenuProps {
   tagList?: { name: string; count: number }[];
   categoryList?: string[];
+  // setSelectedCategory: [];
+  // setSelectedTag: [];
+  getTags: (arr: string[]) => void;
+  getData: (arr: string) => void;
 }
 
-const dummy = [
-  {
-    name: "JAVA",
-    count: 5,
-  },
-  {
-    name: "JAVASCRIPT",
-    count: 5,
-  },
-];
-const dummycategory = ["IT", "Security", "JPA"];
+const MyFilterMenu = ({
+  tagList,
+  categoryList,
+  getTags,
+  getData,
+}: MyFilterMenuProps) => {
+  const [isLikeSelected, setIsLikeSelected] = useState(false);
+  const [isTagListOpen, setIsTagListOpen] = useState(false);
+  const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
+  const [selected, setSelectedTag] = useState<string[]>();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const selectLike = () => {
+    setIsLikeSelected(true);
+    setIsCategoryListOpen(false);
+    setIsTagListOpen(false);
+  };
+  const openTagFolder = () => {
+    setIsTagListOpen(!isTagListOpen);
+    setIsCategoryListOpen(false);
+    setIsLikeSelected(false);
+  };
+  const openCategoryFolder = () => {
+    setIsCategoryListOpen(!isCategoryListOpen);
+    setIsTagListOpen(false);
+    setIsLikeSelected(false);
+  };
+  const checkbox = Array.from(document.getElementsByTagName("input"));
 
-const MyFilterMenu = ({ tagList, categoryList }: MyFilterMenuProps) => {
-  const openFolder = () => {
-    // 화살표바꾸기, bg 색바꾸기, 보여주기
+  const handleClick = () => {
+    const checkedArr: string[] = [];
+    checkbox.forEach((element) => {
+      if (element.checked) {
+        checkedArr.push(element.id);
+      }
+      console.log(element);
+    });
+    setSelectedTag(checkedArr);
+    getTags(checkedArr);
+    console.log(document.getElementById("selected")?.title);
   };
 
-  const selectElement = () => {
-    // bg 색 바꾸기,
+  const getCategory = (element: string) => {
+    setSelectedCategory(element);
+    getData(element);
   };
-
-  const select;
-
   return (
     <FilterBoarder>
       <FilterHeader
@@ -43,17 +70,45 @@ const MyFilterMenu = ({ tagList, categoryList }: MyFilterMenuProps) => {
         북마크 추가
       </FilterHeader>
       <Seperator />
-      <FilterHeader src="/icon/full-star.svg" alt="star" arrow={false}>
+      <FilterHeader
+        src="/icon/full-star.svg"
+        alt="star"
+        arrow={false}
+        onClick={selectLike}
+        isOpen={isLikeSelected}
+      >
         즐겨찾기 목록
       </FilterHeader>
-      <FilterHeader src="/icon/label.svg" alt="tag" arrow>
+      <FilterHeader
+        src="/icon/label.svg"
+        alt="tag"
+        arrow
+        isOpen={isTagListOpen}
+        onClick={openTagFolder}
+      >
         태그 목록
       </FilterHeader>
-      <FilterFolder tagList={tagList} />
-      <FilterHeader src="/icon/folder.svg" alt="category" arrow>
+      <FilterFolder
+        getCategory={getCategory}
+        tagList={tagList}
+        isOpen={isTagListOpen}
+        onChange={() => handleClick()}
+      />
+      <FilterHeader
+        src="/icon/folder.svg"
+        alt="category"
+        arrow
+        isOpen={isCategoryListOpen}
+        onClick={openCategoryFolder}
+      >
         카테고리
       </FilterHeader>
-      <FilterFolder categoryList={categoryList} />
+      <FilterFolder
+        getCategory={getCategory}
+        categoryList={categoryList}
+        isOpen={isCategoryListOpen}
+        onClick={() => handleClick()}
+      />
     </FilterBoarder>
   );
 };
