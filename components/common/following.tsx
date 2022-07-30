@@ -3,17 +3,22 @@ import { color, text } from "@/styles/theme";
 import ProfileImage from "@/components/common/profileImage";
 import Button from "@/components/common/button";
 
-const Following = () => (
+export interface FollowingProps {
+  following: boolean;
+}
+
+const Following = ({ following, ...props }: FollowingProps) => (
   <Card>
     <ProfileImg size="md" />
     <UserName>Groot</UserName>
     <FollowingBtn
-      buttonType="small"
       colorType="skyblue"
       width="128"
       height="42"
+      buttonType={following ? "line" : "small"}
+      {...props}
     >
-      follow +
+      {following ? "following" : "follow +"}
     </FollowingBtn>
   </Card>
 );
@@ -26,7 +31,6 @@ const Card = styled.div`
   border-radius: 8px;
   box-shadow: 0px 0px 6px ${color.$gray400};
   display: flex;
-  /* justify-content: space-between; */
 `;
 
 const ProfileImg = styled(ProfileImage)`
