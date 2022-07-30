@@ -4,13 +4,14 @@ import ProfileImage from "@/components/common/profileImage";
 import Button from "@/components/common/button";
 
 export interface FollowingProps {
+  userName: string;
   following: boolean;
 }
 
-const Following = ({ following, ...props }: FollowingProps) => (
+const Following = ({ userName, following, ...props }: FollowingProps) => (
   <Card>
     <ProfileImg size="md" />
-    <UserName>Groot</UserName>
+    <UserName>{userName}</UserName>
     <FollowingBtn
       colorType="skyblue"
       width="128"

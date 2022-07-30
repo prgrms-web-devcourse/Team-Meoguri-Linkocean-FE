@@ -4,6 +4,7 @@ export default {
   title: "components/Following",
   component: Following,
   argTypes: {
+    userName: { control: { type: "text" }, defaultValue: "username" },
     following: { control: "boolean", defaultValue: false },
   },
 };
