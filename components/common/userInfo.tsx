@@ -1,6 +1,6 @@
 import { ProfileDetail } from "@/types/model";
 import styled from "@emotion/styled";
-import { text } from "@/styles/theme";
+import { text, color } from "@/styles/theme";
 import Button from "./button";
 import ProfileImage from "./profileImage";
 
@@ -17,6 +17,7 @@ const UserInfo = ({ data }: UserInfoProps) => {
           <UserName>{data.username}</UserName>
           <FollowWrapper>
             <FollowInfo>팔로워 {data.followerCount}</FollowInfo>
+            <StyledDiv />
             <FollowInfo>팔로잉 {data.followeeCount}</FollowInfo>
           </FollowWrapper>
         </GridWrapper>
@@ -25,7 +26,7 @@ const UserInfo = ({ data }: UserInfoProps) => {
       {/* src={data.imageUrl || "/image/default-card-meta-image.jpg"}
       src="/image/default-card-meta-image.jpg"
       alt={data.title} */}
-      <StyledButton buttonType="large" colorType="gray" />
+      <Button buttonType="large" colorType="gray" width="277" />
     </Card>
   );
 };
@@ -33,7 +34,6 @@ const UserInfo = ({ data }: UserInfoProps) => {
 // isfollowing?{isfollowing===true ? following : follow +} : 프로필 편집
 
 const Card = styled.div`
-  /* display: grid; */
   width: 277px;
   height: 245px;
   border: 1px solid;
@@ -49,7 +49,7 @@ const Top = styled.div`
 `;
 
 const UserImg = styled(ProfileImage)`
-  padding: 10px;
+  padding: 0px 15px 0px 0px;
 `;
 
 const UserName = styled.div`
@@ -68,11 +68,26 @@ const FollowInfo = styled.div`
   ${text.$caption};
 `;
 
-const Bio = styled.div`
-  height: 261px;
-  padding: 10px;
+const StyledDiv = styled.div`
+  width: 10px;
 `;
 
-const StyledButton = styled(Button)``;
+const Bio = styled.div`
+  max-height: 105px;
+  width: 261px;
+  margin: 10px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: ${color.$gray600};
+    background-clip: padding-box;
+    border: 4px solid transparent;
+  }
+`;
 
 export default UserInfo;
