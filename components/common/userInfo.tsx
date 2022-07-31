@@ -5,10 +5,12 @@ import Button from "./button";
 import ProfileImage from "./profileImage";
 
 export interface UserInfoProps {
-  data: ProfileDetail;
+  data: ProfileDetail & { isFollow?: boolean };
 }
 
 const UserInfo = ({ data }: UserInfoProps) => {
+  console.log(Object.prototype.hasOwnProperty.call(data, "isFollow"));
+  console.log(data.isFollow);
   return (
     <Card>
       <Top>
@@ -26,20 +28,28 @@ const UserInfo = ({ data }: UserInfoProps) => {
         </GridWrapper>
       </Top>
       <Bio>{data.bio}</Bio>
-      {/* src={data.imageUrl || "/image/default-card-meta-image.jpg"}
-      src="/image/default-card-meta-image.jpg"
-      alt={data.title} */}
-      <Button buttonType="large" colorType="gray" width="277" />
+      {!Object.prototype.hasOwnProperty.call(data, "isFollow") && (
+        <Button buttonType="large" colorType="main-color" width="277">
+          edit
+        </Button>
+      )}
+      {Object.prototype.hasOwnProperty.call(data, "isFollow") &&
+        (data.isFollow ? (
+          <Button buttonType="line" colorType="skyblue" width="277">
+            following
+          </Button>
+        ) : (
+          <Button buttonType="large" colorType="skyblue" width="277">
+            follow +
+          </Button>
+        ))}
     </Card>
   );
 };
 
-// isfollowing?{isfollowing===true ? following : follow +} : 프로필 편집
-
 const Card = styled.div`
   width: 277px;
   height: 245px;
-  border: 1px solid;
 `;
 
 const GridWrapper = styled.div`
@@ -78,8 +88,8 @@ const StyledDiv = styled.div`
 const Bio = styled.div`
   max-height: 105px;
   width: 261px;
-  margin: 10px;
-  overflow-y: scroll;
+  padding: 10px;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 11px;
