@@ -2,10 +2,6 @@ import { useState } from "react";
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 
-const reactionCount = {
-  like: 12,
-  hate: 10,
-};
 export interface ReactionProps {
   like: number;
   hate: number;
@@ -21,13 +17,17 @@ interface HateProps {
 const Reaction = ({ like, hate }: ReactionProps) => {
   const [selectLike, setSelectLike] = useState(false);
   const [selectHate, setSelectHate] = useState(false);
+
   const clickLike = () => {
     if (selectLike) {
+      // Like 카운트 내려갈 때
       setSelectLike(false);
     } else {
+      // Like 카운트 올라갈 때
       setSelectLike(true);
     }
     if (selectHate) {
+      // Hate 빼주고, Like 올리기
       setSelectHate(false);
       setSelectLike(true);
     }
@@ -35,11 +35,14 @@ const Reaction = ({ like, hate }: ReactionProps) => {
 
   const clickHate = () => {
     if (selectHate) {
+      // Hate 카운트 내려갈 때
       setSelectHate(false);
     } else {
+      // Hate 카운트 올라갈 때
       setSelectHate(true);
     }
     if (selectLike) {
+      // Like 카운트 빼주고, Hate 올리기
       setSelectHate(true);
       setSelectLike(false);
     }
