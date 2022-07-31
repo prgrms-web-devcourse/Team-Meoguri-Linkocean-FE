@@ -15,7 +15,8 @@ const Header: React.FC = () => {
   return (
     <StyledHeader>
       <Logo>
-        <Image src="/icon/logo.svg" alt="logo" width={252} height={48} />
+        <LinkOcean />
+        <Image src="/icon/logo.svg" alt="Link Ocean" width={252} height={48} />
       </Logo>
       <NavigatorWrapper>
         <Navigator>피드</Navigator>
@@ -51,6 +52,19 @@ const StyledHeader = styled.header`
 
 const Logo = styled.div`
   cursor: pointer;
+`;
+
+const LinkOcean = styled.h1`
+  position: absolute;
+  margin: -1px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
 `;
 
 const NavigatorWrapper = styled.div`
