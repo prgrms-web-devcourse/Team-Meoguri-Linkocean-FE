@@ -72,7 +72,7 @@ const NavigatorWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Navigator = styled.div`
+const Navigator = styled.nav`
   margin: auto 20px;
   color: ${color.$gray600};
   ${text.$headline5};
