@@ -3,8 +3,13 @@ import Image from "next/image";
 import { color } from "@/styles/theme";
 
 const Top = () => {
+  const moveToTop = () => {
+    document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
+    alert("move to top!");
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={moveToTop}>
       <Icon src="/icon/arrow.svg" alt="top" width={50} height={50} />
     </Wrapper>
   );
