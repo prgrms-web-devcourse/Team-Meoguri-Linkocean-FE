@@ -43,7 +43,7 @@ const StyledDiv = styled.div<ArrowProps>`
   ${(props) =>
     props.isOpen
       ? `background-color: ${color.$hoverSkyBlue}11;
-         border-radius:8px;;
+         border-radius:8px;
       `
       : "background-color: white"}
 `;

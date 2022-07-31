@@ -53,7 +53,7 @@ const Wrapper = styled.div<WrapperProps & FilterElementProps>`
   cursor: pointer;
   ${(props) =>
     props.isSelected
-      ? `background-color: ${color.$hoverSkyBlue}11;border-radius:8px;;
+      ? `background-color: ${color.$hoverSkyBlue}11;border-radius:8px;
       `
       : "background-color: white"}
 `;
