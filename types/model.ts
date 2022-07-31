@@ -49,6 +49,7 @@ export interface BookmarkDetail {
 }
 
 export interface Notification {
+  bookmarkId: number;
   username: string;
   title: string;
   url: string;
