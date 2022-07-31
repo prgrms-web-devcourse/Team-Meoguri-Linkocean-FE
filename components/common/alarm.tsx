@@ -1,6 +1,7 @@
 import { color, text } from "@/styles/theme";
 import { Notification } from "@/types/model";
 import styled from "@emotion/styled";
+import React from "react";
 
 export interface AlarmProps {
   data: Notification;
@@ -9,14 +10,23 @@ export interface AlarmProps {
 const Alarm = ({ data }: AlarmProps) => {
   const { bookmarkId, username, title, url } = data;
 
+  const handleClick = () => {
+    alert(`${bookmarkId}클릭`);
+  };
+
+  const urlClick = (e: React.MouseEvent<HTMLElement>) => {
+    window.open(url);
+    e.stopPropagation();
+  };
+
   return (
-    <AlarmBox onClick={() => alert(`${bookmarkId}클릭`)}>
+    <AlarmBox onClick={handleClick}>
       <Guide>
         <b>{username}</b> 님이 북마크를 공유했습니다.
       </Guide>
       <UrlData>
         <Title>{title}</Title>
-        <Url href={url} target="_blank">
+        <Url onClick={urlClick} href={url} target="_blank">
           {url}
         </Url>
       </UrlData>
