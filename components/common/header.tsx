@@ -43,9 +43,11 @@ const Header: React.FC = () => {
 export default Header;
 
 const StyledHeader = styled.header`
+  min-width: 820px;
   height: 62px;
   padding: 0 20px;
   display: flex;
+  box-sizing: border-box;
   justify-content: space-between;
   border-bottom: 2px solid ${color.$gray400};
 `;
@@ -80,11 +82,11 @@ const Navigator = styled.nav`
 `;
 
 const UserWrapper = styled.div`
+  align-items: center;
   display: flex;
 `;
 
 const AlarmButton = styled.div`
-  margin: auto;
   cursor: pointer;
 `;
 
@@ -96,6 +98,5 @@ const UserImg = styled.div`
 const UserName = styled.div`
   color: ${color.$gray600};
   ${text.$headline5};
-  margin: auto;
   cursor: pointer;
 `;
