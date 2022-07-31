@@ -89,8 +89,7 @@ export const MyMenu = ({ tagList, categoryList }: MyFilterMenuProps) => {
   );
 };
 
-export const Feed = ({ tagList, categoryList }: MyFilterMenuProps) => {
-  const [tags, setTags] = useState<string[]>();
+export const Feed = () => {
   const [category, setCategory] = useState<string>();
   const getCategory = (element: string) => {
     setCategory(element);
@@ -99,7 +98,7 @@ export const Feed = ({ tagList, categoryList }: MyFilterMenuProps) => {
   return (
     <div>
       {category}
-      <FeedFilterMenu getData={getCategory} />
+      <FeedFilterMenu getCategoryData={getCategory} />
     </div>
   );
 };

@@ -55,7 +55,10 @@ const Wrapper = styled.div<WrapperProps & FilterElementProps>`
     props.isSelected
       ? `background-color: ${color.$hoverSkyBlue}11;border-radius:8px;
       `
-      : "background-color: white"}
+      : `background-color: white; 
+      &:hover {
+        background-color: ${color.$hoverSkyBlue}11;
+      }`}
 `;
 
 export default FilterElement;
