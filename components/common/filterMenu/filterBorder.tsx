@@ -12,6 +12,7 @@ const FilterBoarder = ({ children }: { children: React.ReactNode }) => {
 
 const OutterWrapper = styled.div`
   border: 2px solid ${color.$skyBlue};
+  box-sizing: border-box;
   width: 278px;
   border-radius: 8px;
   display: flex;
@@ -19,7 +20,7 @@ const OutterWrapper = styled.div`
   background-color: white;
   margin-top: 20px;
   padding: 12px 15px;
-  max-height: 450px;
+  max-height: 560px;
 `;
 
 const Wrapper = styled.div`
@@ -29,7 +30,7 @@ const Wrapper = styled.div`
 const StyledImage = styled.img`
   position: absolute;
   top: -35px;
-  left: 220px;
+  left: 180px;
   z-index: -1;
 `;
 export default FilterBoarder;

@@ -1,7 +1,8 @@
+import { useState } from "react";
 import MyFilterMenu, {
   MyFilterMenuProps,
 } from "@/components/common/filterMenu/myFilterMenu";
-import { useState } from "react";
+import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
 
 export default {
   title: "Components/FilterMenu",
@@ -62,7 +63,7 @@ export default {
   },
 };
 
-export const Default = ({ tagList, categoryList }: MyFilterMenuProps) => {
+export const MyMenu = ({ tagList, categoryList }: MyFilterMenuProps) => {
   const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
   const getTags = (elements: string[]) => {
@@ -81,9 +82,24 @@ export const Default = ({ tagList, categoryList }: MyFilterMenuProps) => {
       <MyFilterMenu
         tagList={tagList}
         categoryList={categoryList}
-        getTags={getTags}
-        getData={getCategory}
+        getTagsData={getTags}
+        getCatagoryData={getCategory}
       />
+    </div>
+  );
+};
+
+export const Feed = ({ tagList, categoryList }: MyFilterMenuProps) => {
+  const [tags, setTags] = useState<string[]>();
+  const [category, setCategory] = useState<string>();
+  const getCategory = (element: string) => {
+    setCategory(element);
+  };
+
+  return (
+    <div>
+      {category}
+      <FeedFilterMenu getData={getCategory} />
     </div>
   );
 };

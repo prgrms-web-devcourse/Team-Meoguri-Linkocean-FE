@@ -1,42 +1,42 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
 import { useState } from "react";
-import FilterBoarder from "./filterBoarder";
+import FilterBorder from "./filterBorder";
 import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
 
 export interface MyFilterMenuProps {
   tagList?: { name: string; count: number }[];
   categoryList?: string[];
-  getTags: (arr: string[]) => void;
-  getData: (arr: string) => void;
+  getTagsData: (arr: string[]) => void;
+  getCatagoryData: (arr: string) => void;
 }
 
 const MyFilterMenu = ({
   tagList,
   categoryList,
-  getTags,
-  getData,
+  getTagsData,
+  getCatagoryData,
 }: MyFilterMenuProps) => {
-  const [isLikeSelected, setIsLikeSelected] = useState(false);
+  const [favoriteSelected, setFavoriteSelected] = useState(false);
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
-  const [selected, setSelectedTag] = useState<string[]>();
+  const [selectedTag, setSelectedTag] = useState<string[]>();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const selectLike = () => {
-    setIsLikeSelected(true);
+    setFavoriteSelected(true);
     setIsCategoryListOpen(false);
     setIsTagListOpen(false);
   };
   const openTagFolder = () => {
     setIsTagListOpen(!isTagListOpen);
     setIsCategoryListOpen(false);
-    setIsLikeSelected(false);
+    setFavoriteSelected(false);
   };
   const openCategoryFolder = () => {
     setIsCategoryListOpen(!isCategoryListOpen);
     setIsTagListOpen(false);
-    setIsLikeSelected(false);
+    setFavoriteSelected(false);
   };
   const checkbox = Array.from(document.getElementsByTagName("input"));
 
@@ -48,15 +48,15 @@ const MyFilterMenu = ({
       }
     });
     setSelectedTag(checkedArr);
-    getTags(checkedArr);
+    getTagsData(checkedArr);
   };
 
   const getCategory = (element: string) => {
     setSelectedCategory(element);
-    getData(element);
+    getCatagoryData(element);
   };
   return (
-    <FilterBoarder>
+    <FilterBorder>
       <FilterHeader
         src="/icon/add.svg"
         alt="add"
@@ -71,7 +71,7 @@ const MyFilterMenu = ({
         alt="star"
         arrow={false}
         onClick={selectLike}
-        isOpen={isLikeSelected}
+        isOpen={favoriteSelected}
       >
         즐겨찾기 목록
       </FilterHeader>
@@ -105,7 +105,7 @@ const MyFilterMenu = ({
         isOpen={isCategoryListOpen}
         onClick={() => handleClick()}
       />
-    </FilterBoarder>
+    </FilterBorder>
   );
 };
 
