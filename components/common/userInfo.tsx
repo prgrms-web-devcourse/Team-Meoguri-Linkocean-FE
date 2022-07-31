@@ -12,7 +12,10 @@ const UserInfo = ({ data }: UserInfoProps) => {
   return (
     <Card>
       <Top>
-        <UserImg size="md" />
+        <UserImg
+          size="md"
+          src={data.imageUrl || "/image/default-profile-image.png"}
+        />
         <GridWrapper>
           <UserName>{data.username}</UserName>
           <FollowWrapper>
@@ -49,7 +52,7 @@ const Top = styled.div`
 `;
 
 const UserImg = styled(ProfileImage)`
-  padding: 0px 15px 0px 0px;
+  margin: 0px 15px 0px 0px;
 `;
 
 const UserName = styled.div`
