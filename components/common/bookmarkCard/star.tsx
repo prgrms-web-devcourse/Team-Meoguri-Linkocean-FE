@@ -1,23 +1,23 @@
 import styled from "@emotion/styled";
 import React, { ButtonHTMLAttributes } from "react";
 
-export interface FavoritButtonProps
+export interface FavoriteButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  favorit: boolean;
+  favorite: boolean;
   size?: number;
 }
 
-const Star = ({ favorit, size = 14, ...props }: FavoritButtonProps) => {
-  return <FavoritButton favorit={favorit} size={size} {...props} />;
+const Star = ({ favorite, size = 14, ...props }: FavoriteButtonProps) => {
+  return <FavoritButton favorite={favorite} size={size} {...props} />;
 };
 
-const FavoritButton = styled.button<FavoritButtonProps>`
+const FavoritButton = styled.button<FavoriteButtonProps>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border: none;
   background-color: #fff;
   background-image: ${(props) =>
-    props.favorit ? "url('/icon/full-star.svg')" : "url('/icon/star.svg')"};
+    props.favorite ? "url('/icon/full-star.svg')" : "url('/icon/star.svg')"};
   background-size: cover;
   background-position: center;
   cursor: pointer;
