@@ -5,7 +5,6 @@ import { color } from "@/styles/theme";
 const Top = () => {
   const moveToTop = () => {
     document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-    alert("move to top!");
   };
 
   return (
@@ -21,6 +20,9 @@ const Icon = styled(Image)`
 `;
 
 const Wrapper = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 50px;
   height: 50px;
   width: 50px;
   border-radius: 50%;

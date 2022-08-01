@@ -6,4 +6,11 @@ export default {
   argTypes: {},
 };
 
-export const Default = () => <Top />;
+export const Default = () => (
+  <>
+    <div style={{ height: "10000px" }}>
+      <div>top</div>
+    </div>
+    <Top />
+  </>
+);
