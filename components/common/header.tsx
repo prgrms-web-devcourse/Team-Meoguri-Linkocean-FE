@@ -54,6 +54,7 @@ const StyledHeader = styled.header`
 
 const Logo = styled.div`
   cursor: pointer;
+  padding-top: 5px;
 `;
 
 const LinkOcean = styled.h1`
