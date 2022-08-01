@@ -1,7 +1,7 @@
 import Button, { ButtonProps } from "@/components/common/button";
 
 export default {
-  title: "Component/Button",
+  title: "Components/Button",
   component: Button,
   argTypes: {
     buttonType: {

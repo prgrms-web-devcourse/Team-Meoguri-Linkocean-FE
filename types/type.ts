@@ -1,15 +1,16 @@
-export type Category =
-  | "self_development"
-  | "humanities"
-  | "politics"
-  | "social"
-  | "art"
-  | "science"
-  | "technology"
-  | "it"
-  | "home"
-  | "health"
-  | "travel"
-  | "cooking";
+export const CATEGORY = [
+  "자기계발",
+  "인문",
+  "정치",
+  "사회",
+  "예술",
+  "과학",
+  "기술",
+  "IT",
+  "가정",
+  "건강",
+  "여행",
+  "요리",
+] as const;
 
 export type OpenType = "private" | "all" | "partial";

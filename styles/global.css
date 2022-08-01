@@ -9,3 +9,8 @@ body {
     "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     sans-serif;
 }
+
+.scrollLock {
+  height: 100vh;
+  overflow: hidden;
+}
