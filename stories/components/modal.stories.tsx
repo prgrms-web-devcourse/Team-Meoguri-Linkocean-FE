@@ -1,5 +1,6 @@
 import Button from "@/components/common/button";
 import Modal, { ModalProps } from "@/components/common/modal";
+import styled from "@emotion/styled";
 import { useState } from "react";
 
 export default {
@@ -18,17 +19,26 @@ export default {
 };
 
 export const Default = (args: ModalProps) => {
-  const [isShow, setIsShow] = useState<boolean>(true);
+  const [isShow, setIsShow] = useState<boolean>(false);
   const { width, height } = args;
 
   return (
-    <div>
+    <Page>
       <Button
+        style={{ marginTop: "100px" }}
         onClick={() => setIsShow(true)}
         buttonType="small"
         colorType="skyblue"
       >
         버튼
+      </Button>
+      <Button
+        style={{ display: "block" }}
+        onClick={() => alert("눌리면 안댐~")}
+        buttonType="small"
+        colorType="skyblue"
+      >
+        이벤트발생하면 안댐
       </Button>
       <Modal
         isShow={isShow}
@@ -38,6 +48,10 @@ export const Default = (args: ModalProps) => {
       >
         <p>abc</p>
       </Modal>
-    </div>
+    </Page>
   );
 };
+
+const Page = styled.div`
+  height: 10000px;
+`;
