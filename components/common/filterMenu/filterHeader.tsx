@@ -34,7 +34,6 @@ const FilterHeader = ({
 
 const StyledDiv = styled.div<ArrowProps>`
   margin-top: 6px;
-  // margin-bottom: 10px;
   ${text.$subtitle1}
   display:flex;
   align-items: center;

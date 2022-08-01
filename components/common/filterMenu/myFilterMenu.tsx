@@ -9,14 +9,14 @@ export interface MyFilterMenuProps {
   tagList?: { name: string; count: number }[];
   categoryList?: string[];
   getTagsData: (arr: string[]) => void;
-  getCatagoryData: (arr: string) => void;
+  getCategoryData: (arr: string) => void;
 }
 
 const MyFilterMenu = ({
   tagList,
   categoryList,
   getTagsData,
-  getCatagoryData,
+  getCategoryData,
 }: MyFilterMenuProps) => {
   const [favoriteSelected, setFavoriteSelected] = useState(false);
   const [isTagListOpen, setIsTagListOpen] = useState(false);
@@ -53,7 +53,7 @@ const MyFilterMenu = ({
 
   const getCategory = (element: string) => {
     setSelectedCategory(element);
-    getCatagoryData(element);
+    getCategoryData(element);
   };
   return (
     <FilterBorder>
