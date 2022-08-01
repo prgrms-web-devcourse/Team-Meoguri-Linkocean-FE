@@ -13,12 +13,13 @@ const AsideBox = styled.aside`
   min-width: 350px;
   display: flex;
   flex-direction: column;
-  gap: 96px;
-  justify-content: center;
+  gap: 80px;
   align-items: center;
   border-right: 1px solid ${color.$gray400};
   padding-top: 100px;
   background-color: #f4f9fc;
+  padding-bottom: 50px;
+  box-sizing: border-box;
 `;
 
 export default Aside;
