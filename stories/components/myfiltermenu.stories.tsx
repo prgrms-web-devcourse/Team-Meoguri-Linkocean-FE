@@ -83,7 +83,7 @@ export const MyMenu = ({ tagList, categoryList }: MyFilterMenuProps) => {
         tagList={tagList}
         categoryList={categoryList}
         getTagsData={getTags}
-        getCatagoryData={getCategory}
+        getCategoryData={getCategory}
       />
     </div>
   );
