@@ -22,7 +22,7 @@ const Alarm = ({ data }: AlarmProps) => {
   return (
     <AlarmBox onClick={handleClick}>
       <Guide>
-        <b>{username}</b> 님이 북마크를 공유했습니다.
+        <b>{username}</b> 님이 북마크를 추가했습니다.
       </Guide>
       <UrlData>
         <Title>{title}</Title>
@@ -49,11 +49,11 @@ const AlarmBox = styled.div`
     position: absolute;
     display: block;
     top: 50%;
-    right: 26px;
-    width: 24px;
+    right: 43px;
+    width: 40px;
     height: 24px;
     transform: translateY(-50%);
-    background-image: url("/icon/link.svg");
+    background-image: url("/icon/label.svg");
     background-position: center;
     background-size: cover;
     content: "";
