@@ -1,6 +1,6 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterElement from "./filterElement";
 
 interface FilterFolderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,23 +20,35 @@ const FilterFolder = ({
 }: FilterFolderProps & WrapperProps) => {
   const [disabled, setDisabled] = useState(false);
   const [selectedElement, setSelectedElement] = useState<string>("");
+  const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
 
-  const checkbox = Array.from(document.getElementsByTagName("input"));
+  useEffect(() => {
+    const $checkboxCollection = Array.from(
+      document.getElementsByTagName("input")
+    );
+    if ($checkboxCollection !== undefined) {
+      setCheckbox($checkboxCollection);
+    }
+  }, []);
 
   const handleTagClick = (index: number) => {
     let checkedCount = 0;
-    checkbox.forEach((element) => {
-      if (element.checked) {
-        checkedCount += 1;
-      }
-    });
+    if (checkbox) {
+      checkbox.forEach((element) => {
+        if (element.checked) {
+          checkedCount += 1;
+        }
+      });
+    }
     if (checkedCount >= 3) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
-    if (checkbox[index].checked === true) {
-      setDisabled(false);
+    if (checkbox) {
+      if (checkbox[index].checked === true) {
+        setDisabled(false);
+      }
     }
   };
   const handleCategoryClick = (element: string) => {
