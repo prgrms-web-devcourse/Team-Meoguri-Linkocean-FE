@@ -18,7 +18,7 @@ export default LogoutTooltip;
 
 const Tooltip = styled.div`
   position: absolute;
-  margin-top: 57px;
+  margin-top: 110px;
   right: 20px;
 `;
 
@@ -37,6 +37,7 @@ const Logout = styled.div`
   height: 40px;
   border-radius: 8px;
   border: 3px solid ${color.$skyBlue};
+  background-color: white;
   color: ${color.$skyBlue};
   ${text.$subtitle1};
   display: flex;
