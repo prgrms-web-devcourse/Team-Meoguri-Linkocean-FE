@@ -27,18 +27,18 @@ const UserInfo = ({ data }: UserInfoProps) => {
       </Top>
       <Bio>{data.bio}</Bio>
       {!Object.prototype.hasOwnProperty.call(data, "isFollow") && (
-        <Button buttonType="large" colorType="main-color" width="277">
-          edit
+        <Button buttonType="large" colorType="skyblue" width="277">
+          프로필 수정
         </Button>
       )}
       {Object.prototype.hasOwnProperty.call(data, "isFollow") &&
         (data.isFollow ? (
           <Button buttonType="line" colorType="skyblue" width="277">
-            following
+            팔로우 취소
           </Button>
         ) : (
           <Button buttonType="large" colorType="skyblue" width="277">
-            follow +
+            팔로우 +
           </Button>
         ))}
     </Card>
