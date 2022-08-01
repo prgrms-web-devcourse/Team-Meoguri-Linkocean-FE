@@ -33,12 +33,14 @@ const FilterHeader = ({
 };
 
 const StyledDiv = styled.div<ArrowProps>`
-  margin-top: 15px;
+  margin-top: 6px;
+  // margin-bottom: 10px;
   ${text.$subtitle1}
   display:flex;
   align-items: center;
   line-height: 0px;
-  padding: 5px;
+  padding: 5px 0px;
+  padding-right: 10px;
   cursor: pointer;
   ${(props) =>
     props.isOpen
@@ -60,7 +62,7 @@ const StyledArrow = styled.img<ArrowProps>`
   display: block;
   margin-left: auto;
   ${(prop) =>
-    prop.isOpen ? `transform:rotate(180deg)` : `transform:rotate(0deg)`}
+    prop.isOpen ? `transform:rotate(180deg); ` : `transform:rotate(0deg)`}
 `;
 
 export default FilterHeader;

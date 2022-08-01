@@ -111,7 +111,7 @@ const MyFilterMenu = ({
 
 const Seperator = styled.div`
   border-bottom: 2px solid ${color.$skyBlue};
-  margin: 20px 0px;
+  margin: 10px 0px;
 `;
 
 export default MyFilterMenu;

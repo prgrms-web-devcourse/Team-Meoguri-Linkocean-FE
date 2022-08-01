@@ -48,8 +48,7 @@ const Wrapper = styled.div<WrapperProps & FilterElementProps>`
   margin: 6px 0px;
   border-radius: 8px;
   cursor: pointer;
-  padding: 5px;
-  padding-left: 10px;
+  padding: 2px 10px;
   cursor: pointer;
   ${(props) =>
     props.isSelected
