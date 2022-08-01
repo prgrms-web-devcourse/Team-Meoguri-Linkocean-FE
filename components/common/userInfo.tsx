@@ -86,7 +86,7 @@ const StyledDiv = styled.div`
 const Bio = styled.div`
   max-height: 105px;
   width: 261px;
-  padding: 10px;
+  margin: 10px;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
