@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Head from "next/head";
 import styles from "@/pages/index.module.css";
+// import Logo from "./logo.svg";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        {/* <Logo /> */}
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>

@@ -1,6 +1,7 @@
 import CategoryItem, {
   CategoryItemProps,
 } from "@/components/common/categoryItem";
+import { CATEGORY } from "@/types/type";
 
 import { useState } from "react";
 
@@ -11,21 +12,8 @@ export default {
     name: {
       control: {
         type: "select",
-        options: [
-          "self_development",
-          "humanities",
-          "politics",
-          "social",
-          "art",
-          "science",
-          "technology",
-          "it",
-          "home",
-          "health",
-          "travel",
-          "cooking",
-        ],
-        defaultValue: "self_development",
+        options: CATEGORY,
+        defaultValue: "자기계발",
       },
     },
   },
@@ -33,7 +21,7 @@ export default {
 
 export const Default = (args: CategoryItemProps) => <CategoryItem {...args} />;
 Default.args = {
-  name: "self_development",
+  name: "자기계발",
 };
 
 export const WithState = (args: CategoryItemProps) => {
@@ -42,7 +30,7 @@ export const WithState = (args: CategoryItemProps) => {
   return (
     <div>
       <CategoryItem
-        name="it"
+        name="IT"
         on={on}
         onChange={(e) => {
           setOn(!on);
@@ -50,7 +38,7 @@ export const WithState = (args: CategoryItemProps) => {
         }}
       />
       <CategoryItem
-        name="self_development"
+        name="자기계발"
         on={on}
         onChange={(e) => {
           setOn(!on);
@@ -58,7 +46,7 @@ export const WithState = (args: CategoryItemProps) => {
         }}
       />
       <CategoryItem
-        name="art"
+        name="예술"
         on={on}
         onChange={(e) => {
           setOn(!on);
