@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Category } from "@/types/type";
+import { CATEGORY } from "@/types/type";
 import * as theme from "@/styles/theme";
 import useToggle from "@/hooks/useToggle";
 import { ChangeEventHandler } from "react";
@@ -7,15 +7,14 @@ import { CheckboxProps } from "./checkbox";
 
 type HandleChange = ChangeEventHandler<HTMLInputElement>;
 export interface CategoryItemProps extends CheckboxProps {
-  name: Category;
+  name: typeof CATEGORY[number];
 }
 
 const CategoryItem = ({ name, on, onChange, ...props }: CategoryItemProps) => {
   const [checked, toggle] = useToggle(on);
-  const { text, color } = CategoryMap[name];
-  const imgSrc = `/icon/category/${getKebabCase(name)}${
-    checked ? "-selected" : ""
-  }.svg`;
+  const { color, fileName } = CATEGORY_MAP[name];
+  const imgSrc = `/icon/category/${fileName}${checked ? "-selected" : ""}.svg`;
+  console.log(imgSrc);
 
   const handleChange: HandleChange = (e) => {
     toggle();
@@ -39,7 +38,7 @@ const CategoryItem = ({ name, on, onChange, ...props }: CategoryItemProps) => {
       />
       <Check>
         <img src={imgSrc} alt={name} aria-hidden />
-        {text}
+        {name}
       </Check>
     </Container>
   );
@@ -75,19 +74,17 @@ const Check = styled.div`
 
 export default CategoryItem;
 
-const CategoryMap = {
-  self_development: { text: "자기계발", color: "#7DCD97" },
-  humanities: { text: "인문", color: "#60A8D4" },
-  politics: { text: "정치", color: "#FFC0CB" },
-  social: { text: "사회", color: "#EDD05C" },
-  art: { text: "예술", color: "#E78565" },
-  science: { text: "과학", color: "#7B61FF" },
-  technology: { text: "기술", color: "#3E4CA2" },
-  it: { text: "IT", color: "#3E7B57" },
-  home: { text: "가정", color: "#DC6363" },
-  health: { text: "건강", color: "#516CF6" },
-  travel: { text: "여행", color: "#82DD4A" },
-  cooking: { text: "요리", color: "#966353" },
+const CATEGORY_MAP = {
+  자기계발: { color: "#7DCD97", fileName: "self-development" },
+  인문: { color: "#60A8D4", fileName: "humanities" },
+  정치: { color: "#FFC0CB", fileName: "politics" },
+  사회: { color: "#EDD05C", fileName: "social" },
+  예술: { color: "#E78565", fileName: "art" },
+  과학: { color: "#7B61FF", fileName: "science" },
+  기술: { color: "#3E4CA2", fileName: "technology" },
+  IT: { color: "#3E7B57", fileName: "it" },
+  가정: { color: "#DC6363", fileName: "home" },
+  건강: { color: "#516CF6", fileName: "health" },
+  여행: { color: "#82DD4A", fileName: "travel" },
+  요리: { color: "#966353", fileName: "cooking" },
 } as const;
-
-const getKebabCase = (snakeCase: string) => snakeCase.replace(/_/g, "-");
