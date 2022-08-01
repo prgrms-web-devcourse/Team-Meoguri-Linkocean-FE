@@ -8,9 +8,7 @@ const Article = ({ children }: PageLayoutProps) => {
 const ArticleBox = styled.article`
   background-color: white;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 100px;
+  padding: 100px 50px;
 `;
 
 export default Article;
