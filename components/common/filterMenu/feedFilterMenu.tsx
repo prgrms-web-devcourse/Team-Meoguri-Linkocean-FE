@@ -9,8 +9,8 @@ interface FeedFilterMenuProps {
 
 const FeedFilterMenu = ({ getCategoryData }: FeedFilterMenuProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  //   const [selectedElement, setSelectedElement] = useState<string>("");
   const categoryList = [
+    "전체",
     "자기계발",
     "인문",
     "정치",
@@ -29,10 +29,6 @@ const FeedFilterMenu = ({ getCategoryData }: FeedFilterMenuProps) => {
     getCategoryData(element);
   };
 
-  //   const getCategory = (element: string) => {
-  //     setSelectedCategory(element);
-  //     getCategoryData(element);
-  //   };
   return (
     <FilterBorder>
       <FilterHeader src="/icon/folder.svg" alt="category" arrow={false}>
