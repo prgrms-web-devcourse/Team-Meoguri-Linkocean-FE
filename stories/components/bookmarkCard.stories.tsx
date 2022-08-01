@@ -14,7 +14,7 @@ export default {
         title: "다음 웹툰",
         tags: ["Spring", "React"],
         category: "IT",
-        url: "https://comic.daum.com/index",
+        url: "https://emotion.sh/docs/best-practices",
         updatedAt: "2022-01-01",
         openType: "public",
         likeCount: 12,
@@ -23,4 +23,19 @@ export default {
   },
 };
 
-export const Default = (args: BookmarkProps) => <BookmarkCard {...args} />;
+export const Default = (args: BookmarkProps) => (
+  <div>
+    <div style={{ display: "flex" }}>
+      <BookmarkCard {...args} />
+      <BookmarkCard {...args} />
+      <BookmarkCard {...args} />
+      <BookmarkCard {...args} />
+    </div>
+    <div style={{ display: "flex" }}>
+      <BookmarkCard {...args} />
+      <BookmarkCard {...args} />
+      <BookmarkCard {...args} />
+      <BookmarkCard {...args} />
+    </div>
+  </div>
+);
