@@ -1,8 +1,8 @@
 import { color, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
 import styled from "@emotion/styled";
-// import DropBox from "./dropBox";
-// import Star from "./star";
+import DropBox from "./dropBox";
+import Star from "./star";
 
 export interface BookmarkProps {
   data: Bookmark;
@@ -19,10 +19,10 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
           <CreateDate>{updatedAt}</CreateDate>
         </div>
         <div>
-          {/* <Star favorit={favorite} /> */}
-          {/* <DropBox>
+          <Star favorite={favorite} />
+          <DropBox>
             <More />
-          </DropBox> */}
+          </DropBox>
         </div>
       </Top>
       <MetaImage
