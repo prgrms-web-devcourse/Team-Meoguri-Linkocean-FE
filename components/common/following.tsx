@@ -28,7 +28,7 @@ const Following = ({
       buttonType={following ? "line" : "small"}
       {...props}
     >
-      {following ? "following" : "follow +"}
+      {following ? "팔로우 취소" : "팔로우 +"}
     </FollowingBtn>
   </Card>
 );
