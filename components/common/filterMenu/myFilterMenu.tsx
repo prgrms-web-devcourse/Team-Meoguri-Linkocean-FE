@@ -24,6 +24,7 @@ const MyFilterMenu = ({
   const [selectedTag, setSelectedTag] = useState<string[]>();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
+
   const selectLike = () => {
     setFavoriteSelected(true);
     setIsCategoryListOpen(false);
@@ -39,12 +40,13 @@ const MyFilterMenu = ({
     setIsTagListOpen(false);
     setFavoriteSelected(false);
   };
-  // const checkbox = Array.from(document.getElementsByTagName("input"));
+
   useEffect(() => {
-    const temp = Array.from(document.getElementsByTagName("input"));
-    console.log(temp);
-    if (temp !== undefined) {
-      setCheckbox(temp);
+    const $checkboxCollection = Array.from(
+      document.getElementsByTagName("input")
+    );
+    if ($checkboxCollection !== undefined) {
+      setCheckbox($checkboxCollection);
     }
   }, []);
 
