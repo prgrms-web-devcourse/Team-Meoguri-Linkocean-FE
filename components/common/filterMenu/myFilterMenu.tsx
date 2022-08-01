@@ -1,6 +1,6 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterBorder from "./filterBorder";
 import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
@@ -23,6 +23,7 @@ const MyFilterMenu = ({
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string[]>();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
   const selectLike = () => {
     setFavoriteSelected(true);
     setIsCategoryListOpen(false);
@@ -38,15 +39,24 @@ const MyFilterMenu = ({
     setIsTagListOpen(false);
     setFavoriteSelected(false);
   };
-  const checkbox = Array.from(document.getElementsByTagName("input"));
+  // const checkbox = Array.from(document.getElementsByTagName("input"));
+  useEffect(() => {
+    const temp = Array.from(document.getElementsByTagName("input"));
+    console.log(temp);
+    if (temp !== undefined) {
+      setCheckbox(temp);
+    }
+  }, []);
 
   const handleClick = () => {
     const checkedArr: string[] = [];
-    checkbox.forEach((element) => {
-      if (element.checked) {
-        checkedArr.push(element.id);
-      }
-    });
+    if (checkbox) {
+      checkbox.forEach((element) => {
+        if (element.checked) {
+          checkedArr.push(element.id);
+        }
+      });
+    }
     setSelectedTag(checkedArr);
     getTagsData(checkedArr);
   };
