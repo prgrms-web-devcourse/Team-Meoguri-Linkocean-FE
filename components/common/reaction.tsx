@@ -53,7 +53,10 @@ const Reaction = ({ like, hate }: ReactionProps) => {
       <Like onClick={() => clickLike()} isLikeClicked={selectLike}>
         <Container>
           <StyledDiv>좋아요!</StyledDiv>
-          <StyledDiv>{like}</StyledDiv>
+          <StyledDiv>
+            {" "}
+            {like >= 1000 ? `${Math.floor(like / 1000)}k` : `${like}`}
+          </StyledDiv>
         </Container>
         <StyledImg src="/image/dolphin.png" alt="like" />
       </Like>
@@ -61,7 +64,9 @@ const Reaction = ({ like, hate }: ReactionProps) => {
         <StyledImg src="/image/starfish.png" alt="hate" />
         <Container>
           <StyledDiv>싫어요!</StyledDiv>
-          <StyledDiv>{hate}</StyledDiv>
+          <StyledDiv>
+            {hate >= 1000 ? `${Math.floor(hate / 1000)}k` : `${hate}`}
+          </StyledDiv>
         </Container>
       </Hate>
     </Wrapper>
@@ -71,7 +76,7 @@ const Reaction = ({ like, hate }: ReactionProps) => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 320px;
+  width: 291px;
   gap: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -85,8 +90,9 @@ const Like = styled.div<LikeProps>`
   border: 5px solid ${color.$aqua};
   border-radius: 8px 50px 50px 8px;
   width: 140px;
-  height: 82px;
+  height: 81px;
   cursor: pointer;
+  box-sizing: border-box;
   ${(props) =>
     props.isLikeClicked
       ? `background-color: ${color.$aqua};`
@@ -100,8 +106,9 @@ const Hate = styled.div<HateProps>`
   border-radius: 50px 8px 8px 50px;
   background-color: #ffec3f;
   width: 140px;
-  height: 82px;
+  height: 81px;
   cursor: pointer;
+  box-sizing: border-box;
   ${(props) =>
     props.isHateClicked
       ? `background-color: #ffec3f;`
@@ -114,13 +121,14 @@ const StyledImg = styled.img`
   height: 65px;
   background-color: white;
   border-radius: 100%;
+  box-sizing: border-box;
 `;
 
 const StyledDiv = styled.div`
   ${text.$subtitle2}
   display:flex;
   justify-content: center;
-  margin: 0px 5px;
+  margin: 0px 10px;
 `;
 const Container = styled.div`
   display: flex;
