@@ -47,7 +47,6 @@ const UserInfo = ({ data }: UserInfoProps) => {
 
 const Card = styled.div`
   width: 277px;
-  height: 245px;
 `;
 
 const GridWrapper = styled.div`
@@ -87,7 +86,9 @@ const Bio = styled.div`
   max-height: 105px;
   width: 261px;
   margin: 10px;
+  padding: 10px 0;
   overflow-y: auto;
+  word-wrap: break-word;
 
   &::-webkit-scrollbar {
     width: 11px;
