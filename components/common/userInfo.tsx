@@ -9,8 +9,6 @@ export interface UserInfoProps {
 }
 
 const UserInfo = ({ data }: UserInfoProps) => {
-  console.log(Object.prototype.hasOwnProperty.call(data, "isFollow"));
-  console.log(data.isFollow);
   return (
     <Card>
       <Top>
