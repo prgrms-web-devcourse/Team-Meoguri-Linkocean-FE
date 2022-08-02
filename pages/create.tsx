@@ -86,15 +86,15 @@ const Create = () => {
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
-                <StyledRadio type="radio" name="publicScope" value="all" />
+                <StyledRadio name="publicScope" value="all" />
               </Contents>
               <Contents>
                 <OptionLabel>비공개</OptionLabel>
-                <StyledRadio type="radio" name="publicScope" value="none" />
+                <StyledRadio name="publicScope" value="none" />
               </Contents>
               <Contents>
                 <OptionLabel>일부공개</OptionLabel>
-                <StyledRadio type="radio" name="publicScope" value="part" />
+                <StyledRadio name="publicScope" value="part" />
               </Contents>
             </RadioWrapper>
 
@@ -176,17 +176,9 @@ const RadioWrapper = styled.div`
   margin: 10px 0 0 2px;
 `;
 
-// const StyledRadio = styled(Radio)`
-//   margin: auto 10px;
-//   padding: 3px;
-// `;
-
-const StyledRadio = styled.input`
+const StyledRadio = styled(Radio)`
   margin: auto 10px;
   padding: 3px;
-  accent-color: ${color.$mainColor};
-  width: 22px;
-  height: 22px;
 `;
 
 const OptionLabel = styled(Label)`
