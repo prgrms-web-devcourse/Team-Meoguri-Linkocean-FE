@@ -7,8 +7,20 @@ export interface FavoriteButtonProps
   size?: number;
 }
 
+const onClick = (e: React.MouseEvent<HTMLElement>) => {
+  alert("좋아요><");
+  e.stopPropagation();
+};
+
 const Star = ({ favorite, size = 14, ...props }: FavoriteButtonProps) => {
-  return <FavoritButton favorite={favorite} size={size} {...props} />;
+  return (
+    <FavoritButton
+      onClick={onClick}
+      favorite={favorite}
+      size={size}
+      {...props}
+    />
+  );
 };
 
 const FavoritButton = styled.button<FavoriteButtonProps>`

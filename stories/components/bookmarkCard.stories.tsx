@@ -2,7 +2,7 @@ import BookmarkCard from "@/components/common/bookmarkCard";
 import { BookmarkProps } from "@/components/common/bookmarkCard/bookmarkCard";
 
 export default {
-  title: "component/bookmarkCard",
+  title: "components/bookmarkCard",
   component: BookmarkCard,
   argTypes: {
     data: {
@@ -19,6 +19,10 @@ export default {
         openType: "public",
         likeCount: 12,
       },
+    },
+    editable: {
+      type: "boolean",
+      defaultValue: true,
     },
   },
 };
