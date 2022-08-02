@@ -18,7 +18,7 @@ export interface ProfileDetail {
 }
 
 export interface Bookmark {
-  favorite: boolean;
+  isFavorite: boolean;
   imageUrl?: string;
   id: number;
   title: string;
