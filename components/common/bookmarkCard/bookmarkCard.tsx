@@ -21,7 +21,7 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
     id,
     updatedAt,
     tags,
-    favorite,
+    isFavorite,
     imageUrl,
     title,
     openType,
@@ -46,7 +46,7 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
           <CreateDate>{updatedAt}</CreateDate>
         </div>
         <div>
-          <Star favorite={favorite} />
+          <Star favorite={isFavorite} />
           <DropBox isWriter={isWriter}>
             <More />
           </DropBox>
@@ -82,16 +82,23 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
 };
 
 const Card = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   width: 190px;
   height: 260px;
   border-radius: 8px;
-  margin-right: 25px;
-  margin-bottom: 29px;
   background-color: #fff;
+  margin-right: calc((100% - (190px * 4)) / 3);
+  margin-bottom: 29px;
+  &:nth-child(4) {
+    margin-right: 0px;
+  }
+  &:nth-child(8) {
+    margin-right: 0px;
+  }
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.15));
   transition: all 0.5s;
+  box-sizing: border-box;
   cursor: pointer;
   &:hover {
     filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.3));
@@ -138,6 +145,7 @@ const More = styled.div`
 
 const Category = styled.span`
   ${text.$subtitle1}
+  height: 15px;
 `;
 
 const CreateDate = styled.span`
