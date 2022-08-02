@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { color, text } from "@/styles/theme";
+import { color } from "@/styles/theme";
 import Image from "next/image";
 import ProfileImage from "@/components/common/profileImage";
 import LogoutTooltip from "@/components/common/logoutTooltip";
@@ -49,7 +49,7 @@ const StyledHeader = styled.header`
   display: flex;
   box-sizing: border-box;
   justify-content: space-between;
-  border-bottom: 2px solid ${color.$gray400};
+  border-bottom: 1px solid ${color.$gray400};
 `;
 
 const Logo = styled.div`
@@ -78,7 +78,9 @@ const NavigatorWrapper = styled.div`
 const Navigator = styled.nav`
   margin: auto 20px;
   color: ${color.$gray600};
-  ${text.$headline5};
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 29px;
   cursor: pointer;
 `;
 
@@ -98,6 +100,8 @@ const UserImg = styled.div`
 
 const UserName = styled.div`
   color: ${color.$gray600};
-  ${text.$headline5};
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 29px;
   cursor: pointer;
 `;
