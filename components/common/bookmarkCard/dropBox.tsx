@@ -4,19 +4,34 @@ import styled from "@emotion/styled";
 
 export interface DropBoxProps {
   children: JSX.Element;
+  isWriter: boolean;
 }
 
-const DropBox = ({ children }: DropBoxProps) => {
+const DropBox = ({ children, isWriter = true }: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
-  const share = () => alert("공유하기");
+  const share = (e: React.MouseEvent<HTMLElement>) => {
+    alert("공유하기");
+    e.stopPropagation();
+  };
 
-  const edit = () => alert("수정하기");
+  const edit = (e: React.MouseEvent<HTMLElement>) => {
+    alert("수정하기");
+    e.stopPropagation();
+  };
 
-  const deletePost = () => alert("삭제하기");
+  const deletePost = (e: React.MouseEvent<HTMLElement>) => {
+    alert("삭제하기");
+    e.stopPropagation();
+  };
+
+  const openBox = (e: React.MouseEvent<HTMLElement>) => {
+    toggle();
+    e.stopPropagation();
+  };
 
   return (
     <Box>
-      <button type="button" onClick={toggle}>
+      <button type="button" onClick={openBox}>
         {children}
       </button>
       <List checked={checked}>
@@ -25,16 +40,20 @@ const DropBox = ({ children }: DropBoxProps) => {
             공유하기
           </button>
         </li>
-        <li>
-          <button type="button" onClick={edit}>
-            수정하기
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={deletePost}>
-            삭제하기
-          </button>
-        </li>
+        {isWriter ? (
+          <>
+            <li>
+              <button type="button" onClick={edit}>
+                수정하기
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={deletePost}>
+                삭제하기
+              </button>
+            </li>
+          </>
+        ) : null}
       </List>
     </Box>
   );

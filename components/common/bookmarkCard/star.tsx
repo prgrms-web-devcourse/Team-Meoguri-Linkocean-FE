@@ -1,3 +1,4 @@
+import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
 import React, { ButtonHTMLAttributes } from "react";
 
@@ -7,8 +8,20 @@ export interface FavoriteButtonProps
   size?: number;
 }
 
+const onClick = (e: React.MouseEvent<HTMLElement>) => {
+  alert("좋아요><");
+  e.stopPropagation();
+};
+
 const Star = ({ favorite, size = 14, ...props }: FavoriteButtonProps) => {
-  return <FavoritButton favorite={favorite} size={size} {...props} />;
+  return (
+    <FavoritButton
+      onClick={onClick}
+      favorite={favorite}
+      size={size}
+      {...props}
+    />
+  );
 };
 
 const FavoritButton = styled.button<FavoriteButtonProps>`
@@ -16,11 +29,18 @@ const FavoritButton = styled.button<FavoriteButtonProps>`
   height: ${(props) => props.size}px;
   border: none;
   background-color: #fff;
+  padding: 10px;
+  border-radius: 50%;
   background-image: ${(props) =>
     props.favorite ? "url('/icon/full-star.svg')" : "url('/icon/star.svg')"};
-  background-size: cover;
+  background-size: 18px, 18px;
+  background-repeat: no-repeat;
   background-position: center;
+  transition: background-color 0.3s;
   cursor: pointer;
+  &:hover {
+    background-color: #ffec3f30;
+  }
 `;
 
 export default Star;
