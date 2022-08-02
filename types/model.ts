@@ -28,6 +28,7 @@ export interface Bookmark {
   updatedAt: string;
   openType: OpenType;
   likeCount: number;
+  isWriter: boolean;
 }
 
 export interface BookmarkDetail {
