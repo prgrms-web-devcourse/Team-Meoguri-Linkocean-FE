@@ -4,10 +4,10 @@ import styled from "@emotion/styled";
 
 export interface DropBoxProps {
   children: JSX.Element;
-  editable?: boolean;
+  isWriter: boolean;
 }
 
-const DropBox = ({ children, editable = true }: DropBoxProps) => {
+const DropBox = ({ children, isWriter = true }: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
   const share = (e: React.MouseEvent<HTMLElement>) => {
     alert("공유하기");
@@ -40,7 +40,7 @@ const DropBox = ({ children, editable = true }: DropBoxProps) => {
             공유하기
           </button>
         </li>
-        {editable ? (
+        {isWriter ? (
           <>
             <li>
               <button type="button" onClick={edit}>

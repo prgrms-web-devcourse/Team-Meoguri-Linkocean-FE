@@ -6,12 +6,20 @@ import Star from "./star";
 
 export interface BookmarkProps {
   data: Bookmark;
-  editable?: boolean;
 }
 
-const BookmarkCard = ({ data, editable }: BookmarkProps) => {
-  const { category, url, id, updatedAt, tags, favorite, imageUrl, title } =
-    data;
+const BookmarkCard = ({ data }: BookmarkProps) => {
+  const {
+    category,
+    url,
+    id,
+    updatedAt,
+    tags,
+    favorite,
+    imageUrl,
+    title,
+    isWriter,
+  } = data;
 
   const urlClick = (e: React.MouseEvent<HTMLElement>) => {
     window.open(url);
@@ -31,7 +39,7 @@ const BookmarkCard = ({ data, editable }: BookmarkProps) => {
         </div>
         <div>
           <Star favorite={favorite} />
-          <DropBox editable={editable}>
+          <DropBox isWriter={isWriter}>
             <More />
           </DropBox>
         </div>

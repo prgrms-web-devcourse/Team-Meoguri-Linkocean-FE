@@ -18,11 +18,8 @@ export default {
         updatedAt: "2022-01-01",
         openType: "public",
         likeCount: 12,
+        isWriter: true,
       },
-    },
-    editable: {
-      type: "boolean",
-      defaultValue: true,
     },
   },
 };
