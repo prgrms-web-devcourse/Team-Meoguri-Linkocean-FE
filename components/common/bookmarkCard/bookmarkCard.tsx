@@ -109,7 +109,7 @@ const Top = styled.div`
 `;
 
 const MetaImage = styled.img`
-  height: 190px;
+  height: 110px;
   object-fit: cover;
   background-image: url("/image/default-card-meta-image.jpg");
   background-position: center;

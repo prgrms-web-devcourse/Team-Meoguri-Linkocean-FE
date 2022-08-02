@@ -9,7 +9,8 @@ export default {
       type: "text",
       defaultValue: {
         favorite: false,
-        // imageUrl: "imageUrl2",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfnFobXDZ9yiIjEpNUoA6CaoinBpWJF2d1rA&usqp=CAU",
         id: 2,
         title: "다음 웹툰",
         tags: ["Spring", "React"],
