@@ -20,7 +20,7 @@ const Create = () => {
         <UserInfo data={data} />
         <MyFilterMenu
           getTagsData={getTags}
-          getCategoryData={getCategory}
+          getCatagoryData={getCategory}
           tagList={tagList}
           categoryList={categoryList}
         />
