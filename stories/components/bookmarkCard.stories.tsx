@@ -21,8 +21,7 @@ const cardData: Bookmark[] = [
     url: "https://comic.naver.com/index",
     openType: "all",
     updatedAt: "2022-01-01",
-    imageUrl:
-      "https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png",
+    imageUrl: "https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_g",
     likeCount: 122,
     isFavorite: false,
     isWriter: true,
@@ -35,8 +34,6 @@ const cardData: Bookmark[] = [
     openType: "all",
     category: "IT",
     updatedAt: "2022-12-02",
-    imageUrl:
-      "http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg",
     likeCount: 222,
     isFavorite: false,
     isWriter: true,
