@@ -8,6 +8,12 @@ export interface BookmarkProps {
   data: Bookmark;
 }
 
+const OPEN_TYPE = {
+  all: "전체공개",
+  partial: "일부공개",
+  private: "비공개",
+};
+
 const BookmarkCard = ({ data }: BookmarkProps) => {
   const {
     category,
@@ -18,6 +24,8 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
     favorite,
     imageUrl,
     title,
+    openType,
+    likeCount,
     isWriter,
   } = data;
 
@@ -62,9 +70,9 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
             {url}
           </Url>
           <CardBottom>
-            <span>일부공개</span>
+            <span>{OPEN_TYPE[openType]}</span>
             <Like>
-              <i /> 12
+              <i /> {likeCount}
             </Like>
           </CardBottom>
         </div>

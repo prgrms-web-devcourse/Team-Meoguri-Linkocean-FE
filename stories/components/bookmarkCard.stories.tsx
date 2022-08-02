@@ -16,7 +16,7 @@ export default {
         category: "IT",
         url: "https://emotion.sh/docs/best-practices",
         updatedAt: "2022-01-01",
-        openType: "public",
+        openType: "all",
         likeCount: 12,
         isWriter: true,
       },
