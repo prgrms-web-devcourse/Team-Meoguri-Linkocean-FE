@@ -38,6 +38,19 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
     alert(`${id} 클릭`);
   };
 
+  const unitConversion = (num: number) => {
+    if (num < 1000) {
+      return num;
+    }
+    if (num < 10000 && num >= 1000) {
+      return `${(num / 1000).toPrecision(2)}k`;
+    }
+    if (num > 10000) {
+      return `${(num / 10000).toPrecision(2)}M`;
+    }
+    return num;
+  };
+
   return (
     <Card onClick={clickCard}>
       <Top>
@@ -72,7 +85,7 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
           <CardBottom>
             <span>{OPEN_TYPE[openType]}</span>
             <Like>
-              <i /> {likeCount}
+              <i /> {unitConversion(likeCount)}
             </Like>
           </CardBottom>
         </div>
