@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import Pagination from "@/components/common/pagination";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -11,6 +12,7 @@ import Select from "@/components/common/select";
 import BookmarkCard from "@/components/common/bookmarkCard";
 import { Bookmark } from "@/types/model";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export interface Dummy {
   count: number;
@@ -197,15 +199,29 @@ const data = {
 const dummyBookmark = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const Favorite = () => {
-  const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState<string>();
+  const [tags, setTags] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   // const cardData: Bookmark[] = dummyResponse.data;
+  const router = useRouter();
+  useEffect(() => {
+    const tagParamsObj = { tag: JSON.stringify(tags) };
+    const searchParams = new URLSearchParams(tagParamsObj).toString();
+    if (tags.length !== 0) {
+      router.push(`tag/?${searchParams.toString()}`);
+    }
+  }, [tags]);
+
+  useEffect(() => {
+    const categoryParamsObj = { category };
+    const searchParams = new URLSearchParams(categoryParamsObj).toString();
+    if (category.length !== 0) {
+      router.push(`category/?${searchParams.toString()}`);
+    }
+  }, [category]);
   const AsideMemo = React.useMemo(
     () => (
       <PageLayout.Aside>
-        {tags}
-        {category}
         <UserInfo data={data} />
         <MyFilterMenu
           categoryList={dummyCategory}

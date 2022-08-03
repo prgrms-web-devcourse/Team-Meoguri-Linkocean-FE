@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
@@ -198,23 +199,30 @@ const data = {
 const dummyBookmark = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const My = () => {
-  const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState<string>();
+  const [tags, setTags] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
-
   const router = useRouter();
-  console.log(router.query);
   useEffect(() => {
-    const query = (
-      <Link href={{ pathname: "category", query: { name: "test" } }} />
-    );
+    const tagParamsObj = { tag: JSON.stringify(tags) };
+    const searchParams = new URLSearchParams(tagParamsObj).toString();
+    if (tags.length !== 0) {
+      router.push(`tag/?${searchParams.toString()}`);
+    }
   }, [tags]);
+
+  useEffect(() => {
+    const categoryParamsObj = { category };
+    const searchParams = new URLSearchParams(categoryParamsObj).toString();
+    if (category.length !== 0) {
+      router.push(`category/?${searchParams.toString()}`);
+    }
+  }, [category]);
+  console.log(router.query);
   // const cardData: Bookmark[] = dummyResponse.data;
   const AsideMemo = React.useMemo(
     () => (
       <PageLayout.Aside>
-        {tags}
-        {category}
         <UserInfo data={data} />
         <MyFilterMenu
           categoryList={dummyCategory}
