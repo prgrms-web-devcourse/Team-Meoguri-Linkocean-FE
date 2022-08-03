@@ -1,4 +1,4 @@
-import { CATEGORY, OpenType } from "./type";
+import { CATEGORY, NotificationType, OpenType } from "./type";
 
 export interface Profile {
   profileId: number;
@@ -50,8 +50,16 @@ export interface BookmarkDetail {
 }
 
 export interface Notification {
-  bookmarkId: number;
-  username: string;
-  title: string;
-  url: string;
+  type: NotificationType;
+  info: {
+    bookmark: {
+      id: number;
+      title: string;
+      link: string;
+    };
+    sender?: {
+      id: number;
+      username: string;
+    };
+  };
 }

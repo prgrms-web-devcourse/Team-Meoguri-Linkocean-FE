@@ -31,6 +31,14 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
@@ -44,6 +52,8 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "arrow-body-style": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "import/extensions": [
       "error",
       "ignorePackages",

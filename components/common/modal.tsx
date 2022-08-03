@@ -8,8 +8,6 @@ export interface ModalProps {
   height?: number;
   children: React.ReactNode;
 }
-
-const body = document.getElementsByTagName("body")[0];
 const Modal = ({
   isShow,
   setIsShow,
@@ -18,6 +16,8 @@ const Modal = ({
   children,
 }: ModalProps) => {
   useEffect(() => {
+    if (typeof window !== "object") return;
+    const body = document.getElementsByTagName("body")[0];
     if (isShow) {
       body.classList.add("scrollLock");
     } else {

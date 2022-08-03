@@ -3,7 +3,7 @@ import ProfileImage, {
 } from "@/components/common/profileImage";
 
 export default {
-  title: "components/profileImage",
+  title: "components/ProfileImage",
   component: ProfileImage,
   argTypes: {
     src: {

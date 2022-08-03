@@ -14,7 +14,6 @@ const CategoryItem = ({ name, on, onChange, ...props }: CategoryItemProps) => {
   const [checked, toggle] = useToggle(on);
   const { color, fileName } = CATEGORY_MAP[name];
   const imgSrc = `/icon/category/${fileName}${checked ? "-selected" : ""}.svg`;
-  console.log(imgSrc);
 
   const handleChange: HandleChange = (e) => {
     toggle();
