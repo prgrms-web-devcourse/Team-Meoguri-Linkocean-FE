@@ -210,6 +210,7 @@ const Favorite = () => {
         <MyFilterMenu
           categoryList={dummyCategory}
           tagList={dummyTag}
+          isFavorite
           getCategoryData={setCategory}
           getTagsData={setTags}
         />

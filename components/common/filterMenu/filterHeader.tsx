@@ -10,6 +10,7 @@ interface FilterHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 interface ArrowProps {
   isOpen?: boolean;
+  isFavorite?: boolean;
 }
 
 const FilterHeader = ({
@@ -19,10 +20,11 @@ const FilterHeader = ({
   children,
   arrow,
   isOpen, // Arrow 방향
+  isFavorite,
   ...props
 }: FilterHeaderProps & ArrowProps) => {
   return (
-    <StyledDiv isOpen={isOpen} {...props}>
+    <StyledDiv isOpen={isOpen} isFavorite={isFavorite} {...props}>
       <StyledImage src={src} alt={alt} style={style} />
       {children}
       {arrow ? (
@@ -42,7 +44,7 @@ const StyledDiv = styled.div<ArrowProps>`
   padding-right: 10px;
   cursor: pointer;
   ${(props) =>
-    props.isOpen
+    props.isOpen || props.isFavorite
       ? `background-color: ${color.$hoverSkyBlue}11;
          border-radius:8px;
       `

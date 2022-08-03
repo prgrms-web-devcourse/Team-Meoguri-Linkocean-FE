@@ -10,6 +10,7 @@ import FilterHeader from "./filterHeader";
 export interface MyFilterMenuProps {
   tagList?: { name: string; count: number }[];
   categoryList?: string[];
+  isFavorite?: boolean;
   getTagsData: (arr: string[]) => void;
   getCategoryData: (arr: string) => void;
 }
@@ -17,6 +18,7 @@ export interface MyFilterMenuProps {
 const MyFilterMenu = ({
   tagList,
   categoryList,
+  isFavorite,
   getTagsData,
   getCategoryData,
 }: MyFilterMenuProps) => {
@@ -86,6 +88,7 @@ const MyFilterMenu = ({
         <FilterHeader
           src="/icon/full-star.svg"
           alt="star"
+          isFavorite={isFavorite}
           arrow={false}
           onClick={selectLike}
           isOpen={favoriteSelected}
