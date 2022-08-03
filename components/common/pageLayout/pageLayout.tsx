@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
+import React from "react";
 import Header from "../header";
 import Article from "./article";
 import Aside, { PageLayoutProps } from "./aside";
 
 const PageLayout = ({ children }: PageLayoutProps) => {
+  const HeaderMemo = React.useMemo(() => <Header />, []);
   return (
     <Layout>
-      <Header />
+      {HeaderMemo}
       <main>{children}</main>
     </Layout>
   );

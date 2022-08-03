@@ -1,6 +1,8 @@
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Checkbox from "@/components/common/checkbox";
+import Link from "next/link";
+import { Router } from "next/router";
 
 interface FilterElementProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
