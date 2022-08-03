@@ -196,8 +196,6 @@ const data = {
   followeeCount: 10,
 };
 
-const dummyBookmark = [1, 2, 3, 4, 5, 6, 7, 8];
-
 const Favorite = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<string>("");
@@ -240,23 +238,15 @@ const Favorite = () => {
       {AsideMemo}
       <PageLayout.Article>
         <Wrapper>
-          <Link
-            href={{
-              pathname: "favorite/about",
-              query: { name: "test" },
-            }}
-          >
-            About us
-          </Link>
           <Title>즐겨찾기 목록</Title>
           <FilterDiv>
             <SearchDiv>
-              <Input
+              {/* <Input
                 searchIcon
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                 }}
-              />
+              /> */}
 
               <Button buttonType="small" colorType="main-color">
                 검색
@@ -273,9 +263,10 @@ const Favorite = () => {
             </SelectDiv>
           </FilterDiv>
           <ContentDiv>
-            {dummyResponse.data.map((e) => (
+            {dummyResponse.data.map((e, i) => (
               // <div>hello</div>
-              <BookmarkCard key={e.id} data={e} />
+              // eslint-disable-next-line react/no-array-index-key
+              <BookmarkCard key={i} data={e} />
             ))}
           </ContentDiv>
           <PaginationDiv>
