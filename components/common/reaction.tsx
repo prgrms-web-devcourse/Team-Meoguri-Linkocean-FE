@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 
@@ -17,19 +17,29 @@ interface HateProps {
 const Reaction = ({ like, hate }: ReactionProps) => {
   const [selectLike, setSelectLike] = useState(false);
   const [selectHate, setSelectHate] = useState(false);
+  const [likeCount, setLikeCount] = useState(like);
+  const [hateCount, setHateCount] = useState(hate);
+  useEffect(() => {
+    setLikeCount(like);
+    setHateCount(hate);
+  }, [like, hate]);
 
   const clickLike = () => {
     if (selectLike) {
       // Like 카운트 내려갈 때
       setSelectLike(false);
+      setLikeCount(likeCount - 1);
     } else {
       // Like 카운트 올라갈 때
       setSelectLike(true);
+      setLikeCount(likeCount + 1);
     }
     if (selectHate) {
       // Hate 빼주고, Like 올리기
       setSelectHate(false);
+      setHateCount(hateCount - 1);
       setSelectLike(true);
+      setLikeCount(likeCount + 1);
     }
   };
 
@@ -37,14 +47,18 @@ const Reaction = ({ like, hate }: ReactionProps) => {
     if (selectHate) {
       // Hate 카운트 내려갈 때
       setSelectHate(false);
+      setHateCount(hateCount - 1);
     } else {
       // Hate 카운트 올라갈 때
       setSelectHate(true);
+      setHateCount(hateCount + 1);
     }
     if (selectLike) {
       // Like 카운트 빼주고, Hate 올리기
       setSelectHate(true);
+      setHateCount(hateCount + 1);
       setSelectLike(false);
+      setLikeCount(likeCount - 1);
     }
   };
 
@@ -54,8 +68,9 @@ const Reaction = ({ like, hate }: ReactionProps) => {
         <Container>
           <StyledDiv>좋아요!</StyledDiv>
           <StyledDiv>
-            {" "}
-            {like >= 1000 ? `${Math.floor(like / 1000)}k` : `${like}`}
+            {likeCount >= 1000
+              ? `${Math.floor(likeCount / 1000)}k`
+              : `${likeCount}`}
           </StyledDiv>
         </Container>
         <StyledImg src="/image/dolphin.png" alt="like" />
@@ -65,7 +80,9 @@ const Reaction = ({ like, hate }: ReactionProps) => {
         <Container>
           <StyledDiv>싫어요!</StyledDiv>
           <StyledDiv>
-            {hate >= 1000 ? `${Math.floor(hate / 1000)}k` : `${hate}`}
+            {hateCount >= 1000
+              ? `${Math.floor(hateCount / 1000)}k`
+              : `${hateCount}`}
           </StyledDiv>
         </Container>
       </Hate>
