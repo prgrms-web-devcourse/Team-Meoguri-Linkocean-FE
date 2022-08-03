@@ -2,17 +2,54 @@ import styled from "@emotion/styled";
 import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout/index";
+<<<<<<< HEAD
 import { useState } from "react";
+=======
+import Input from "@/components/common/input";
+import Label from "@/components/common/label";
+import Textarea from "@/components/common/textarea";
+import Select from "@/components/common/select";
+import Radio from "@/components/common/radio";
+import Button from "@/components/common/button";
+import { useRef, useState } from "react";
+import { color, text } from "@/styles/theme";
+>>>>>>> 2015ca1 ([#63] handleCreate 추가)
 
 const Create = () => {
+  const [url, setUrl] = useState("");
   const [tags, setTags] = useState<string[]>();
+<<<<<<< HEAD
   const [category, setCategory] = useState<string>();
+=======
+  const [category, setCategory] = useState("");
+  const [openType, setOpenType] = useState<string>();
+  const [bio, setBio] = useState("");
+
+  const urlRef = useRef(null);
+
+>>>>>>> 2015ca1 ([#63] handleCreate 추가)
   const getTags = (elements: string[]) => {
     setTags(elements);
   };
   const getCategory = (element: string) => {
     setCategory(element);
   };
+
+  const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOpenType(event.target.value);
+  };
+
+  const handleCreate = () => {
+    if (url === "") {
+      alert("url을 입력해주세요");
+      // urlRef.current.focus();
+    } else if (category === "") {
+      alert("카테고리를 선택해주세요");
+    } else if (openType === undefined) {
+      alert("공개 범위를 선택해주세요");
+    }
+  };
+
   return (
     <PageLayout>
       {" "}
@@ -35,7 +72,12 @@ const Create = () => {
 
             <StyledLabel>URL</StyledLabel>
             {/* URL 중복 확인 요청, 링크메타데이터 요청 */}
-            <StyledInput placeholder="URL을 입력하세요." />
+            <StyledInput
+              ref={urlRef}
+              placeholder="URL을 입력하세요."
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
 
             <StyledLabel>제목</StyledLabel>
             <StyledInput placeholder="제목을 입력하세요." />
@@ -58,8 +100,9 @@ const Create = () => {
             />
 
             <StyledLabel>카테고리</StyledLabel>
+            {category && <h2>{category}</h2>}
             <StyledSelect>
-              <Select width="470px">
+              <Select width="470px" onChange={setCategory}>
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList>
                   <Select.Option value="self-development">
@@ -84,18 +127,31 @@ const Create = () => {
             <StyledInput placeholder="태그를 입력하세요." />
 
             <StyledLabel>공개 범위</StyledLabel>
+            {openType && <h2>{openType}</h2>}
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
-                <StyledRadio name="openType" value="all" />
+                <StyledRadio
+                  name="openType"
+                  value="all"
+                  onChange={radioHandler}
+                />
               </Contents>
               <Contents>
                 <OptionLabel>비공개</OptionLabel>
-                <StyledRadio name="openType" value="private" />
+                <StyledRadio
+                  name="openType"
+                  value="private"
+                  onChange={radioHandler}
+                />
               </Contents>
               <Contents>
                 <OptionLabel>일부공개</OptionLabel>
-                <StyledRadio name="openType" value="partial" />
+                <StyledRadio
+                  name="openType"
+                  value="partial"
+                  onChange={radioHandler}
+                />
               </Contents>
             </RadioWrapper>
 
@@ -106,6 +162,7 @@ const Create = () => {
                 colorType="main-color"
                 width="194"
                 style={{ margin: "120px auto" }}
+                onClick={handleCreate}
               >
                 작성완료
               </Button>
