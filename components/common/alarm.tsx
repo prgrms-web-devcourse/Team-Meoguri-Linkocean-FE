@@ -1,5 +1,6 @@
 import { color, text } from "@/styles/theme";
 import { Notification } from "@/types/model";
+import { NotificationType } from "@/types/type";
 import styled from "@emotion/styled";
 import React from "react";
 
@@ -8,30 +9,75 @@ export interface AlarmProps {
 }
 
 const Alarm = ({ data }: AlarmProps) => {
-  const { bookmarkId, username, title, url } = data;
+  const { type, info } = data;
+  const { bookmark, sender } = info;
 
   const handleClick = () => {
-    alert(`${bookmarkId}클릭`);
+    alert(`${bookmark.id}클릭`);
   };
 
   const urlClick = (e: React.MouseEvent<HTMLElement>) => {
-    window.open(url);
+    window.open(bookmark.link);
     e.stopPropagation();
   };
 
+  const comment = () => {
+    switch (type) {
+      case "FEED":
+        return (
+          <>
+            <b>{sender?.username}</b> 님이 북마크를 추가했습니다.
+          </>
+        );
+      case "SHARE":
+        return (
+          <>
+            <b>{sender?.username}</b> 님이 북마크를 공유했습니다.
+          </>
+        );
+      case "OLD":
+        return (
+          <>
+            <b>10일</b> 동안 사용하지 않은 북마크가 있습니다.
+          </>
+        );
+      default:
+        return <>잘못된 알림이 오고 있습니다. 담당자에게 문의 해주세요</>;
+    }
+  };
+
   return (
-    <AlarmBox onClick={handleClick}>
-      <Guide>
-        <b>{username}</b> 님이 북마크를 추가했습니다.
-      </Guide>
+    <AlarmBox onClick={handleClick} type={type}>
+      <Guide>{comment()}</Guide>
       <UrlData>
-        <Title>{title}</Title>
-        <Url onClick={urlClick} href={url} target="_blank">
-          {url}
-        </Url>
+        <Title>{bookmark.title}</Title>
+        <Url onClick={urlClick}>{bookmark.link}</Url>
       </UrlData>
     </AlarmBox>
   );
+};
+
+const alarmIcon = (type: NotificationType) => {
+  switch (type) {
+    case "FEED":
+      return `
+        background-image: url("/icon/label.svg");
+        width: 40px;
+        height: 24px;
+      `;
+    case "SHARE":
+      return `
+        background-image: url("/icon/hide.svg");
+        width: 28px;
+        height: 13px;`;
+    case "OLD":
+      return `
+        background-image: url("/icon/link.svg");
+        width: 26px;
+        height: 26px;`;
+    default:
+      return null;
+  }
 };
 
 const AlarmBox = styled.div`
@@ -50,12 +96,11 @@ const AlarmBox = styled.div`
     display: block;
     top: 50%;
     right: 43px;
-    width: 40px;
-    height: 24px;
     transform: translateY(-50%);
-    background-image: url("/icon/label.svg");
+    ${(props: { type: NotificationType }) => alarmIcon(props.type)};
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
     content: "";
   }
 `;
