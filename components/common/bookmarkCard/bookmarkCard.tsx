@@ -167,7 +167,7 @@ const Tag = styled.span`
   ${text.$caption}
 `;
 
-const CardBottom = styled.p`
+const CardBottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
