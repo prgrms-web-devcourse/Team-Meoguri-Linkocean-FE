@@ -52,6 +52,8 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "arrow-body-style": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
