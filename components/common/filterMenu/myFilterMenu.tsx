@@ -1,5 +1,7 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import FilterBorder from "./filterBorder";
 import FilterFolder from "./filterFolder";
@@ -69,24 +71,28 @@ const MyFilterMenu = ({
   };
   return (
     <FilterBorder>
-      <FilterHeader
-        src="/icon/add.svg"
-        alt="add"
-        style={{ width: "15px", height: "15px", marginLeft: "10px" }}
-        arrow={false}
-      >
-        북마크 추가
-      </FilterHeader>
+      <Link href="create">
+        <FilterHeader
+          src="/icon/add.svg"
+          alt="add"
+          style={{ width: "15px", height: "15px", marginLeft: "10px" }}
+          arrow={false}
+        >
+          북마크 추가
+        </FilterHeader>
+      </Link>
       <Seperator />
-      <FilterHeader
-        src="/icon/full-star.svg"
-        alt="star"
-        arrow={false}
-        onClick={selectLike}
-        isOpen={favoriteSelected}
-      >
-        즐겨찾기 목록
-      </FilterHeader>
+      <Link href="favorite">
+        <FilterHeader
+          src="/icon/full-star.svg"
+          alt="star"
+          arrow={false}
+          onClick={selectLike}
+          isOpen={favoriteSelected}
+        >
+          즐겨찾기 목록
+        </FilterHeader>
+      </Link>
       <FilterHeader
         src="/icon/label.svg"
         alt="tag"
