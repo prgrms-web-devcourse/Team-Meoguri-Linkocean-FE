@@ -34,6 +34,7 @@ const Create = () => {
             <PageName>북마크 추가</PageName>
 
             <StyledLabel>URL</StyledLabel>
+            {/* URL 중복 확인 요청, 링크메타데이터 요청 */}
             <StyledInput placeholder="URL을 입력하세요." />
 
             <StyledLabel>제목</StyledLabel>
@@ -86,19 +87,20 @@ const Create = () => {
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
-                <StyledRadio name="publicScope" value="all" />
+                <StyledRadio name="openType" value="all" />
               </Contents>
               <Contents>
                 <OptionLabel>비공개</OptionLabel>
-                <StyledRadio name="publicScope" value="none" />
+                <StyledRadio name="openType" value="private" />
               </Contents>
               <Contents>
                 <OptionLabel>일부공개</OptionLabel>
-                <StyledRadio name="publicScope" value="part" />
+                <StyledRadio name="openType" value="partial" />
               </Contents>
             </RadioWrapper>
 
             <ButtonWrapper>
+              {/* 북마크 등록 */}
               <Button
                 buttonType="large"
                 colorType="main-color"
