@@ -4,10 +4,10 @@ type ImgSize = "lg" | "md" | "sm" | number;
 
 export interface ProfileImageProps {
   src?: string;
-  size: ImgSize;
+  size?: ImgSize;
 }
 
-const profileImage = ({ src, size = "md", ...props }: ProfileImageProps) => (
+const ProfileImage = ({ src, size = "md", ...props }: ProfileImageProps) => (
   <ProfileImg
     src={src || "/image/default-profile-image.png"}
     size={size}
@@ -34,6 +34,7 @@ const ProfileImg = styled.img<ProfileImageProps>`
   height: ${(props) => profileSize(props.size)}px;
   border-radius: 50%;
   display: inline-block;
+  background-color: #fff;
 `;
 
-export default profileImage;
+export default ProfileImage;
