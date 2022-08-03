@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
@@ -11,7 +12,8 @@ import Select from "@/components/common/select";
 import BookmarkCard from "@/components/common/bookmarkCard";
 import { Bookmark } from "@/types/model";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 export interface Dummy {
   count: number;
@@ -198,27 +200,48 @@ const data = {
 const dummyBookmark = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const My = () => {
-  const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState<string>();
+  const [tags, setTags] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [a, setA] = useState("");
   // const cardData: Bookmark[] = dummyResponse.data;
   const router = useRouter();
+
+  // console.log(router.query);
+  // setA(router.query());
+  // useEffect(() => {
+  //   let result = "";
+  //   const tag = "tag?";
+  //   const category = "category?";
+  //   tags?.forEach((t) => {
+  //     result += `${tag}tag=${t}`;
+  //   });
+  //   console.log(result);
+  //   // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  //   router.push(`${tags ? result : ""}`);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [tags]);
+
+  console.log(router.query);
   useEffect(() => {
-    let result = "";
-    const tag = "tag?";
-    tags?.forEach((t) => {
-      result += `${tag}tag=${t}`;
-    });
-    console.log(result);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    router.push(`${tags ? result : ""}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const tagParamsObj = { tag: JSON.stringify(tags) };
+    const searchParams = new URLSearchParams(tagParamsObj).toString();
+    if (tags.length !== 0) {
+      router.push(`?${searchParams.toString()}`);
+    }
   }, [tags]);
+
+  useEffect(() => {
+    const categoryParamsObj = { category };
+    const searchParams = new URLSearchParams(categoryParamsObj).toString();
+    if (category.length !== 0) {
+      router.push(`category/?${searchParams.toString()}`);
+    }
+  }, [category]);
+
   const AsideMemo = React.useMemo(
     () => (
       <PageLayout.Aside>
-        {tags}
-        {category}
         <UserInfo data={data} />
         <MyFilterMenu
           categoryList={dummyCategory}
@@ -236,9 +259,6 @@ const My = () => {
       {AsideMemo}
       <PageLayout.Article>
         <Wrapper>
-          <Link href={{ pathname: "tag", query: { name: "test" } }}>
-            카테고리
-          </Link>
           <Title>태그 목록</Title>
           <FilterDiv>
             <SearchDiv>
