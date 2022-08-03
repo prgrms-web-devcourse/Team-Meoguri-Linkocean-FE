@@ -14,3 +14,5 @@ export const CATEGORY = [
 ] as const;
 
 export type OpenType = "private" | "all" | "partial";
+
+export type NotificationType = "SHARE" | "FEED" | "OLD";
