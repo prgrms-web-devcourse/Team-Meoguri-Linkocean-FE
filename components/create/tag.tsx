@@ -22,6 +22,8 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
     const item = tag.slice(0);
     item.splice(num, 1);
     setTag(item);
+    setOverlapMsg(false);
+    setLimitMsg(false);
   };
 
   // 태그 추가
@@ -178,9 +180,11 @@ const TagBtn = styled.div`
     }
     :before {
       transform: rotate(45deg);
+      z-index: -10;
     }
     :after {
       transform: rotate(-45deg);
+      z-index: -10;
     }
   }
 
@@ -198,7 +202,7 @@ const Input = styled.input`
   border-radius: 10px;
   margin: 0 0 0 10px;
   padding: 0;
-  font-size: 20px;
+  font-size: 16px;
   box-sizing: border-box;
   :focus {
     outline: none;
