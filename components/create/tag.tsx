@@ -1,46 +1,43 @@
 import React, { KeyboardEvent, useRef } from "react";
 import styled from "@emotion/styled";
+import { color } from "@/styles/theme";
 
 export interface CreateProps {
   tag: string[];
   setTag: (item: string[]) => void;
+  width?: string;
+  height?: string;
 }
 
-const Tag = ({ tag, setTag }: CreateProps) => {
+const Tag = ({ tag, setTag, ...props }: CreateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log(tag);
 
   // 태그 제거
   const removeTag = (num: number) => {
     const item = tag.slice(0);
     item.splice(num, 1);
     setTag(item);
-    console.log(item);
   };
 
   // 태그 추가
   const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const item = tag.slice();
-      console.log(item);
-
       item.push(inputRef?.current?.value as string);
       setTag(item);
-
       const current = inputRef.current as HTMLInputElement;
       current.value = "";
-      console.log(item);
     }
   };
   return (
-    <TagBox>
+    <TagBox {...props}>
       {/* tags */}
       {tag.map((item, num) => {
         const key = `${num}-${item}`;
         return (
-          <TagBtn key={key}>
+          <TagBtn key={key} {...props}>
             <span>{item}</span>
-            <button type="button" onClick={() => removeTag(num)}>
+            <button type="button" onClick={() => removeTag(num)} {...props}>
               {" "}
             </button>
           </TagBtn>
@@ -50,8 +47,9 @@ const Tag = ({ tag, setTag }: CreateProps) => {
       <Input
         ref={inputRef}
         onKeyPress={addTag}
-        placeholder="Press enter to add tags"
+        placeholder="태그를 입력하세요"
         type="text"
+        {...props}
       />
     </TagBox>
   );
@@ -66,17 +64,17 @@ const TagBox = styled.div`
   height: 40px;
   margin: 150px auto;
   border: 1px solid #bbb;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
   :focus-within {
-    border: 1px solid var(--main-color);
+    border: 1px solid ${color.$mainColor};
   }
 `;
 
 // 태그
 const TagBtn = styled.div`
   display: flex;
-  background-color: var(--main-color);
+  background-color: ${color.$skyBlue};
   color: #fff;
   padding: 10px;
   margin-right: 3px;
@@ -100,7 +98,7 @@ const TagBtn = styled.div`
       width: 2px;
       height: 10px;
       border-radius: 2px;
-      background-color: var(--main-color);
+      background-color: ${color.$mainColor};
       content: "";
     }
     :before {
