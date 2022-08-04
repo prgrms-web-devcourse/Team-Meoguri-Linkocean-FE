@@ -13,10 +13,15 @@ import Radio from "@/components/common/radio";
 import Button from "@/components/common/button";
 import { useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
+<<<<<<< HEAD
 >>>>>>> 2015ca1 ([#63] handleCreate 추가)
+=======
+// import Tag from "@/components/create/tag";
+>>>>>>> 4a70a32 ([#63] refactor: tag 컴포넌트 브랜치 이동)
 
 const Create = () => {
   const [url, setUrl] = useState("");
+  // const [tag, setTag] = useState(["태그", "실행돼라!!"]);
   const [tags, setTags] = useState<string[]>();
 <<<<<<< HEAD
   const [category, setCategory] = useState<string>();
@@ -25,7 +30,7 @@ const Create = () => {
   const [openType, setOpenType] = useState<string>();
   const [bio, setBio] = useState("");
 
-  const urlRef = useRef(null);
+  const urlRef = useRef<HTMLInputElement>(null);
 
 >>>>>>> 2015ca1 ([#63] handleCreate 추가)
   const getTags = (elements: string[]) => {
@@ -42,7 +47,7 @@ const Create = () => {
   const handleCreate = () => {
     if (url === "") {
       alert("url을 입력해주세요");
-      // urlRef.current.focus();
+      urlRef.current?.focus();
     } else if (category === "") {
       alert("카테고리를 선택해주세요");
     } else if (openType === undefined) {
@@ -125,6 +130,7 @@ const Create = () => {
 
             <StyledLabel>태그</StyledLabel>
             <StyledInput placeholder="태그를 입력하세요." />
+            {/* <Tag tag={tag} setTag={setTag} /> */}
 
             <StyledLabel>공개 범위</StyledLabel>
             {openType && <h2>{openType}</h2>}
