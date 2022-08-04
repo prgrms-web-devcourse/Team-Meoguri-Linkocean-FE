@@ -11,9 +11,7 @@ import Button from "@/components/common/button";
 import Select from "@/components/common/select";
 import BookmarkCard from "@/components/common/bookmarkCard";
 import { Bookmark } from "@/types/model";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 export interface Dummy {
   count: number;
@@ -197,55 +195,30 @@ const data = {
   followeeCount: 10,
 };
 
-const dummyBookmark = [1, 2, 3, 4, 5, 6, 7, 8];
-
 const My = () => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [a, setA] = useState("");
-  // const cardData: Bookmark[] = dummyResponse.data;
+
   const router = useRouter();
 
-  // console.log(router.query);
-  // setA(router.query());
-  // useEffect(() => {
-  //   let result = "";
-  //   const tag = "tag?";
-  //   const category = "category?";
-  //   tags?.forEach((t) => {
-  //     result += `${tag}tag=${t}`;
-  //   });
-  //   console.log(result);
-  //   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  //   router.push(`${tags ? result : ""}`);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [tags]);
-
-  console.log(router.query);
   useEffect(() => {
-    const tagParamsObj = { tag: JSON.stringify(tags) };
+    // const tagParamsObj = tags ? { tag: tags } : {tag:["1"] };
+    const tagsString = tags === undefined ? "" : tags.join(",");
+    const tagParamsObj = { tag: tagsString };
     const searchParams = new URLSearchParams(tagParamsObj).toString();
-    // if (tags.length !== 0) {
-    router.push(`?${searchParams.toString()}`);
-    // }
+    if (tags !== undefined) {
+      router.push(`?${searchParams.toString()}`);
+    }
   }, [tags]);
 
   useEffect(() => {
-    const tagParamsObj = { tag: JSON.stringify(tags) };
-    const searchParams = new URLSearchParams(tagParamsObj).toString();
-    if (tags.length !== 0) {
-      router.push(`?${searchParams.toString()}`);
+    const categoryParamsObj = { category };
+    const searchParams = new URLSearchParams(categoryParamsObj).toString();
+    if (category.length !== 0) {
+      router.push(`category/?${searchParams.toString()}`);
     }
-  }, []);
-
-  // useEffect(() => {
-  //   const categoryParamsObj = { category };
-  //   const searchParams = new URLSearchParams(categoryParamsObj).toString();
-  //   if (category.length !== 0) {
-  //     router.push(`category/?${searchParams.toString()}`);
-  //   }
-  // }, [category]);
+  }, [category]);
 
   const AsideMemo = React.useMemo(
     () => (
