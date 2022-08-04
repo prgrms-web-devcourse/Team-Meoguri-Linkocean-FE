@@ -109,13 +109,13 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
 export default Tag;
 
 const TagWrapper = styled.div`
-  min-height: 100px;
-  margin-bottom: 40px;
+  min-height: 130px;
+  margin-bottom: 20px;
 `;
 
 const TagBox = styled.div`
   display: flex;
-  width: 470px;
+  width: 464px;
   height: 45px;
   border: 1px solid ${color.$gray600};
   border-radius: 8px;
@@ -180,11 +180,9 @@ const TagBtn = styled.div`
     }
     :before {
       transform: rotate(45deg);
-      z-index: -10;
     }
     :after {
       transform: rotate(-45deg);
-      z-index: -10;
     }
   }
 
