@@ -35,13 +35,23 @@ const DetailPage = ({
           <UserFollow>
             <ProfileImage src={profile.imageUrl} size="sm" />
             <span>{profile.username}</span>
-            <Button
-              style={{ height: "33px", width: "128px" }}
-              buttonType="small"
-              colorType="main-color"
-            >
-              팔로우+
-            </Button>
+            {profile.isFollow ? (
+              <Button
+                style={{ height: "33px", width: "128px" }}
+                buttonType="small"
+                colorType="gray"
+              >
+                팔로우 취소
+              </Button>
+            ) : (
+              <Button
+                style={{ height: "33px", width: "128px" }}
+                buttonType="small"
+                colorType="main-color"
+              >
+                팔로우+
+              </Button>
+            )}
           </UserFollow>
         )}
       </FlexBetween>
