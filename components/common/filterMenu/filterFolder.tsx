@@ -64,6 +64,7 @@ const FilterFolder = ({
     const tags = router.query.tag;
     if (typeof tags === "string") {
       const tagArr = tags.split(",");
+      console.log(tagArr);
       return tagArr.filter((element) => element === tag).length !== 0;
     }
     return false;
