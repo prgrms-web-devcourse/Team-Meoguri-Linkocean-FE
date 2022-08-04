@@ -1,5 +1,7 @@
+/* eslint-disable no-restricted-syntax */
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import FilterElement from "./filterElement";
 
@@ -22,6 +24,12 @@ const FilterFolder = ({
   const [selectedElement, setSelectedElement] = useState<string>("");
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
 
+  const router = useRouter();
+  useEffect(() => {
+    console.log(router.query.tag);
+  }, [router.query]);
+  console.log(router.query);
+  // console.log(router.query);
   useEffect(() => {
     const $checkboxCollection = Array.from(
       document.getElementsByTagName("input")
@@ -67,6 +75,7 @@ const FilterFolder = ({
               type="tag"
               isSelected={false}
               disabled={disabled}
+              // checked={router.query.tag?.includes(element.name)}
               onClick={() => handleTagClick(index)}
             />
           ))

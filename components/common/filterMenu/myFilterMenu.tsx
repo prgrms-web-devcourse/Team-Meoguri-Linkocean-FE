@@ -1,7 +1,7 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import FilterBorder from "./filterBorder";
 import FilterFolder from "./filterFolder";
@@ -22,13 +22,26 @@ const MyFilterMenu = ({
   getTagsData,
   getCategoryData,
 }: MyFilterMenuProps) => {
-  const [favoriteSelected, setFavoriteSelected] = useState(false);
+  const [favoriteSelected, setFavoriteSelected] = useState(isFavorite);
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string[]>();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
-
+  const router = useRouter();
+  console.log(router.asPath);
+  useEffect(() => {
+    const url = router.asPath;
+    if (url.includes("favorite")) {
+      setFavoriteSelected(true);
+    }
+    if (url.includes("tag")) {
+      setIsTagListOpen(true);
+    }
+    if (url.includes("category")) {
+      setIsCategoryListOpen(true);
+    }
+  }, [router.asPath]);
   const selectLike = () => {
     setFavoriteSelected(true);
     setIsCategoryListOpen(false);
@@ -71,6 +84,7 @@ const MyFilterMenu = ({
     setSelectedCategory(element);
     getCategoryData(element);
   };
+
   return (
     <FilterBorder>
       <Link href="create">
@@ -88,7 +102,7 @@ const MyFilterMenu = ({
         <FilterHeader
           src="/icon/full-star.svg"
           alt="star"
-          isFavorite={isFavorite}
+          // isFavorite={favoriteSelected}
           arrow={false}
           onClick={selectLike}
           isOpen={favoriteSelected}
