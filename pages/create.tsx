@@ -25,7 +25,7 @@ import Tag from "@/components/create/tag";
 
 const Create = () => {
   const [url, setUrl] = useState("");
-  const [tag, setTag] = useState([]);
+  const [tag, setTag] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>();
 <<<<<<< HEAD
   const [category, setCategory] = useState<string>();
@@ -58,6 +58,10 @@ const Create = () => {
       alert("공개 범위를 선택해주세요");
     }
   };
+
+  const item = [];
+  item.push(tag);
+  console.log(item);
 
   return (
     <PageLayout>
@@ -102,7 +106,7 @@ const Create = () => {
               style={{
                 width: "470px",
                 height: "155px",
-                padding: "10px 20px",
+                padding: "10px 16px",
                 marginBottom: "40px",
                 fontSize: "16px",
               }}
@@ -113,7 +117,7 @@ const Create = () => {
             <StyledSelect>
               <Select width="470px" onChange={setCategory}>
                 <Select.Trigger>선택</Select.Trigger>
-                <Select.OptionList>
+                <Select.OptionList style={{ zIndex: 10, width: "470px" }}>
                   <Select.Option value="self-development">
                     자기계발
                   </Select.Option>
@@ -133,7 +137,7 @@ const Create = () => {
             </StyledSelect>
 
             <StyledLabel>태그</StyledLabel>
-            {/* <StyledInput placeholder="태그를 입력하세요." /> */}
+            {/* {tag && <h2>{item.forEach(e=>)}</h2>} */}
             <Tag tag={tag} setTag={setTag} />
 
             <StyledLabel>공개 범위</StyledLabel>
