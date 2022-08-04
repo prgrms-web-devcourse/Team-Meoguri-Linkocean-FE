@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useRef } from "react";
 import styled from "@emotion/styled";
-import { color } from "@/styles/theme";
+import { color, text } from "@/styles/theme";
 
 export interface CreateProps {
   tag: string[];
@@ -63,7 +63,7 @@ const TagBox = styled.div`
   width: 80%;
   height: 40px;
   margin: 150px auto;
-  border: 1px solid #bbb;
+  border: 1px solid ${color.$gray600};
   border-radius: 8px;
   padding: 10px;
   :focus-within {
@@ -74,29 +74,35 @@ const TagBox = styled.div`
 // 태그
 const TagBtn = styled.div`
   display: flex;
-  background-color: ${color.$skyBlue};
-  color: #fff;
-  padding: 10px;
-  margin-right: 3px;
-  border-radius: 10px;
+  background-color: #fff;
+  border: 2px solid ${color.$mainColor};
+  padding: 9px 15px;
+  margin-right: 10px;
+  border-radius: 20px;
   font-weight: bold;
   white-space: nowrap;
   > button {
     position: relative;
-    width: 20px;
+    width: 10px;
     padding: 0;
     margin-left: 5px;
     border: none;
     border-radius: 50%;
     background-color: #fff;
     cursor: pointer;
+
+    &:hover::after,
+    &:hover::before {
+      background-color: ${color.$hoverMaincolor};
+    }
+
     :before,
     :after {
       position: absolute;
-      top: 6px;
+      top: 3px;
       left: 9px;
       width: 2px;
-      height: 10px;
+      height: 12px;
       border-radius: 2px;
       background-color: ${color.$mainColor};
       content: "";
@@ -107,6 +113,11 @@ const TagBtn = styled.div`
     :after {
       transform: rotate(-45deg);
     }
+  }
+
+  > span {
+    color: ${color.$mainColor};
+    ${text.$subtitle1}
   }
 `;
 
