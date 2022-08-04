@@ -1,7 +1,7 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import FilterBorder from "./filterBorder";
 import FilterFolder from "./filterFolder";
@@ -101,7 +101,6 @@ const MyFilterMenu = ({
         <FilterHeader
           src="/icon/full-star.svg"
           alt="star"
-          // isFavorite={favoriteSelected}
           arrow={false}
           onClick={selectLike}
           isOpen={favoriteSelected}

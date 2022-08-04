@@ -26,13 +26,6 @@ const FilterFolder = ({
 
   const router = useRouter();
 
-  const [arr, setArr] = useState<string | string[] | undefined>();
-  useEffect(() => {
-    console.log(router.query.tag);
-    setArr(router.query.tag);
-  }, [router.query]);
-  console.log(router.query);
-  // console.log(router.query);
   useEffect(() => {
     const $checkboxCollection = Array.from(
       document.getElementsByTagName("input")
@@ -66,10 +59,14 @@ const FilterFolder = ({
     setSelectedElement(element);
     getCategory(element);
   };
-  const defaultCheck = () => {
-    if (disabled) {
-      console.log("ckucj");
+
+  const defaultCheck = (tag: string) => {
+    const tags = router.query.tag;
+    if (typeof tags === "string") {
+      const tagArr = tags.split(",");
+      return tagArr.filter((element) => element === tag).length !== 0;
     }
+    return false;
   };
 
   return (
@@ -83,11 +80,8 @@ const FilterFolder = ({
               type="tag"
               isSelected={false}
               disabled={disabled}
-              // checked={router.query.tag?.includes(element.name)}
-              onClick={() => {
-                handleTagClick(index);
-                defaultCheck();
-              }}
+              checked={defaultCheck(element.name)}
+              onClick={() => handleTagClick(index)}
             />
           ))
         : null}
@@ -100,7 +94,7 @@ const FilterFolder = ({
                 title={element}
                 type="category"
                 onClick={() => handleCategoryClick(element)}
-                isSelected
+                isSelected={router.query.category === element}
                 disabled={false}
               />
             ) : (
@@ -109,7 +103,7 @@ const FilterFolder = ({
                 key={element}
                 type="category"
                 onClick={() => handleCategoryClick(element)}
-                isSelected={false}
+                isSelected={router.query.category === element}
                 disabled={false}
               />
             )

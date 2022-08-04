@@ -197,23 +197,24 @@ const data = {
 };
 
 const Favorite = () => {
-  const [tags, setTags] = useState<string[]>([]);
-  const [category, setCategory] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState("");
-  // const cardData: Bookmark[] = dummyResponse.data;
+  const [tags, setTags] = useState<string[]>();
+  const [category, setCategory] = useState<string>();
+  const [searchQuery, setSearchQuery] = useState();
+
   const router = useRouter();
+
   useEffect(() => {
     const tagParamsObj = { tag: JSON.stringify(tags) };
     const searchParams = new URLSearchParams(tagParamsObj).toString();
-    if (tags.length !== 0) {
+    if (tags !== undefined) {
       router.push(`tag/?${searchParams.toString()}`);
     }
   }, [tags]);
 
   useEffect(() => {
-    const categoryParamsObj = { category };
+    const categoryParamsObj = category ? { category } : { category: "" };
     const searchParams = new URLSearchParams(categoryParamsObj).toString();
-    if (category.length !== 0) {
+    if (category !== undefined) {
       router.push(`category/?${searchParams.toString()}`);
     }
   }, [category]);
@@ -241,12 +242,12 @@ const Favorite = () => {
           <Title>즐겨찾기 목록</Title>
           <FilterDiv>
             <SearchDiv>
-              {/* <Input
+              <Input
                 searchIcon
                 onChange={(e) => {
-                  setSearchQuery(e.target.value);
+                  // setSearchQuery(e.target.value);
                 }}
-              /> */}
+              />
 
               <Button buttonType="small" colorType="main-color">
                 검색
@@ -264,9 +265,7 @@ const Favorite = () => {
           </FilterDiv>
           <ContentDiv>
             {dummyResponse.data.map((e, i) => (
-              // <div>hello</div>
-              // eslint-disable-next-line react/no-array-index-key
-              <BookmarkCard key={i} data={e} />
+              <BookmarkCard data={e} />
             ))}
           </ContentDiv>
           <PaginationDiv>
