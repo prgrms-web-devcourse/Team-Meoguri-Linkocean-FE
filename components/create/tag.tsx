@@ -107,18 +107,29 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
 export default Tag;
 
 const TagWrapper = styled.div`
-  height: 100px;
+  min-height: 100px;
+  margin-bottom: 40px;
 `;
 
 const TagBox = styled.div`
   display: flex;
   width: 470px;
-  height: 40px;
+  height: 45px;
   border: 1px solid ${color.$gray600};
   border-radius: 8px;
-  padding: 10px;
+  padding-left: 5px;
+  outline: 0;
+
   :focus-within {
     border: 1px solid ${color.$mainColor};
+  }
+
+  &:focus {
+    box-shadow: 0px 0px 1px 2px ${color.$skyBlue};
+  }
+
+  input::placeholder {
+    font-size: 16px;
   }
 `;
 
