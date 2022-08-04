@@ -22,8 +22,11 @@ const Tag = ({ tag, setTag }: CreateProps) => {
   const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const item = tag.slice();
+      console.log(item);
+
       item.push(inputRef?.current?.value as string);
       setTag(item);
+
       const current = inputRef.current as HTMLInputElement;
       current.value = "";
       console.log(item);
@@ -33,8 +36,9 @@ const Tag = ({ tag, setTag }: CreateProps) => {
     <TagBox>
       {/* tags */}
       {tag.map((item, num) => {
+        const key = `${num}-${item}`;
         return (
-          <TagBtn key={item}>
+          <TagBtn key={key}>
             <span>{item}</span>
             <button type="button" onClick={() => removeTag(num)}>
               {" "}
