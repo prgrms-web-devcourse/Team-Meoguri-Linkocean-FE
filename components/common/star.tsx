@@ -1,4 +1,3 @@
-import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
 import React, { ButtonHTMLAttributes } from "react";
 
@@ -36,6 +35,7 @@ const FavoritButton = styled.button<FavoriteButtonProps>`
   background-size: 18px, 18px;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: cover;
   transition: background-color 0.3s;
   cursor: pointer;
   &:hover {

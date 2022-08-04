@@ -1,4 +1,4 @@
-import Star from "@/components/common/bookmarkCard/star";
+import Star from "@/components/common/star";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 export default {
