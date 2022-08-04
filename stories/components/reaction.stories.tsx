@@ -12,9 +12,24 @@ export default {
       defaultValue: 1,
       control: "number",
     },
+    isLike: {
+      defaultValue: false,
+      control: "boolean",
+    },
+    isHate: {
+      defaultValue: false,
+      control: "boolean",
+    },
   },
 };
 
 export const Default = ({ ...args }: ReactionProps) => {
-  return <Reaction like={args.like} hate={args.hate} />;
+  return (
+    <Reaction
+      like={args.like}
+      hate={args.hate}
+      isLike={args.isLike}
+      isHate={args.isHate}
+    />
+  );
 };

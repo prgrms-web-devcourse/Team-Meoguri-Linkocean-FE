@@ -5,6 +5,8 @@ import styled from "@emotion/styled";
 export interface ReactionProps {
   like: number;
   hate: number;
+  isLike?: boolean;
+  isHate?: boolean;
 }
 interface LikeProps {
   isLikeClicked?: boolean;
@@ -14,9 +16,9 @@ interface HateProps {
   isHateClicked?: boolean;
 }
 
-const Reaction = ({ like, hate }: ReactionProps) => {
-  const [selectLike, setSelectLike] = useState(false);
-  const [selectHate, setSelectHate] = useState(false);
+const Reaction = ({ like, hate, isLike, isHate }: ReactionProps) => {
+  const [selectLike, setSelectLike] = useState(isLike);
+  const [selectHate, setSelectHate] = useState(isHate);
   const [likeCount, setLikeCount] = useState(like);
   const [hateCount, setHateCount] = useState(hate);
   useEffect(() => {
