@@ -1,6 +1,8 @@
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
+import DetailPage from "@/components/detail";
+import { getBookMarkDetail, getProfile } from "@/types/dummyData";
 import { useState } from "react";
 
 const MyDetail = () => {
@@ -16,50 +18,18 @@ const MyDetail = () => {
   return (
     <PageLayout>
       <PageLayout.Aside>
-        <UserInfo data={userData} />
+        <UserInfo data={getProfile} />
         <MyFilterMenu
-          tagList={userData.tags}
-          categoryList={userData.favoriteCategories}
+          tagList={getProfile.tags}
+          categoryList={getProfile.favoriteCategories}
           getTagsData={getTags}
           getCategoryData={getCategory}
         />
       </PageLayout.Aside>
-      <PageLayout.Article>ab</PageLayout.Article>
+      <PageLayout.Article>
+        <DetailPage data={getBookMarkDetail} isWriter />
+      </PageLayout.Article>
     </PageLayout>
   );
 };
-
-const userData = {
-  profileId: 1,
-  // imageUrl: "image_url",
-  favoriteCategories: ["인문", "정치", "사회"],
-  username: "user",
-  bio: "hi i'm user",
-  followerCount: 3,
-  followeeCount: 2,
-  tags: [
-    {
-      name: "JAVA",
-      count: 5,
-    },
-    {
-      name: "node",
-      count: 5,
-    },
-    {
-      name: "React",
-      count: 5,
-    },
-    {
-      name: "study",
-      count: 5,
-    },
-    {
-      name: "JAVASCRIPT",
-      count: 5,
-    },
-  ],
-  categories: ["인문", "정치", "사회"],
-};
-
 export default MyDetail;
