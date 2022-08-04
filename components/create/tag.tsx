@@ -1,7 +1,7 @@
 import React, { KeyboardEvent, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
-// import ErrorText from "@/components/common/errorText";
+import ErrorText from "@/components/common/errorText";
 
 export interface CreateProps {
   tag: string[];
@@ -12,6 +12,7 @@ export interface CreateProps {
 
 const Tag = ({ tag, setTag, ...props }: CreateProps) => {
   const [isEmphasis, setIsEmphasis] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const TAG_LIMIT = 5;
 
@@ -26,6 +27,12 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
   const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
     if (tag.length >= TAG_LIMIT) {
       setIsEmphasis(true);
+      return;
+    }
+
+    if (tag.includes(inputRef?.current?.value as string)) {
+      // console.log("❗️ 이미 등록한 태그입니다.");
+      setErrorMsg(true);
       return;
     }
 
@@ -66,10 +73,15 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
         />
       </TagBox>
       {isEmphasis ? (
-        <BoldText>💬 태그는 최대 5개까지 입력 가능합니다.</BoldText>
+        <ErrorText>🐳 태그는 최대 5개까지 입력 가능합니다.</ErrorText>
       ) : (
-        <Text>💬 태그는 최대 5개까지 입력 가능합니다.</Text>
+        <Text>🐳 태그는 최대 5개까지 입력 가능합니다.</Text>
       )}
+      {errorMsg ? (
+        <div>
+          <ErrorText>❗️ 이미 등록한 태그입니다.</ErrorText>
+        </div>
+      ) : null}
     </>
   );
 };
@@ -156,13 +168,6 @@ const Input = styled.input`
 `;
 
 const Text = styled.span`
-  padding: 10px;
   ${text.$caption}
   color: ${color.$gray600}
-`;
-
-const BoldText = styled.span`
-  padding: 10px;
-  ${text.$caption}
-  color: ${color.$warning}
 `;
