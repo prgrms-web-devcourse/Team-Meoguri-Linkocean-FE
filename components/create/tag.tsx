@@ -29,9 +29,9 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
       return;
     }
 
-    if (e.key === "Spacebar") {
-      return;
-    }
+    // if (e.key === "Spacebar") {
+    //   return;
+    // }
     if (e.key === "Enter") {
       const item = tag.slice();
       item.push(inputRef?.current?.value as string);
@@ -65,7 +65,11 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
           {...props}
         />
       </TagBox>
-      <Text>💬 태그는 최대 5개까지 입력 가능합니다.</Text>
+      {isEmphasis ? (
+        <BoldText>💬 태그는 최대 5개까지 입력 가능합니다.</BoldText>
+      ) : (
+        <Text>💬 태그는 최대 5개까지 입력 가능합니다.</Text>
+      )}
     </>
   );
 };
@@ -155,4 +159,10 @@ const Text = styled.span`
   padding: 10px;
   ${text.$caption}
   color: ${color.$gray600}
+`;
+
+const BoldText = styled.span`
+  padding: 10px;
+  ${text.$caption}
+  color: ${color.$warning}
 `;
