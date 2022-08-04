@@ -12,9 +12,10 @@ const getBookMarkDetail: BookmarkDetail = {
   id: 123,
   title: "네이버 웹툰",
   url: "https://comic.naver.com/index",
-  imageUrl: "imageUrl1",
+  imageUrl:
+    "http://www.urbanbrush.net/web/wp-content/uploads/edd/2020/02/urbanbrush-20200227023608426223.jpg",
   category: "IT",
-  memo: "memo",
+  memo: "해당 링크는 네이버 카툰 사이트 링크 입니다. 많이 이용해주세요~~",
   openType: "all",
   isFavorite: false,
   updatedAt: "2022-01-01",
@@ -30,7 +31,8 @@ const getBookMarkDetail: BookmarkDetail = {
   profile: {
     profileId: 1,
     username: "crush",
-    imageUrl: "image_url",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyT-fcCPkfYWQQ1UwkNyRPevaYT1hpA8dRMYk1zFvar4t5KDrDHji_e74bM_cV-MreDM&usqp=CAU",
     isFollow: true,
   },
 };
