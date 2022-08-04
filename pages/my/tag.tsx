@@ -226,18 +226,26 @@ const My = () => {
   useEffect(() => {
     const tagParamsObj = { tag: JSON.stringify(tags) };
     const searchParams = new URLSearchParams(tagParamsObj).toString();
-    if (tags.length !== 0) {
-      router.push(`?${searchParams.toString()}`);
-    }
+    // if (tags.length !== 0) {
+    router.push(`?${searchParams.toString()}`);
+    // }
   }, [tags]);
 
   useEffect(() => {
-    const categoryParamsObj = { category };
-    const searchParams = new URLSearchParams(categoryParamsObj).toString();
-    if (category.length !== 0) {
-      router.push(`category/?${searchParams.toString()}`);
+    const tagParamsObj = { tag: JSON.stringify(tags) };
+    const searchParams = new URLSearchParams(tagParamsObj).toString();
+    if (tags.length !== 0) {
+      router.push(`?${searchParams.toString()}`);
     }
-  }, [category]);
+  }, []);
+
+  // useEffect(() => {
+  //   const categoryParamsObj = { category };
+  //   const searchParams = new URLSearchParams(categoryParamsObj).toString();
+  //   if (category.length !== 0) {
+  //     router.push(`category/?${searchParams.toString()}`);
+  //   }
+  // }, [category]);
 
   const AsideMemo = React.useMemo(
     () => (

@@ -25,8 +25,11 @@ const FilterFolder = ({
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
 
   const router = useRouter();
+
+  const [arr, setArr] = useState<string | string[] | undefined>();
   useEffect(() => {
     console.log(router.query.tag);
+    setArr(router.query.tag);
   }, [router.query]);
   console.log(router.query);
   // console.log(router.query);
@@ -63,6 +66,11 @@ const FilterFolder = ({
     setSelectedElement(element);
     getCategory(element);
   };
+  const defaultCheck = () => {
+    if (disabled) {
+      console.log("ckucj");
+    }
+  };
 
   return (
     <Wrapper isOpen={isOpen} {...props} getCategory={getCategory}>
@@ -76,7 +84,10 @@ const FilterFolder = ({
               isSelected={false}
               disabled={disabled}
               // checked={router.query.tag?.includes(element.name)}
-              onClick={() => handleTagClick(index)}
+              onClick={() => {
+                handleTagClick(index);
+                defaultCheck();
+              }}
             />
           ))
         : null}

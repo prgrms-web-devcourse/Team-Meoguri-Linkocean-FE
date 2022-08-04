@@ -29,7 +29,6 @@ const MyFilterMenu = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
   const router = useRouter();
-  console.log(router.asPath);
   useEffect(() => {
     const url = router.asPath;
     if (url.includes("favorite")) {
