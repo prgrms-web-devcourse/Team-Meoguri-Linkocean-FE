@@ -1,6 +1,7 @@
 import React, { KeyboardEvent, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
+import { tagRegExp } from "@/utils/validation";
 import ErrorText from "@/components/common/errorText";
 
 export interface CreateProps {
@@ -11,8 +12,9 @@ export interface CreateProps {
 }
 
 const Tag = ({ tag, setTag, ...props }: CreateProps) => {
-  const [isEmphasis, setIsEmphasis] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
+  const [tagCount, setTagCount] = useState(false);
+  const [overlapMsg, setOverlapMsg] = useState(false);
+  const [limitMsg, setLimitMsg] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const TAG_LIMIT = 5;
 
@@ -25,20 +27,31 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
 
   // 태그 추가
   const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 태그 개수 제한
     if (tag.length >= TAG_LIMIT) {
-      setIsEmphasis(true);
+      setTagCount(true);
       return;
     }
 
+    // 태그 중복 방지
     if (tag.includes(inputRef?.current?.value as string)) {
-      // console.log("❗️ 이미 등록한 태그입니다.");
-      setErrorMsg(true);
+      setOverlapMsg(true);
       return;
     }
+    // (limitMsg && setLimitMsg(false))
+    // console.log(e.key);
+    // console.log(inputRef?.current?.value as string);
 
-    // if (e.key === "Spacebar") {
-    //   return;
-    // }
+    // 특수문자, 스페이스 입력 방지
+    if (tagRegExp.test(e.key)) {
+      console.log("특수문자/스페이스");
+      setLimitMsg(true);
+      let current = inputRef?.current?.value as string;
+      current = current.slice(0, -1);
+
+      // (inputRef?.current?.value.slice(0, -1) as string);
+    }
+
     if (e.key === "Enter") {
       const item = tag.slice();
       item.push(inputRef?.current?.value as string);
@@ -65,21 +78,26 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
         {/* input */}
         <Input
           ref={inputRef}
-          onKeyPress={addTag}
+          onKeyUp={addTag}
           placeholder="태그를 입력하세요"
           type="text"
-          onBlur={() => isEmphasis && setIsEmphasis(false)}
+          onBlur={() => tagCount && setTagCount(false)}
           {...props}
         />
       </TagBox>
-      {isEmphasis ? (
+      {tagCount ? (
         <ErrorText>🐳 태그는 최대 5개까지 입력 가능합니다.</ErrorText>
       ) : (
         <Text>🐳 태그는 최대 5개까지 입력 가능합니다.</Text>
       )}
-      {errorMsg ? (
+      {overlapMsg ? (
         <div>
           <ErrorText>❗️ 이미 등록한 태그입니다.</ErrorText>
+        </div>
+      ) : null}
+      {limitMsg ? (
+        <div>
+          <ErrorText>❗️ 특수문자와 공백은 입력할 수 없습니다.</ErrorText>
         </div>
       ) : null}
     </TagWrapper>
