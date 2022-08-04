@@ -1,6 +1,7 @@
-import React, { KeyboardEvent, useRef } from "react";
+import React, { KeyboardEvent, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
+// import ErrorText from "@/components/common/errorText";
 
 export interface CreateProps {
   tag: string[];
@@ -10,7 +11,9 @@ export interface CreateProps {
 }
 
 const Tag = ({ tag, setTag, ...props }: CreateProps) => {
+  const [isEmphasis, setIsEmphasis] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const TAG_LIMIT = 5;
 
   // 태그 제거
   const removeTag = (num: number) => {
@@ -21,6 +24,14 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
 
   // 태그 추가
   const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (tag.length >= TAG_LIMIT) {
+      setIsEmphasis(true);
+      return;
+    }
+
+    if (e.key === "Spacebar") {
+      return;
+    }
     if (e.key === "Enter") {
       const item = tag.slice();
       item.push(inputRef?.current?.value as string);
@@ -30,28 +41,32 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
     }
   };
   return (
-    <TagBox {...props}>
-      {/* tags */}
-      {tag.map((item, num) => {
-        const key = `${num}-${item}`;
-        return (
-          <TagBtn key={key} {...props}>
-            <span>{item}</span>
-            <button type="button" onClick={() => removeTag(num)} {...props}>
-              {" "}
-            </button>
-          </TagBtn>
-        );
-      })}
-      {/* input */}
-      <Input
-        ref={inputRef}
-        onKeyPress={addTag}
-        placeholder="태그를 입력하세요"
-        type="text"
-        {...props}
-      />
-    </TagBox>
+    <>
+      <TagBox {...props}>
+        {/* tags */}
+        {tag.map((item, num) => {
+          const key = `${num}-${item}`;
+          return (
+            <TagBtn key={key} {...props}>
+              <span>{item}</span>
+              <button type="button" onClick={() => removeTag(num)} {...props}>
+                {" "}
+              </button>
+            </TagBtn>
+          );
+        })}
+        {/* input */}
+        <Input
+          ref={inputRef}
+          onKeyPress={addTag}
+          placeholder="태그를 입력하세요"
+          type="text"
+          onBlur={() => isEmphasis && setIsEmphasis(false)}
+          {...props}
+        />
+      </TagBox>
+      <Text>💬 태그는 최대 5개까지 입력 가능합니다.</Text>
+    </>
   );
 };
 
@@ -60,9 +75,9 @@ export default Tag;
 // TagBox위치
 const TagBox = styled.div`
   display: flex;
-  width: 80%;
+  /* width: 80%; */
   height: 40px;
-  margin: 150px auto;
+  /* margin: 150px auto; */
   border: 1px solid ${color.$gray600};
   border-radius: 8px;
   padding: 10px;
@@ -134,4 +149,10 @@ const Input = styled.input`
   :focus {
     outline: none;
   }
+`;
+
+const Text = styled.span`
+  padding: 10px;
+  ${text.$caption}
+  color: ${color.$gray600}
 `;
