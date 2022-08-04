@@ -1,8 +1,8 @@
 import { color, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
 import styled from "@emotion/styled";
+import Star from "../star";
 import DropBox from "./dropBox";
-import Star from "./star";
 
 export interface BookmarkProps {
   data: Bookmark;
