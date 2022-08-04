@@ -16,3 +16,8 @@ export const CATEGORY = [
 export type OpenType = "private" | "all" | "partial";
 
 export type NotificationType = "SHARE" | "FEED" | "OLD";
+
+export type TagType = {
+  name: string;
+  count: number;
+};

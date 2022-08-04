@@ -1,4 +1,4 @@
-import { CATEGORY, NotificationType, OpenType } from "./type";
+import { CATEGORY, NotificationType, OpenType, TagType } from "./type";
 
 export interface Profile {
   profileId: number;
@@ -10,11 +10,13 @@ export interface Profile {
 export interface ProfileDetail {
   profileId: number;
   imageUrl?: string;
-  categories: string[];
+  favoriteCategories: string[];
+  categories?: string[];
   username: string;
   bio?: string;
   followerCount: number;
   followeeCount: number;
+  tags?: TagType[];
 }
 
 export interface Bookmark {
@@ -28,7 +30,7 @@ export interface Bookmark {
   updatedAt: string;
   openType: OpenType;
   likeCount: number;
-  isWriter: boolean;
+  isWriter?: boolean;
 }
 
 export interface BookmarkDetail {
@@ -39,7 +41,7 @@ export interface BookmarkDetail {
   category?: typeof CATEGORY[number];
   memo?: string;
   openType: OpenType;
-  favorite: boolean;
+  isFavorite: boolean;
   profile: Profile;
   updatedAt: string;
   tags?: string[];
@@ -47,6 +49,16 @@ export interface BookmarkDetail {
     like: number;
     hate: number;
   };
+  reaction: {
+    like: true;
+    hate: false;
+  };
+}
+
+export interface BookmarkList {
+  totalCount: number;
+  name?: string; // name 미정
+  data: Bookmark[];
 }
 
 export interface Notification {
