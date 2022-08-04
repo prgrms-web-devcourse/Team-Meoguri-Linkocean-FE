@@ -48,7 +48,7 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
     }
   };
   return (
-    <>
+    <TagWrapper>
       <TagBox {...props}>
         {/* tags */}
         {tag.map((item, num) => {
@@ -82,11 +82,16 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
           <ErrorText>❗️ 이미 등록한 태그입니다.</ErrorText>
         </div>
       ) : null}
-    </>
+    </TagWrapper>
   );
 };
 
 export default Tag;
+
+const TagWrapper = styled.div`
+  height: 100px;
+  border: 1px solid;
+`;
 
 // TagBox위치
 const TagBox = styled.div`
