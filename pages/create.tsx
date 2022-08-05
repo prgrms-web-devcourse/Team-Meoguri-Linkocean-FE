@@ -11,6 +11,7 @@ import Textarea from "@/components/common/textarea";
 import Select from "@/components/common/select";
 import Radio from "@/components/common/radio";
 import Button from "@/components/common/button";
+import ErrorText from "@/components/common/errorText";
 import { useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 <<<<<<< HEAD
@@ -99,25 +100,44 @@ const Create = () => {
               BIO
               <OverLine>{bio.length}/200</OverLine>
             </StyledLabel>
-            <Textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="텍스트를 입력하세요."
-              style={{
-                width: "470px",
-                height: "155px",
-                padding: "10px 16px",
-                marginBottom: "40px",
-                fontSize: "16px",
-              }}
-            />
+            {bio.length > 199 ? (
+              <>
+                <Textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value.substring(0, 200))}
+                  placeholder="텍스트를 입력하세요."
+                  style={{
+                    width: "470px",
+                    height: "155px",
+                    padding: "10px 16px",
+                    fontSize: "16px",
+                  }}
+                />
+                <ErrorText style={{ marginBottom: "40px", marginTop: "3px" }}>
+                  ❗️ 200자 이내로 입력 가능합니다.
+                </ErrorText>
+              </>
+            ) : (
+              <Textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                placeholder="텍스트를 입력하세요."
+                style={{
+                  width: "470px",
+                  height: "155px",
+                  padding: "10px 16px",
+                  marginBottom: "40px",
+                  fontSize: "16px",
+                }}
+              />
+            )}
 
             <StyledLabel>카테고리</StyledLabel>
             {category && <h2>{category}</h2>}
             <StyledSelect>
               <Select width="470px" onChange={setCategory}>
                 <Select.Trigger>선택</Select.Trigger>
-                <Select.OptionList style={{ zIndex: 10, width: "470px" }}>
+                <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
                   <Select.Option value="self-development">
                     자기계발
                   </Select.Option>
@@ -137,7 +157,7 @@ const Create = () => {
             </StyledSelect>
 
             <StyledLabel>태그</StyledLabel>
-            {/* {tag && <h2>{item.forEach(e=>)}</h2>} */}
+            {tag && <h1>{item}</h1>}
             <Tag tag={tag} setTag={setTag} />
 
             <StyledLabel>공개 범위</StyledLabel>
