@@ -9,17 +9,19 @@ import Select from "@/components/common/select";
 import Radio from "@/components/common/radio";
 import Button from "@/components/common/button";
 import ErrorText from "@/components/common/errorText";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
 
 const Edit = () => {
-  const [url, setUrl] = useState("");
-  const [tag, setTag] = useState<string[]>([]);
+  const INIT_OPTION = { value: bookmark.category, text: bookmark.category };
+
+  const [category, setCategory] = useState(INIT_OPTION.value);
+  const [tag, setTag] = useState<string[]>(bookmark.tags);
   const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState<string>(bookmark.title);
   const [openType, setOpenType] = useState<string>();
-  const [bio, setBio] = useState("");
+  const [memo, setMemo] = useState(bookmark.memo);
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -61,22 +63,25 @@ const Edit = () => {
           <DivWrapper>
             <PageName>북마크 수정</PageName>
 
-            <StyledLabel>URL</StyledLabel>
-            {/* URL 중복 확인 요청, 링크메타데이터 요청 */}
-            <StyledInput value={url} onChange={(e) => setUrl(e.target.value)} />
+            <StyledLabel>* URL</StyledLabel>
+            <StyledInput value={bookmark.url} disabled />
 
             <StyledLabel>제목</StyledLabel>
-            <StyledInput placeholder="제목을 입력하세요." />
+            <StyledInput
+              value={title}
+              placeholder="제목을 입력하세요."
+              onChange={(e) => setTitle(e.target.value)}
+            />
 
             <StyledLabel>
-              설명
-              <OverLine>{bio.length}/200</OverLine>
+              메모
+              <OverLine>{memo.length}/200</OverLine>
             </StyledLabel>
-            {bio.length > 199 ? (
+            {memo.length > 199 ? (
               <>
                 <Textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value.substring(0, 200))}
+                  value={memo}
+                  onChange={(e) => setMemo(e.target.value.substring(0, 200))}
                   placeholder="텍스트를 입력하세요."
                   style={{
                     width: "470px",
@@ -91,8 +96,8 @@ const Edit = () => {
               </>
             ) : (
               <Textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
                 placeholder="텍스트를 입력하세요."
                 style={{
                   width: "470px",
@@ -104,26 +109,27 @@ const Edit = () => {
               />
             )}
 
-            <StyledLabel>카테고리</StyledLabel>
-            {category && <h2>{category}</h2>}
+            <StyledLabel>* 카테고리</StyledLabel>
             <StyledSelect>
-              <Select width="470px" onChange={setCategory}>
+              <Select
+                selectedOption={INIT_OPTION}
+                width="470px"
+                onChange={setCategory}
+              >
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                  <Select.Option value="self-development">
-                    자기계발
-                  </Select.Option>
-                  <Select.Option value="humanities">인문</Select.Option>
-                  <Select.Option value="politics">정치</Select.Option>
-                  <Select.Option value="social">사회</Select.Option>
-                  <Select.Option value="art">예술</Select.Option>
-                  <Select.Option value="science">과학</Select.Option>
-                  <Select.Option value="technology">기술</Select.Option>
-                  <Select.Option value="it">IT</Select.Option>
-                  <Select.Option value="home">가정</Select.Option>
-                  <Select.Option value="health">건강</Select.Option>
-                  <Select.Option value="travel">여행</Select.Option>
-                  <Select.Option value="cooking">요리</Select.Option>
+                  <Select.Option value="자기계발">자기계발</Select.Option>
+                  <Select.Option value="인문">인문</Select.Option>
+                  <Select.Option value="정치">정치</Select.Option>
+                  <Select.Option value="사회">사회</Select.Option>
+                  <Select.Option value="예술">예술</Select.Option>
+                  <Select.Option value="과학">과학</Select.Option>
+                  <Select.Option value="기술">기술</Select.Option>
+                  <Select.Option value="it">it</Select.Option>
+                  <Select.Option value="가정">가정</Select.Option>
+                  <Select.Option value="건강">건강</Select.Option>
+                  <Select.Option value="여행">여행</Select.Option>
+                  <Select.Option value="요리">요리</Select.Option>
                 </Select.OptionList>
               </Select>
             </StyledSelect>
@@ -132,7 +138,7 @@ const Edit = () => {
             {tag && <h1>{item}</h1>}
             <Tag tag={tag} setTag={setTag} />
 
-            <StyledLabel>공개 범위</StyledLabel>
+            <StyledLabel>* 공개 범위</StyledLabel>
             {openType && <h2>{openType}</h2>}
             <RadioWrapper>
               <Contents>
@@ -253,6 +259,7 @@ const ButtonWrapper = styled.div`
 const data = {
   profileId: 1,
   imageUrl: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
+  favoriteCategories: ["it"],
   categories: ["it", "technology"],
   username: "joy",
   bio: "안녕하세요! 행복한 조이입니당.",
@@ -309,3 +316,34 @@ const categoryList = [
   "travel",
   "cooking",
 ];
+
+const bookmark = {
+  id: 1,
+  title: "네이버 웹툰",
+  url: "https://comic.naver.com/index",
+  imageUrl: "imageUrl1",
+  category: "it",
+  memo: "memo",
+  openType: "public",
+  isFavorite: false,
+  updatedAt: "2022-01-01",
+
+  tags: ["Spring", "React"],
+
+  reactionCount: {
+    like: 12,
+    hate: 10,
+  },
+
+  reaction: {
+    like: true,
+    hate: false,
+  },
+
+  profile: {
+    profileId: 1,
+    username: "crush",
+    imageUrl: "image_url",
+    isFollow: true,
+  },
+};
