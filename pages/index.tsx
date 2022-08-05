@@ -36,7 +36,7 @@ export default function Home() {
     async (body: { email: string; oauthType: string }) => {
       try {
         const { data } = await axios.post<{ hasProfile: boolean }>(
-          `${process.env.END_POINT as string}/api/v1/login`,
+          `${process.env.END_POINT}/api/v1/login`,
           body
         );
 
