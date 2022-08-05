@@ -97,7 +97,7 @@ const Create = () => {
             <StyledInput placeholder="제목을 입력하세요." />
 
             <StyledLabel>
-              설명
+              메모
               <OverLine>{bio.length}/200</OverLine>
             </StyledLabel>
             {bio.length > 199 ? (
