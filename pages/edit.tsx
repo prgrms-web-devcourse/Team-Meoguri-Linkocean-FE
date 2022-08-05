@@ -135,11 +135,9 @@ const Edit = () => {
             </StyledSelect>
 
             <StyledLabel>태그</StyledLabel>
-            {tag && <h1>{item}</h1>}
             <Tag tag={tag} setTag={setTag} />
 
             <StyledLabel>* 공개 범위</StyledLabel>
-            {openType && <h2>{openType}</h2>}
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
@@ -147,6 +145,7 @@ const Edit = () => {
                   name="openType"
                   value="all"
                   onChange={radioHandler}
+                  checked={bookmark.openType === "all"}
                 />
               </Contents>
               <Contents>
@@ -155,6 +154,7 @@ const Edit = () => {
                   name="openType"
                   value="private"
                   onChange={radioHandler}
+                  checked={bookmark.openType === "private"}
                 />
               </Contents>
               <Contents>
@@ -163,6 +163,7 @@ const Edit = () => {
                   name="openType"
                   value="partial"
                   onChange={radioHandler}
+                  checked={bookmark.openType === "partial"}
                 />
               </Contents>
             </RadioWrapper>
@@ -324,7 +325,7 @@ const bookmark = {
   imageUrl: "imageUrl1",
   category: "it",
   memo: "memo",
-  openType: "public",
+  openType: "partial",
   isFavorite: false,
   updatedAt: "2022-01-01",
 
