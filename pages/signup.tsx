@@ -6,12 +6,19 @@ import Label from "@/components/common/label";
 import { CATEGORY } from "@/types/type";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { ChangeEventHandler, FormEvent, useCallback, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEvent,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 import { usernameRegExp } from "@/utils/validation";
 import Head from "next/head";
 import * as theme from "@/styles/theme";
 import axios from "axios";
 import { useRouter } from "next/router";
+import profileAPI, { Profiles } from "@/utils/apis/profile";
 
 type ChangeInputHandler = ChangeEventHandler<HTMLInputElement>;
 type CategoryType = typeof CATEGORY[number];
@@ -23,10 +30,11 @@ type UserCategory = {
 const SignUp = () => {
   const [userCategory, setUserCategory] = useState<UserCategory>({
     value: [],
-    errorText: "1개 이상 선택해주세요.",
+    errorText: "❗️ 1개 이상 선택해주세요.",
   });
   const [username, setUsername] = useState({ value: "", errorText: "" });
 
+  const usernameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   const getNextUserCategoryValue = useCallback(
@@ -45,7 +53,7 @@ const SignUp = () => {
     const nextValue = getNextUserCategoryValue(selectedCategory);
     setUserCategory({
       value: nextValue,
-      errorText: nextValue.length > 0 ? "" : "1개 이상 선택해주세요.",
+      errorText: nextValue.length > 0 ? "" : "❗️ 1개 이상 선택해주세요.",
     });
   };
   const handleUsernameChange: ChangeInputHandler = (e) => {
@@ -54,26 +62,33 @@ const SignUp = () => {
       value: nextValue,
       errorText: usernameRegExp.test(nextValue)
         ? ""
-        : "유저 네임은 2-6자의 한글, 영어, 숫자만 사용 가능합니다.",
+        : "❗️ 유저 네임은 2-6자의 한글, 영어, 숫자만 사용 가능합니다.",
     });
   };
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    // TODO: 유저 네임 중복 에러 메시지 설정
-    // API 요청 테스트 필요
-    // signup({ username: username.value, category: userCategory.value });
+    signup({ username: username.value, categories: userCategory.value });
   };
 
-  const signup = async (body: {
-    username: string;
-    category: CategoryType[];
-  }) => {
+  const signup = async (payload: Profiles) => {
     try {
-      await axios.post(`${process.env.END_POINT}/api/v1/profiles`, body);
+      await profileAPI.profiles(payload);
+
       router.push("/my/favorite");
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error) && error.response !== undefined) {
+        const isDuplicatedUserName = error.response.status === 400;
+        if (isDuplicatedUserName) {
+          setUsername({
+            ...username,
+            errorText: "❗️ 이미 사용중인 유저 네임입니다.",
+          });
+          usernameRef.current?.focus();
+        }
+      } else {
+        console.error(error);
+      }
     }
   };
 
@@ -110,6 +125,7 @@ const SignUp = () => {
               type="text"
               value={username.value}
               onChange={handleUsernameChange}
+              ref={usernameRef}
             />
 
             <ErrorText style={{ marginTop: "5px", height: "14px" }}>
@@ -124,7 +140,6 @@ const SignUp = () => {
             width="175"
             style={{ margin: "63px auto 0" }}
             disabled={
-              // TODO:닉네임 중복일 때 조건 추가 필요
               userCategory.errorText !== "" ||
               username.errorText !== "" ||
               username.value === ""
