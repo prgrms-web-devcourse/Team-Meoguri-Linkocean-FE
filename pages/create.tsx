@@ -2,9 +2,6 @@ import styled from "@emotion/styled";
 import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout/index";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
 import Input from "@/components/common/input";
 import Label from "@/components/common/label";
 import Textarea from "@/components/common/textarea";
@@ -14,23 +11,12 @@ import Button from "@/components/common/button";
 import ErrorText from "@/components/common/errorText";
 import { useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 2015ca1 ([#63] handleCreate 추가)
-=======
-// import Tag from "@/components/create/tag";
->>>>>>> 4a70a32 ([#63] refactor: tag 컴포넌트 브랜치 이동)
-=======
 import Tag from "@/components/create/tag";
->>>>>>> c8b8274 ([#63] style: tag 스타일 개선)
 
 const Create = () => {
   const [url, setUrl] = useState("");
   const [tag, setTag] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>();
-<<<<<<< HEAD
-  const [category, setCategory] = useState<string>();
-=======
   const [category, setCategory] = useState("");
   const [openType, setOpenType] = useState<string>("all");
   const [bio, setBio] = useState("");
@@ -38,7 +24,6 @@ const Create = () => {
 
   const urlRef = useRef<HTMLInputElement>(null);
 
->>>>>>> 2015ca1 ([#63] handleCreate 추가)
   const getTags = (elements: string[]) => {
     setTags(elements);
   };
@@ -68,15 +53,12 @@ const Create = () => {
         <UserInfo data={data} />
         <MyFilterMenu
           getTagsData={getTags}
-          getCatagoryData={getCategory}
+          getCategoryData={getCategory}
           tagList={tagList}
           categoryList={categoryList}
         />
       </PageLayout.Aside>
       <PageLayout.Article>
-<<<<<<< HEAD
-        <Contents>북마크 추가</Contents>
-=======
         <Contents>
           <DivWrapper>
             <PageName>북마크 추가</PageName>
@@ -226,7 +208,6 @@ const Create = () => {
             </ButtonWrapper>
           </DivWrapper>
         </Contents>
->>>>>>> 7db69eb ([#63] feat: radio 버튼 임시 처방)
       </PageLayout.Article>
     </PageLayout>
   );
@@ -235,9 +216,6 @@ const Create = () => {
 export default Create;
 
 const Contents = styled.div`
-<<<<<<< HEAD
-  /* border: 1px solid black; */
-=======
   display: flex;
 `;
 
@@ -292,7 +270,6 @@ const OptionLabel = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
->>>>>>> 7db69eb ([#63] feat: radio 버튼 임시 처방)
 `;
 
 const StyledErrorText = styled(ErrorText)`
