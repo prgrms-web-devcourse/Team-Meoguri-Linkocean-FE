@@ -11,7 +11,6 @@ const Test = () => {
   const getAPI = async () => {
     const res = await axios.get("http://localhost:3000/products/22");
     const product = res.data as Product;
-    console.log(product);
     setData(product);
   };
 
@@ -20,6 +19,13 @@ const Test = () => {
       <button type="button" onClick={getAPI}>
         api
       </button>
+      {data ? (
+        <div>
+          <div>id: {data.id}</div>
+          <div>name: {data.name}</div>
+          <div>quantity: {data.quantity}</div>
+        </div>
+      ) : null}
     </div>
   );
 };
