@@ -140,6 +140,7 @@ const Wrapper = styled.div`
 const Title = styled.h1`
   ${text.$headline4}
   color:${color.$gray800}
+  margin: 9px 0 0 15px;
 `;
 
 const FilterDiv = styled.div`
@@ -161,6 +162,6 @@ const SearchDiv = styled.div`
 const PaginationDiv = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 26px;
 `;
 export default Category;
