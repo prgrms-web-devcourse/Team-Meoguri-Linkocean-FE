@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import Option from "./option";
 import OptionList from "./optionList";
 import SelectProvider, { SelectProviderProps } from "./selectStore";
@@ -17,10 +18,14 @@ const Select = ({
       selectedOption={selectedOption}
       onChange={onChange}
     >
-      {children}
+      <Container>{children}</Container>
     </SelectProvider>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+`;
 
 Select.Trigger = Trigger;
 Select.OptionList = OptionList;

@@ -27,6 +27,7 @@ const StyledList = styled.ul`
   border-radius: 0 0 8px 8px;
   padding: 8px 0;
   background-color: #fff;
+  z-index: 10;
   box-sizing: border-box;
   overflow-y: overlay;
 
