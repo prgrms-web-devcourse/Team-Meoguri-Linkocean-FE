@@ -6,29 +6,36 @@ const storage = {
       return defaultValue;
     }
 
-    const storedValue = window.localStorage.getItem(key);
-    return storedValue !== null ? (JSON.parse(storedValue) as T) : defaultValue;
+    try {
+      const storedValue = localStorage.getItem(key);
+
+      return storedValue === null
+        ? defaultValue
+        : (JSON.parse(storedValue) as T);
+    } catch (error) {
+      return defaultValue;
+    }
   },
   setItem: <T>(key: string, value: T) => {
     if (!isBrowser()) {
       return;
     }
 
-    window.localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(value));
   },
   removeItem: (key: string) => {
     if (!isBrowser()) {
       return;
     }
 
-    window.localStorage.removeItem(key);
+    localStorage.removeItem(key);
   },
   clearItem: () => {
     if (!isBrowser()) {
       return;
     }
 
-    window.localStorage.clear();
+    localStorage.clear();
   },
 };
 
