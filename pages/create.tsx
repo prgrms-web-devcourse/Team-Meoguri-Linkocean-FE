@@ -32,7 +32,7 @@ const Create = () => {
   const [category, setCategory] = useState<string>();
 =======
   const [category, setCategory] = useState("");
-  const [openType, setOpenType] = useState<string>();
+  const [openType, setOpenType] = useState<string>("all");
   const [bio, setBio] = useState("");
   const [submit, setSubmit] = useState(false);
 
@@ -173,6 +173,7 @@ const Create = () => {
                 <StyledRadio
                   name="openType"
                   value="all"
+                  checked={openType === "all"}
                   onChange={radioHandler}
                 />
               </Contents>
@@ -181,6 +182,7 @@ const Create = () => {
                 <StyledRadio
                   name="openType"
                   value="private"
+                  checked={openType === "private"}
                   onChange={radioHandler}
                 />
               </Contents>
@@ -189,6 +191,7 @@ const Create = () => {
                 <StyledRadio
                   name="openType"
                   value="partial"
+                  checked={openType === "partial"}
                   onChange={radioHandler}
                 />
               </Contents>
@@ -281,8 +284,10 @@ const StyledRadio = styled(Radio)`
   padding: 3px;
 `;
 
-const OptionLabel = styled(Label)`
+const OptionLabel = styled.div`
   margin: auto 0;
+  ${text.$body1};
+  color: ${color.$gray600};
 `;
 
 const ButtonWrapper = styled.div`

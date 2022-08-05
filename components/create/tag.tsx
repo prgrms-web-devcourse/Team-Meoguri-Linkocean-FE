@@ -67,7 +67,7 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
         {/* input */}
         <Input
           onKeyUp={addTag}
-          placeholder="태그를 입력하세요"
+          placeholder="Enter로 구분하여 태그를 입력하세요"
           type="text"
           onBlur={() => tagCount && setTagCount(false)}
           {...props}
