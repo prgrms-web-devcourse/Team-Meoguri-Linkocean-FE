@@ -136,24 +136,27 @@ const Create = () => {
             )}
 
             <StyledLabel>카테고리</StyledLabel>
-            {category && <h2>{category}</h2>}
-            <Select width="470px" onChange={setCategory}>
-              <Select.Trigger>선택</Select.Trigger>
-              <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                <Select.Option value="self-development">자기계발</Select.Option>
-                <Select.Option value="humanities">인문</Select.Option>
-                <Select.Option value="politics">정치</Select.Option>
-                <Select.Option value="social">사회</Select.Option>
-                <Select.Option value="art">예술</Select.Option>
-                <Select.Option value="science">과학</Select.Option>
-                <Select.Option value="technology">기술</Select.Option>
-                <Select.Option value="it">IT</Select.Option>
-                <Select.Option value="home">가정</Select.Option>
-                <Select.Option value="health">건강</Select.Option>
-                <Select.Option value="travel">여행</Select.Option>
-                <Select.Option value="cooking">요리</Select.Option>
-              </Select.OptionList>
-            </Select>
+            <div>
+              <Select width="470px" onChange={setCategory}>
+                <Select.Trigger>선택</Select.Trigger>
+                <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
+                  <Select.Option value="self-development">
+                    자기계발
+                  </Select.Option>
+                  <Select.Option value="humanities">인문</Select.Option>
+                  <Select.Option value="politics">정치</Select.Option>
+                  <Select.Option value="social">사회</Select.Option>
+                  <Select.Option value="art">예술</Select.Option>
+                  <Select.Option value="science">과학</Select.Option>
+                  <Select.Option value="technology">기술</Select.Option>
+                  <Select.Option value="it">IT</Select.Option>
+                  <Select.Option value="home">가정</Select.Option>
+                  <Select.Option value="health">건강</Select.Option>
+                  <Select.Option value="travel">여행</Select.Option>
+                  <Select.Option value="cooking">요리</Select.Option>
+                </Select.OptionList>
+              </Select>
+            </div>
             {submit && category === "" ? (
               <StyledErrorText>
                 ❗️ 카테고리는 필수 선택값입니다
@@ -163,11 +166,9 @@ const Create = () => {
             )}
 
             <StyledLabel>태그</StyledLabel>
-            {tag && <h1>{item}</h1>}
             <Tag tag={tag} setTag={setTag} />
 
             <StyledLabel>공개 범위</StyledLabel>
-            {openType && <h2>{openType}</h2>}
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
