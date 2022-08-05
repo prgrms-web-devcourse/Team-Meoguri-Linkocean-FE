@@ -5,7 +5,7 @@ import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import Pagination from "@/components/common/pagination";
 import React, { useEffect, useState } from "react";
-import { text } from "@/styles/theme";
+import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
 import Select from "@/components/common/select";
@@ -109,7 +109,7 @@ const Category = () => {
               <Select>
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList>
-                  <Select.Option value="recent">최신 순</Select.Option>
+                  <Select.Option value="upload">최신 순</Select.Option>
                   <Select.Option value="like">좋아요 순</Select.Option>
                 </Select.OptionList>
               </Select>
@@ -134,18 +134,21 @@ const Wrapper = styled.div`
   width: 835px;
   display: flex;
   flex-direction: column;
-  gap: 37px;
+  gap: 35px;
 `;
 
 const Title = styled.h1`
   ${text.$headline4}
+  color:${color.$gray800}
 `;
 
 const FilterDiv = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const ContentDiv = styled.div``;
+const ContentDiv = styled.div`
+  padding-top: 2px;
+`;
 
 const SelectDiv = styled.div`
   z-index: 1;
