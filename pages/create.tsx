@@ -97,7 +97,7 @@ const Create = () => {
             <StyledInput placeholder="제목을 입력하세요." />
 
             <StyledLabel>
-              BIO
+              설명
               <OverLine>{bio.length}/200</OverLine>
             </StyledLabel>
             {bio.length > 199 ? (
@@ -198,7 +198,7 @@ const Create = () => {
                 style={{ margin: "120px auto" }}
                 onClick={handleCreate}
               >
-                작성완료
+                작성 완료
               </Button>
               <Button
                 buttonType="large"
