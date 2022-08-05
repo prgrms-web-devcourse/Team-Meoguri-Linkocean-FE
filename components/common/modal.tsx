@@ -7,6 +7,7 @@ export interface ModalProps {
   width?: number;
   height?: number;
   children: React.ReactNode;
+  closed?: () => void;
 }
 const Modal = ({
   isShow,
@@ -14,6 +15,7 @@ const Modal = ({
   width = 300,
   height = 300,
   children,
+  closed,
 }: ModalProps) => {
   useEffect(() => {
     if (typeof window !== "object") return;
@@ -25,9 +27,16 @@ const Modal = ({
     }
   }, [isShow]);
 
+  const closedModal = () => {
+    setIsShow(false);
+    if (closed) {
+      closed();
+    }
+  };
+
   return (
     <Wrapper isShow={isShow}>
-      <Background onClick={() => setIsShow(false)} />
+      <Background onClick={closedModal} />
       <ModalBox width={width} height={height}>
         {children}
       </ModalBox>
