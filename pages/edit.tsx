@@ -16,12 +16,12 @@ import Tag from "@/components/create/tag";
 const Edit = () => {
   const INIT_OPTION = { value: bookmark.category, text: bookmark.category };
 
+  const [title, setTitle] = useState<string>(bookmark.title);
+  const [memo, setMemo] = useState(bookmark.memo);
   const [category, setCategory] = useState(INIT_OPTION.value);
   const [tag, setTag] = useState<string[]>(bookmark.tags);
-  const [tags, setTags] = useState<string[]>();
-  const [title, setTitle] = useState<string>(bookmark.title);
   const [openType, setOpenType] = useState<string>();
-  const [memo, setMemo] = useState(bookmark.memo);
+  const [tags, setTags] = useState<string[]>();
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -29,8 +29,8 @@ const Edit = () => {
   const getCategory = (element: string) => {
     setCategory(element);
   };
-
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    bookmark.openType = event.target.value;
     setOpenType(event.target.value);
   };
 
@@ -44,7 +44,7 @@ const Edit = () => {
 
   const item = [];
   item.push(tag);
-  console.log(item);
+  // console.log(item);
 
   return (
     <PageLayout>
@@ -138,14 +138,15 @@ const Edit = () => {
             <Tag tag={tag} setTag={setTag} />
 
             <StyledLabel>* 공개 범위</StyledLabel>
+            <div>{openType}</div>
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
                 <StyledRadio
                   name="openType"
                   value="all"
-                  onChange={radioHandler}
                   checked={bookmark.openType === "all"}
+                  onChange={radioHandler}
                 />
               </Contents>
               <Contents>
@@ -153,8 +154,8 @@ const Edit = () => {
                 <StyledRadio
                   name="openType"
                   value="private"
-                  onChange={radioHandler}
                   checked={bookmark.openType === "private"}
+                  onChange={radioHandler}
                 />
               </Contents>
               <Contents>
@@ -162,8 +163,8 @@ const Edit = () => {
                 <StyledRadio
                   name="openType"
                   value="partial"
-                  onChange={radioHandler}
                   checked={bookmark.openType === "partial"}
+                  onChange={radioHandler}
                 />
               </Contents>
             </RadioWrapper>
