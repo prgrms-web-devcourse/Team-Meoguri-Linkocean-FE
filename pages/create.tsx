@@ -34,6 +34,7 @@ const Create = () => {
   const [category, setCategory] = useState("");
   const [openType, setOpenType] = useState<string>();
   const [bio, setBio] = useState("");
+  const [submit, setSubmit] = useState(false);
 
   const urlRef = useRef<HTMLInputElement>(null);
 
@@ -50,13 +51,9 @@ const Create = () => {
   };
 
   const handleCreate = () => {
+    setSubmit(true);
     if (url === "") {
-      alert("url을 입력해주세요");
       urlRef.current?.focus();
-    } else if (category === "") {
-      alert("카테고리를 선택해주세요");
-    } else if (openType === undefined) {
-      alert("공개 범위를 선택해주세요");
     }
   };
 
@@ -84,7 +81,7 @@ const Create = () => {
           <DivWrapper>
             <PageName>북마크 추가</PageName>
 
-            <StyledLabel>* URL</StyledLabel>
+            <StyledLabel>URL</StyledLabel>
             {/* URL 중복 확인 요청, 링크메타데이터 요청 */}
             <StyledInput
               ref={urlRef}
@@ -92,9 +89,17 @@ const Create = () => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
+            {submit && url === "" ? (
+              <StyledErrorText>❗️ url은 필수 입력값입니다.</StyledErrorText>
+            ) : (
+              <StyledErrorText> </StyledErrorText>
+            )}
 
             <StyledLabel>제목</StyledLabel>
-            <StyledInput placeholder="제목을 입력하세요." />
+            <StyledInput
+              style={{ marginBottom: "60px" }}
+              placeholder="제목을 입력하세요."
+            />
 
             <StyledLabel>
               메모
@@ -113,9 +118,7 @@ const Create = () => {
                     fontSize: "16px",
                   }}
                 />
-                <ErrorText style={{ marginBottom: "40px", marginTop: "3px" }}>
-                  ❗️ 200자 이내로 입력 가능합니다.
-                </ErrorText>
+                <ErrorText>❗️ 200자 이내로 입력 가능합니다.</ErrorText>
               </>
             ) : (
               <Textarea
@@ -126,41 +129,44 @@ const Create = () => {
                   width: "470px",
                   height: "155px",
                   padding: "10px 16px",
-                  marginBottom: "40px",
+                  marginBottom: "60px",
                   fontSize: "16px",
                 }}
               />
             )}
 
-            <StyledLabel>* 카테고리</StyledLabel>
+            <StyledLabel>카테고리</StyledLabel>
             {category && <h2>{category}</h2>}
-            <StyledSelect>
-              <Select width="470px" onChange={setCategory}>
-                <Select.Trigger>선택</Select.Trigger>
-                <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                  <Select.Option value="self-development">
-                    자기계발
-                  </Select.Option>
-                  <Select.Option value="humanities">인문</Select.Option>
-                  <Select.Option value="politics">정치</Select.Option>
-                  <Select.Option value="social">사회</Select.Option>
-                  <Select.Option value="art">예술</Select.Option>
-                  <Select.Option value="science">과학</Select.Option>
-                  <Select.Option value="technology">기술</Select.Option>
-                  <Select.Option value="it">IT</Select.Option>
-                  <Select.Option value="home">가정</Select.Option>
-                  <Select.Option value="health">건강</Select.Option>
-                  <Select.Option value="travel">여행</Select.Option>
-                  <Select.Option value="cooking">요리</Select.Option>
-                </Select.OptionList>
-              </Select>
-            </StyledSelect>
+            <Select width="470px" onChange={setCategory}>
+              <Select.Trigger>선택</Select.Trigger>
+              <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
+                <Select.Option value="self-development">자기계발</Select.Option>
+                <Select.Option value="humanities">인문</Select.Option>
+                <Select.Option value="politics">정치</Select.Option>
+                <Select.Option value="social">사회</Select.Option>
+                <Select.Option value="art">예술</Select.Option>
+                <Select.Option value="science">과학</Select.Option>
+                <Select.Option value="technology">기술</Select.Option>
+                <Select.Option value="it">IT</Select.Option>
+                <Select.Option value="home">가정</Select.Option>
+                <Select.Option value="health">건강</Select.Option>
+                <Select.Option value="travel">여행</Select.Option>
+                <Select.Option value="cooking">요리</Select.Option>
+              </Select.OptionList>
+            </Select>
+            {submit && category === "" ? (
+              <StyledErrorText>
+                ❗️ 카테고리는 필수 선택값입니다
+              </StyledErrorText>
+            ) : (
+              <StyledErrorText> </StyledErrorText>
+            )}
 
             <StyledLabel>태그</StyledLabel>
             {tag && <h1>{item}</h1>}
             <Tag tag={tag} setTag={setTag} />
 
-            <StyledLabel>* 공개 범위</StyledLabel>
+            <StyledLabel>공개 범위</StyledLabel>
             {openType && <h2>{openType}</h2>}
             <RadioWrapper>
               <Contents>
@@ -188,6 +194,13 @@ const Create = () => {
                 />
               </Contents>
             </RadioWrapper>
+            {submit && openType === undefined ? (
+              <StyledErrorText>
+                ❗️ 공개범위는 필수 선택값입니다.
+              </StyledErrorText>
+            ) : (
+              <StyledErrorText> </StyledErrorText>
+            )}
 
             <ButtonWrapper>
               {/* 북마크 등록 */}
@@ -195,7 +208,7 @@ const Create = () => {
                 buttonType="large"
                 colorType="main-color"
                 width="194"
-                style={{ margin: "120px auto" }}
+                style={{ margin: "60px auto" }}
                 onClick={handleCreate}
               >
                 작성 완료
@@ -204,7 +217,7 @@ const Create = () => {
                 buttonType="large"
                 colorType="gray"
                 width="194"
-                style={{ margin: "120px auto" }}
+                style={{ margin: "60px auto" }}
               >
                 취소
               </Button>
@@ -251,15 +264,10 @@ const OverLine = styled.div`
 
 const StyledInput = styled(Input)`
   width: 470px;
-  margin-bottom: 40px;
 
   input::placeholder {
     font-size: 16px;
   }
-`;
-
-const StyledSelect = styled.div`
-  margin-bottom: 40px;
 `;
 
 const RadioWrapper = styled.div`
@@ -281,6 +289,11 @@ const OptionLabel = styled(Label)`
 const ButtonWrapper = styled.div`
   display: flex;
 >>>>>>> 7db69eb ([#63] feat: radio 버튼 임시 처방)
+`;
+
+const StyledErrorText = styled(ErrorText)`
+  margin-top: 2px;
+  margin-bottom: 40px;
 `;
 
 const data = {
