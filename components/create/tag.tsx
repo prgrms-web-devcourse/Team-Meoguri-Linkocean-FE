@@ -74,9 +74,9 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
         />
       </TagBox>
       {tagCount ? (
-        <ErrorText>🐳 태그는 최대 5개까지 입력 가능합니다.</ErrorText>
+        <ErrorText>* 태그는 최대 5개까지 입력 가능합니다.</ErrorText>
       ) : (
-        <Text>🐳 태그는 최대 5개까지 입력 가능합니다.</Text>
+        <Text>* 태그는 최대 5개까지 입력 가능합니다.</Text>
       )}
       {overlapMsg ? (
         <div>
