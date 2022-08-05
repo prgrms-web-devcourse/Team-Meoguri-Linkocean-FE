@@ -84,7 +84,7 @@ const Create = () => {
           <DivWrapper>
             <PageName>북마크 추가</PageName>
 
-            <StyledLabel>URL</StyledLabel>
+            <StyledLabel>* URL</StyledLabel>
             {/* URL 중복 확인 요청, 링크메타데이터 요청 */}
             <StyledInput
               ref={urlRef}
@@ -132,7 +132,7 @@ const Create = () => {
               />
             )}
 
-            <StyledLabel>카테고리</StyledLabel>
+            <StyledLabel>* 카테고리</StyledLabel>
             {category && <h2>{category}</h2>}
             <StyledSelect>
               <Select width="470px" onChange={setCategory}>
@@ -160,7 +160,7 @@ const Create = () => {
             {tag && <h1>{item}</h1>}
             <Tag tag={tag} setTag={setTag} />
 
-            <StyledLabel>공개 범위</StyledLabel>
+            <StyledLabel>* 공개 범위</StyledLabel>
             {openType && <h2>{openType}</h2>}
             <RadioWrapper>
               <Contents>
@@ -286,6 +286,7 @@ const ButtonWrapper = styled.div`
 const data = {
   profileId: 1,
   imageUrl: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
+  favoriteCategories: ["it"],
   categories: ["it", "technology"],
   username: "joy",
   bio: "안녕하세요! 행복한 조이입니당.",
