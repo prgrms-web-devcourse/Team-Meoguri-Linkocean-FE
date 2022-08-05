@@ -11,8 +11,70 @@ import Pagination from "@/components/common/pagination";
 import { Bookmark } from "@/types/model";
 import BookmarkCard from "@/components/common/bookmarkCard";
 import Head from "next/head";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/router";
+import { CATEGORY } from "@/types/type";
+
+const PAGE_SIZE = 8;
+
+type CategoryType = "전체" | typeof CATEGORY[number];
+type OrderType = "update" | "like";
+
+type Filtering = {
+  category: CategoryType;
+  searchTitle: string;
+  follow: boolean;
+  order: OrderType;
+  pages: number;
+  size: number;
+};
+
+const INITIAL_FILTERING: Filtering = {
+  category: "전체",
+  searchTitle: "",
+  follow: false,
+  order: "update",
+  pages: 1,
+  size: PAGE_SIZE,
+};
+
+const getUrl = (state: Filtering) => {
+  return `/feed?${decodeURI(
+    new URLSearchParams(
+      Object.entries(state).map(([key, value]) => [key, value.toString()])
+    ).toString()
+  )}`;
+};
 
 const Feed = () => {
+  console.log("feed");
+  const router = useRouter();
+
+  const [state, setState] = useState<Filtering>(INITIAL_FILTERING);
+
+  const handleChangeFollow = ({
+    target: { checked },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, follow: checked });
+  };
+  const handleChangeCategory = (selectedCategory: string) => {
+    setState({ ...state, category: selectedCategory as CategoryType });
+  };
+  const handleChangeOrder = (selectedOrder: string) => {
+    setState({ ...state, order: selectedOrder as OrderType });
+  };
+  const handleChangePages = (pages: number) => {
+    setState({ ...state, pages });
+  };
+  const handleChangeSearchTitle = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const $searchTitle = e.currentTarget.elements.namedItem(
+      "searchTitle"
+    ) as HTMLInputElement;
+    setState({ ...state, searchTitle: $searchTitle.value });
+  };
+
   return (
     <>
       <Head>
@@ -21,15 +83,25 @@ const Feed = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          <FeedFilterMenu getCategoryData={() => {}} />
+          <FeedFilterMenu getCategoryData={handleChangeCategory} />
         </PageLayout.Aside>
+
         <PageLayout.Article>
           <Layout>
             <Title>피드 페이지</Title>
 
-            <Form action="submit" onSubmit={() => {}}>
+            <Test>{`상태: ${JSON.stringify(state, null, " ")}`}</Test>
+            <Test>{`API url: ${new URLSearchParams(
+              Object.entries(state).map(([key, value]) => [
+                key,
+                value.toString(),
+              ])
+            ).toString()}`}</Test>
+            <Test>{`Browser URL: ${getUrl(state)}`}</Test>
+
+            <Form action="submit" onSubmit={handleChangeSearchTitle}>
               <SearchTitle>
-                <Input searchIcon name="title" onChange={() => {}} />
+                <Input searchIcon name="searchTitle" />
                 <Button
                   colorType="main-color"
                   buttonType="small"
@@ -48,15 +120,19 @@ const Feed = () => {
                   >
                     팔로워 게시글만
                   </Label>
-                  <Checkbox name="follow" id="follow" onChange={() => {}} />
+                  <Checkbox
+                    name="follow"
+                    id="follow"
+                    onChange={handleChangeFollow}
+                  />
                 </Follow>
 
                 <div>
-                  <Select onChange={() => {}}>
+                  <Select onChange={handleChangeOrder}>
                     <Select.Trigger>정렬</Select.Trigger>
                     <Select.OptionList>
-                      <Select.Option value="latest">최신 순</Select.Option>
-                      <Select.Option value="likes">좋아요 순</Select.Option>
+                      <Select.Option value="update">최신 순</Select.Option>
+                      <Select.Option value="like">좋아요 순</Select.Option>
                     </Select.OptionList>
                   </Select>
                 </div>
@@ -70,7 +146,11 @@ const Feed = () => {
             </BookmarkContainer>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <Pagination defaultPage={1} count={6} onChange={() => {}} />
+              <Pagination
+                defaultPage={state.pages}
+                count={6}
+                onChange={handleChangePages}
+              />
             </div>
           </Layout>
         </PageLayout.Article>
@@ -120,6 +200,8 @@ const BookmarkContainer = styled.div`
   height: 549px;
   margin-bottom: 90px;
 `;
+
+const Test = styled.div``;
 
 export default Feed;
 
