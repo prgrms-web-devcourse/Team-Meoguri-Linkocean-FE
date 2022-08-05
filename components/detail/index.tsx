@@ -115,7 +115,7 @@ const Content = styled.div`
 const BookMarkInfo = styled.div`
   display: flex;
   gap: 35px;
-  margin-bottom: 25px;
+  margin-bottom: 60px;
   img {
     border-radius: 8px;
   }
