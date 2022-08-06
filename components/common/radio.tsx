@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import * as theme from "@/styles/theme";
 import { HTMLAttributes } from "react";
 
-const Radio = (props: HTMLAttributes<HTMLInputElement>) => {
+const Radio = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
   return <StyledRadio type="radio" {...props} />;
 };
 

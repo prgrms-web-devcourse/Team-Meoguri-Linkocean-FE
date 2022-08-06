@@ -5,13 +5,15 @@ import styled from "@emotion/styled";
 import * as theme from "@/styles/theme";
 import LoginButton from "@/components/main/loginButton";
 import { useEffect, MouseEvent, useCallback } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
+import profileAPI, { Login, OauthType } from "@/utils/apis/profile";
+import storage from "@/utils/localStorage";
 import GoogleLoginButton from "../components/main/googleLoginButton";
 import NaverLoginButton from "../components/main/naverLoginButton";
 import KakaoLoginButton from "../components/main/kakaoLoginButton";
 
 const OAUTH_TYPE = "OAUTH_TYPE";
+const TOKEN_KEY = "LINKOCEAN_TOKEN";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -19,45 +21,56 @@ export default function Home() {
   const router = useRouter();
 
   const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
-    const oauthType = e.currentTarget.name;
-
-    signIn(oauthType);
-
+    const oauthType = e.currentTarget.name as OauthType;
     const upperOAuthType = oauthType.toUpperCase();
-    window.localStorage.setItem(OAUTH_TYPE, upperOAuthType);
+    storage.setItem(OAUTH_TYPE, upperOAuthType);
+
+    (async () => {
+      try {
+        await signIn(oauthType);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   };
   const handleSignOut = () => {
     signOut();
 
-    window.localStorage.removeItem(OAUTH_TYPE);
+    storage.removeItem(OAUTH_TYPE);
+    storage.removeItem(TOKEN_KEY);
   };
 
-  const login = useCallback(
-    async (body: { email: string; oauthType: string }) => {
-      try {
-        const { data } = await axios.post<{ hasProfile: boolean }>(
-          `${process.env.END_POINT as string}/api/v1/login`,
-          body
-        );
-
-        if (data.hasProfile) {
-          router.push("/my/favorite");
-        } else {
-          router.push("/signup");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [router]
-  );
+  const login = useCallback(async (payload: Login) => {
+    try {
+      const response = await profileAPI.login(payload);
+      storage.setItem(TOKEN_KEY, response.data.token);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+  const loginSuccess = useCallback(async () => {
+    try {
+      const response = await profileAPI.loginSuccess();
+      const nextPage = response.data.hasProfile ? "/my/favorite" : "/signup";
+      router.push(nextPage);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [router]);
 
   useEffect(() => {
     if (session) {
-      const oauthType = window.localStorage.getItem(OAUTH_TYPE) ?? "";
-      login({ email: session.user?.email as string, oauthType });
+      (async () => {
+        const oauthType = storage.getItem(OAUTH_TYPE, "");
+        if (oauthType === "") {
+          return;
+        }
+
+        await login({ email: session?.user?.email as string, oauthType });
+        await loginSuccess();
+      })();
     }
-  }, [session, login]);
+  }, [login, loginSuccess, session, session?.user?.email]);
 
   return (
     <>

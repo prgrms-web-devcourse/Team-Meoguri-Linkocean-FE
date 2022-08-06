@@ -1,5 +1,7 @@
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import FilterBorder from "./filterBorder";
 import FilterFolder from "./filterFolder";
@@ -8,6 +10,7 @@ import FilterHeader from "./filterHeader";
 export interface MyFilterMenuProps {
   tagList?: { name: string; count: number }[];
   categoryList?: string[];
+  isFavorite?: boolean;
   getTagsData: (arr: string[]) => void;
   getCategoryData: (arr: string) => void;
 }
@@ -15,16 +18,29 @@ export interface MyFilterMenuProps {
 const MyFilterMenu = ({
   tagList,
   categoryList,
+  isFavorite,
   getTagsData,
   getCategoryData,
 }: MyFilterMenuProps) => {
-  const [favoriteSelected, setFavoriteSelected] = useState(false);
+  const [favoriteSelected, setFavoriteSelected] = useState(isFavorite);
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string[]>();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
-
+  const router = useRouter();
+  useEffect(() => {
+    const url = router.asPath;
+    if (url.includes("favorite")) {
+      setFavoriteSelected(true);
+    }
+    if (url.includes("tag")) {
+      setIsTagListOpen(true);
+    }
+    if (url.includes("category")) {
+      setIsCategoryListOpen(true);
+    }
+  }, [router.asPath]);
   const selectLike = () => {
     setFavoriteSelected(true);
     setIsCategoryListOpen(false);
@@ -67,26 +83,31 @@ const MyFilterMenu = ({
     setSelectedCategory(element);
     getCategoryData(element);
   };
+
   return (
     <FilterBorder>
-      <FilterHeader
-        src="/icon/add.svg"
-        alt="add"
-        style={{ width: "15px", height: "15px", marginLeft: "10px" }}
-        arrow={false}
-      >
-        북마크 추가
-      </FilterHeader>
+      <Link href="create">
+        <FilterHeader
+          src="/icon/add.svg"
+          alt="add"
+          style={{ width: "15px", height: "15px", marginLeft: "10px" }}
+          arrow={false}
+        >
+          북마크 추가
+        </FilterHeader>
+      </Link>
       <Seperator />
-      <FilterHeader
-        src="/icon/full-star.svg"
-        alt="star"
-        arrow={false}
-        onClick={selectLike}
-        isOpen={favoriteSelected}
-      >
-        즐겨찾기 목록
-      </FilterHeader>
+      <Link href="favorite">
+        <FilterHeader
+          src="/icon/full-star.svg"
+          alt="star"
+          arrow={false}
+          onClick={selectLike}
+          isOpen={favoriteSelected}
+        >
+          즐겨찾기 목록
+        </FilterHeader>
+      </Link>
       <FilterHeader
         src="/icon/label.svg"
         alt="tag"

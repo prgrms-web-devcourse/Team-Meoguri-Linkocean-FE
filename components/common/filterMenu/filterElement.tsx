@@ -7,9 +7,10 @@ interface FilterElementProps extends React.HTMLAttributes<HTMLDivElement> {
   count?: number;
   type: "tag" | "category";
   disabled: boolean;
+  checked?: boolean;
 }
 interface WrapperProps {
-  isSelected: boolean;
+  isSelected: boolean; // 백그라운드 색 변경 변수
 }
 
 const FilterElement = ({
@@ -18,6 +19,7 @@ const FilterElement = ({
   type,
   isSelected,
   disabled,
+  checked,
   ...props
 }: FilterElementProps & WrapperProps) => {
   return (
@@ -33,7 +35,9 @@ const FilterElement = ({
         {type === "tag" && count !== undefined
           ? `# ${title} (${count})`
           : `${title}`}
-        {type === "tag" ? <Checkbox id={title} disabled={disabled} /> : null}
+        {type === "tag" ? (
+          <Checkbox id={title} disabled={disabled} checked={checked} />
+        ) : null}
       </Wrapper>
     </label>
   );

@@ -1,5 +1,7 @@
+/* eslint-disable no-restricted-syntax */
 import { color } from "@/styles/theme";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import FilterElement from "./filterElement";
 
@@ -21,6 +23,8 @@ const FilterFolder = ({
   const [disabled, setDisabled] = useState(false);
   const [selectedElement, setSelectedElement] = useState<string>("");
   const [checkbox, setCheckbox] = useState<HTMLInputElement[]>();
+
+  const router = useRouter();
 
   useEffect(() => {
     const $checkboxCollection = Array.from(
@@ -56,6 +60,16 @@ const FilterFolder = ({
     getCategory(element);
   };
 
+  const defaultCheck = (tag: string) => {
+    const tags = router.query.tag;
+    if (typeof tags === "string") {
+      const tagArr = tags.split(",");
+      console.log(tagArr);
+      return tagArr.filter((element) => element === tag).length !== 0;
+    }
+    return false;
+  };
+
   return (
     <Wrapper isOpen={isOpen} {...props} getCategory={getCategory}>
       {tagList
@@ -67,6 +81,7 @@ const FilterFolder = ({
               type="tag"
               isSelected={false}
               disabled={disabled}
+              checked={defaultCheck(element.name)}
               onClick={() => handleTagClick(index)}
             />
           ))
@@ -80,7 +95,7 @@ const FilterFolder = ({
                 title={element}
                 type="category"
                 onClick={() => handleCategoryClick(element)}
-                isSelected
+                isSelected={router.query.category === element}
                 disabled={false}
               />
             ) : (
@@ -89,7 +104,7 @@ const FilterFolder = ({
                 key={element}
                 type="category"
                 onClick={() => handleCategoryClick(element)}
-                isSelected={false}
+                isSelected={router.query.category === element}
                 disabled={false}
               />
             )

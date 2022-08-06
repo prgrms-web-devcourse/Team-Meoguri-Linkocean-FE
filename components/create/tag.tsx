@@ -22,6 +22,8 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
     const item = tag.slice(0);
     item.splice(num, 1);
     setTag(item);
+    setOverlapMsg(false);
+    setLimitMsg(false);
   };
 
   // 태그 추가
@@ -65,16 +67,16 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
         {/* input */}
         <Input
           onKeyUp={addTag}
-          placeholder="태그를 입력하세요"
+          placeholder="Enter로 구분하여 태그를 입력하세요"
           type="text"
           onBlur={() => tagCount && setTagCount(false)}
           {...props}
         />
       </TagBox>
       {tagCount ? (
-        <ErrorText>🐳 태그는 최대 5개까지 입력 가능합니다.</ErrorText>
+        <ErrorText>* 태그는 최대 5개까지 입력 가능합니다.</ErrorText>
       ) : (
-        <Text>🐳 태그는 최대 5개까지 입력 가능합니다.</Text>
+        <Text>* 태그는 최대 5개까지 입력 가능합니다.</Text>
       )}
       {overlapMsg ? (
         <div>
@@ -107,18 +109,29 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
 export default Tag;
 
 const TagWrapper = styled.div`
-  height: 100px;
+  min-height: 130px;
+  margin-bottom: 20px;
 `;
 
 const TagBox = styled.div`
   display: flex;
-  width: 470px;
-  height: 40px;
+  width: 464px;
+  height: 45px;
   border: 1px solid ${color.$gray600};
   border-radius: 8px;
-  padding: 10px;
+  padding-left: 5px;
+  outline: 0;
+
   :focus-within {
     border: 1px solid ${color.$mainColor};
+  }
+
+  &:focus {
+    box-shadow: 0px 0px 1px 2px ${color.$skyBlue};
+  }
+
+  input::placeholder {
+    font-size: 16px;
   }
 `;
 
@@ -187,7 +200,7 @@ const Input = styled.input`
   border-radius: 10px;
   margin: 0 0 0 10px;
   padding: 0;
-  font-size: 20px;
+  font-size: 16px;
   box-sizing: border-box;
   :focus {
     outline: none;
