@@ -20,11 +20,17 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
       return;
     }
     setFile(e.target.files?.[0]);
+    toggle();
   };
 
   const openBox = (e: React.MouseEvent<HTMLElement>) => {
     toggle();
     e.stopPropagation();
+  };
+
+  const changeDefaultImage = () => {
+    setFile();
+    toggle();
   };
 
   return (
@@ -47,7 +53,7 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
             </label>
           </li>
           <li>
-            <button type="button" onClick={() => setFile()}>
+            <button type="button" onClick={changeDefaultImage}>
               기본 이미지로 변경
             </button>
           </li>
