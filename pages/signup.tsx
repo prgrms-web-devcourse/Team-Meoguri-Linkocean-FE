@@ -18,7 +18,7 @@ import Head from "next/head";
 import * as theme from "@/styles/theme";
 import axios from "axios";
 import { useRouter } from "next/router";
-import profileAPI, { Profiles } from "@/utils/apis/profile";
+import profileAPI, { ProfilesPayload } from "@/utils/apis/profile";
 
 type ChangeInputHandler = ChangeEventHandler<HTMLInputElement>;
 type CategoryType = typeof CATEGORY[number];
@@ -71,9 +71,9 @@ const SignUp = () => {
     signup({ username: username.value, categories: userCategory.value });
   };
 
-  const signup = async (payload: Profiles) => {
+  const signup = async (payload: ProfilesPayload) => {
     try {
-      await profileAPI.profiles(payload);
+      await profileAPI.createProfile(payload);
 
       router.push("/my/favorite");
     } catch (error) {
