@@ -21,3 +21,5 @@ export type TagType = {
   name: string;
   count: number;
 };
+
+export type Reaction = "like" | "hate";
