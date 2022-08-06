@@ -9,7 +9,7 @@ authInstance.interceptors.request.use(
   (config) => {
     // eslint-disable-next-line no-param-reassign
     config.headers = {
-      Authorization: `bearer ${storage.getItem("LINKOCEAN_TOKEN", "")}`,
+      Authorization: `Bearer ${storage.getItem("LINKOCEAN_TOKEN", "")}`,
     };
 
     return config;
