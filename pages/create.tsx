@@ -72,7 +72,7 @@ const Create = () => {
               onChange={(e) => setUrl(e.target.value)}
             />
             {submit && url === "" ? (
-              <StyledErrorText>!! url은 필수 입력값입니다.</StyledErrorText>
+              <StyledErrorText>* url은 필수 입력값입니다.</StyledErrorText>
             ) : (
               <StyledErrorText> </StyledErrorText>
             )}
@@ -100,7 +100,7 @@ const Create = () => {
                     fontSize: "16px",
                   }}
                 />
-                <ErrorText>!! 200자 이내로 입력 가능합니다.</ErrorText>
+                <ErrorText>* 200자 이내로 입력 가능합니다.</ErrorText>
               </>
             ) : (
               <Textarea
@@ -140,7 +140,7 @@ const Create = () => {
               </Select>
             </div>
             {submit && category === "" ? (
-              <StyledErrorText>!! 카테고리는 필수 선택값입니다</StyledErrorText>
+              <StyledErrorText>* 카테고리는 필수 선택값입니다.</StyledErrorText>
             ) : (
               <StyledErrorText> </StyledErrorText>
             )}
@@ -179,9 +179,7 @@ const Create = () => {
               </Contents>
             </RadioWrapper>
             {submit && openType === undefined ? (
-              <StyledErrorText>
-                !! 공개범위는 필수 선택값입니다.
-              </StyledErrorText>
+              <StyledErrorText>* 공개범위는 필수 선택값입니다.</StyledErrorText>
             ) : (
               <StyledErrorText> </StyledErrorText>
             )}

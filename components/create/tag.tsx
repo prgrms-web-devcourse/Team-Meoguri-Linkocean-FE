@@ -67,7 +67,7 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
         {/* input */}
         <Input
           onKeyUp={addTag}
-          placeholder="Enter로 구분하여 태그를 입력하세요"
+          placeholder="Enter로 구분하여 태그를 입력하세요."
           type="text"
           onBlur={() => tagCount && setTagCount(false)}
           {...props}
@@ -80,12 +80,12 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
       )}
       {overlapMsg ? (
         <div>
-          <ErrorText>❗️ 이미 등록한 태그입니다.</ErrorText>
+          <ErrorText>* 이미 등록한 태그입니다.</ErrorText>
         </div>
       ) : null}
       {limitMsg ? (
         <div>
-          <ErrorText>❗️ 특수문자와 공백은 입력할 수 없습니다.</ErrorText>
+          <ErrorText>* 특수문자와 공백은 입력할 수 없습니다.</ErrorText>
         </div>
       ) : null}
       <TagBtnWrapper>
