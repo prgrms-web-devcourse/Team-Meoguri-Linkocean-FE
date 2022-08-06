@@ -2,6 +2,7 @@ import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import Alarm, { AlarmProps } from "@/components/common/alarm";
+import Top from "@/components/common/top";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { color, text } from "@/styles/theme";
@@ -41,6 +42,7 @@ const Notifications = () => {
               ))}
             </AlarmWrapper>
           </DivWrapper>
+          <Top />
         </Contents>
       </PageLayout.Article>
     </PageLayout>
@@ -131,6 +133,158 @@ const categoryList = [
 ];
 
 const dummyNotification: Notification[] = [
+  {
+    type: "SHARE",
+    info: {
+      bookmark: {
+        id: 1,
+        title: "네이버",
+        link: "https://www.naver.com",
+      },
+      sender: {
+        id: 1,
+        username: "haha",
+      },
+    },
+  },
+  {
+    type: "FEED",
+    info: {
+      bookmark: {
+        id: 2,
+        title: "구글",
+        link: "https://www.google.com",
+      },
+      sender: {
+        id: 2,
+        username: "jacob",
+      },
+    },
+  },
+  {
+    type: "OLD",
+    info: {
+      bookmark: {
+        id: 3,
+        title: "프로그래머스",
+        link: "https://school.programmers.co.kr/my-courses/learning",
+      },
+    },
+  },
+  {
+    type: "SHARE",
+    info: {
+      bookmark: {
+        id: 1,
+        title: "네이버",
+        link: "https://www.naver.com",
+      },
+      sender: {
+        id: 1,
+        username: "haha",
+      },
+    },
+  },
+  {
+    type: "FEED",
+    info: {
+      bookmark: {
+        id: 2,
+        title: "구글",
+        link: "https://www.google.com",
+      },
+      sender: {
+        id: 2,
+        username: "jacob",
+      },
+    },
+  },
+  {
+    type: "OLD",
+    info: {
+      bookmark: {
+        id: 3,
+        title: "프로그래머스",
+        link: "https://school.programmers.co.kr/my-courses/learning",
+      },
+    },
+  },
+  {
+    type: "SHARE",
+    info: {
+      bookmark: {
+        id: 1,
+        title: "네이버",
+        link: "https://www.naver.com",
+      },
+      sender: {
+        id: 1,
+        username: "haha",
+      },
+    },
+  },
+  {
+    type: "FEED",
+    info: {
+      bookmark: {
+        id: 2,
+        title: "구글",
+        link: "https://www.google.com",
+      },
+      sender: {
+        id: 2,
+        username: "jacob",
+      },
+    },
+  },
+  {
+    type: "OLD",
+    info: {
+      bookmark: {
+        id: 3,
+        title: "프로그래머스",
+        link: "https://school.programmers.co.kr/my-courses/learning",
+      },
+    },
+  },
+  {
+    type: "SHARE",
+    info: {
+      bookmark: {
+        id: 1,
+        title: "네이버",
+        link: "https://www.naver.com",
+      },
+      sender: {
+        id: 1,
+        username: "haha",
+      },
+    },
+  },
+  {
+    type: "FEED",
+    info: {
+      bookmark: {
+        id: 2,
+        title: "구글",
+        link: "https://www.google.com",
+      },
+      sender: {
+        id: 2,
+        username: "jacob",
+      },
+    },
+  },
+  {
+    type: "OLD",
+    info: {
+      bookmark: {
+        id: 3,
+        title: "프로그래머스",
+        link: "https://school.programmers.co.kr/my-courses/learning",
+      },
+    },
+  },
   {
     type: "SHARE",
     info: {
