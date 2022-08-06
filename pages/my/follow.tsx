@@ -59,7 +59,7 @@ const Follow = () => {
   );
 };
 
-const Layout = styled.div`
+export const Layout = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,7 +72,7 @@ const Form = styled.form`
   text-align: center;
 `;
 
-const FollowCardContainer = styled.div`
+export const FollowCardContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -82,9 +82,9 @@ const FollowCardContainer = styled.div`
 
 export default Follow;
 
-const { isFollow, ...DUMMY_USER_INFO } = getProfile;
+export const { isFollow, ...DUMMY_USER_INFO } = getProfile;
 
-const DUMMY_FOLLOWE = {
+export const DUMMY_FOLLOWE = {
   profiles: [
     {
       profileId: 1,
