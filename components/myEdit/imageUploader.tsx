@@ -19,7 +19,7 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
       alert("확장자가 .png, .jpg, .jpeg, .gif 인지 확인해 주세요");
       return;
     }
-    setFile(e.target.files?.[0]);
+    setFile(e.target.files[0]);
     toggle();
   };
 
