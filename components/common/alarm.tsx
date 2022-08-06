@@ -2,6 +2,7 @@ import { color, text } from "@/styles/theme";
 import { Notification } from "@/types/model";
 import { NotificationType } from "@/types/type";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import React from "react";
 
 export interface AlarmProps {
@@ -9,11 +10,26 @@ export interface AlarmProps {
 }
 
 const Alarm = ({ data }: AlarmProps) => {
+  const router = useRouter();
   const { type, info } = data;
   const { bookmark, sender } = info;
 
   const handleClick = () => {
-    alert(`${bookmark.id}클릭`);
+    switch (type) {
+      case "FEED":
+        if (!sender) return;
+        router.push(`profile/${sender.id}/detail/${bookmark.id}`);
+        break;
+      case "SHARE":
+        if (!sender) return;
+        router.push(`profile/${sender.id}/detail/${bookmark.id}`);
+        break;
+      case "OLD":
+        router.push(`my/detail/${bookmark.id}`);
+        break;
+      default:
+        break;
+    }
   };
 
   const urlClick = (e: React.MouseEvent<HTMLElement>) => {
