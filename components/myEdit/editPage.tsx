@@ -1,39 +1,125 @@
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { usernameRegExp } from "@/utils/validation";
 import Button from "../common/button";
+import ErrorText from "../common/errorText";
 import Input from "../common/input";
 import Label from "../common/label";
-import ProfileImage from "../common/profileImage";
 import Select from "../common/select";
 import Textarea from "../common/textarea";
-// import SelectCategoryModal from "./selectCategoryModal";
-// import ImageUploader from "./imageUploader";
+import SelectCategoryModal from "./selectCategoryModal";
+import ImageUploader from "./imageUploader";
 
 const EditPage = () => {
+  const [userNameErrorMsg, setUserNameErrorMsg] = useState("");
+  const [bioErrorMsg, setBioErrorMsg] = useState("");
   const [file, setFile] = useState<File>();
   const [categories, setCategories] = useState(["IT"]);
+  const [input, setInput] = useState({
+    userName: "초기 세팅",
+    bio: "초기 세팅",
+  });
+  const router = useRouter();
+
+  const edit = () => {
+    if (bioErrorMsg || userNameErrorMsg) return;
+    submit();
+  };
+
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value, name } = e.target;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+    validate(value, name);
+  };
+
+  const validate = (value: string, name: string) => {
+    switch (name) {
+      case "userName":
+        if (!usernameRegExp.test(value)) {
+          setUserNameErrorMsg(
+            "* 유저 네임은 2-6자의 한글, 영어, 숫자만 사용 가능합니다."
+          );
+        } else {
+          setUserNameErrorMsg("");
+        }
+        break;
+      case "bio":
+        if (value.length > 200) {
+          setBioErrorMsg("* 200글자 이하로 작성해주세요");
+        } else {
+          setBioErrorMsg("");
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  const submit = () => {
+    const imageFile = new FormData();
+    if (file) {
+      imageFile.append("file", file);
+    }
+
+    const submitData = {
+      username: input.userName,
+      categories: [...categories],
+      bio: input.bio,
+      image: imageFile,
+    };
+
+    console.log(submitData);
+  };
 
   return (
     <Page>
-      {/* <ImageUploader file={file} setFile={setFile} /> */}
+      <ImageUploader file={file} setFile={setFile} />
       <InputBox>
         <Label>유저 네임</Label>
-        <Input width="100%" placeholder="유저네임을 입력하세요" />
+        <Input
+          onChange={onChange}
+          width="100%"
+          name="userName"
+          placeholder="유저네임을 입력하세요"
+          defaultValue="초기 세팅"
+        />
+        {userNameErrorMsg ? (
+          <ErrorText style={{ height: "14px" }}>{userNameErrorMsg}</ErrorText>
+        ) : (
+          <div style={{ height: "16px" }} />
+        )}
       </InputBox>
       <InputBox>
         <Label>선호 카테고리</Label>
-        {/* <SelectCategoryModal
+      </InputBox>
+      <SelectCategoryModal
         categories={categories}
         setCategories={setCategories}
       />
       {categories.map((category) => (
-        <CategoryTag>{category}</CategoryTag>
-      ))} */}
-      </InputBox>
+        <CategoryTag key={category}>{category}</CategoryTag>
+      ))}
       <InputBox>
         <Label>자기 소개</Label>
-        <Textarea width="100%" placeholder="텍스트를 입력해주세요" />
+        <Textarea
+          onChange={onChange}
+          name="bio"
+          defaultValue="초기 세팅"
+          width="100%"
+          placeholder="텍스트를 입력해주세요"
+        />
+        {bioErrorMsg ? (
+          <ErrorText style={{ height: "14px" }}>{bioErrorMsg}</ErrorText>
+        ) : (
+          <div style={{ height: "16px" }} />
+        )}
       </InputBox>
       <InputBox>
         <Label>오래된 북마크 기간</Label>
@@ -45,10 +131,20 @@ const EditPage = () => {
         </Select>
       </InputBox>
       <ButtonBox>
-        <Button width="170" colorType="main-color" buttonType="large">
+        <Button
+          onClick={edit}
+          width="170"
+          colorType="main-color"
+          buttonType="large"
+        >
           수정 완료
         </Button>
-        <Button width="170" colorType="gray" buttonType="large">
+        <Button
+          onClick={() => router.back()}
+          width="170"
+          colorType="gray"
+          buttonType="large"
+        >
           취소
         </Button>
       </ButtonBox>
@@ -71,7 +167,10 @@ const CategoryTag = styled.span`
 `;
 
 const InputBox = styled.div`
-  margin-top: 44px;
+  margin-top: 40px;
+  input {
+    ${text.$body1}
+  }
   label {
     display: block;
     margin-bottom: 6px;
