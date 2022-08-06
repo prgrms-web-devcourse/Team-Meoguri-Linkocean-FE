@@ -1,21 +1,25 @@
 import useToggle from "@/hooks/useToggle";
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 
 export interface DropBoxProps {
   children: JSX.Element;
   isWriter: boolean;
+  id: number;
 }
 
-const DropBox = ({ children, isWriter = true }: DropBoxProps) => {
+const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
+  const router = useRouter();
+
   const share = (e: React.MouseEvent<HTMLElement>) => {
     alert("공유하기");
     e.stopPropagation();
   };
 
   const edit = (e: React.MouseEvent<HTMLElement>) => {
-    alert("수정하기");
+    router.push(`/edit/${id}`);
     e.stopPropagation();
   };
 

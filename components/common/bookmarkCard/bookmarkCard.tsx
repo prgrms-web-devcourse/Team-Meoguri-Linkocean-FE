@@ -1,6 +1,7 @@
 import { color, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import Star from "../star";
 import DropBox from "./dropBox";
 
@@ -29,13 +30,15 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
     isWriter,
   } = data;
 
+  const router = useRouter();
   const urlClick = (e: React.MouseEvent<HTMLElement>) => {
     window.open(url);
     e.stopPropagation();
   };
 
   const clickCard = () => {
-    alert(`${id} 클릭`);
+    const link = router.asPath.split("/")[1];
+    router.push(`/${link}/detail/${id}`);
   };
 
   const unitConversion = (num: number) => {
@@ -60,7 +63,7 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
         </div>
         <div>
           <Star favorite={isFavorite} />
-          <DropBox isWriter={isWriter}>
+          <DropBox isWriter={isWriter} id={id}>
             <More />
           </DropBox>
         </div>
