@@ -15,7 +15,6 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
-    console.log(e.target.files?.[0].type);
     if (!test.test(e.target.files?.[0].type)) {
       alert("확장자가 .png, .jpg, .jpeg, .gif 인지 확인해 주세요");
       return;
@@ -26,10 +25,6 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
   const openBox = (e: React.MouseEvent<HTMLElement>) => {
     toggle();
     e.stopPropagation();
-  };
-
-  const changeBasicImage = () => {
-    setFile();
   };
 
   return (
@@ -52,7 +47,7 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
             </label>
           </li>
           <li>
-            <button type="button" onClick={changeBasicImage}>
+            <button type="button" onClick={() => setFile()}>
               기본 이미지로 변경
             </button>
           </li>
