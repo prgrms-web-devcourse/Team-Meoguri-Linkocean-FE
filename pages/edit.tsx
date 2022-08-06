@@ -63,7 +63,7 @@ const Edit = () => {
           <DivWrapper>
             <PageName>북마크 수정</PageName>
 
-            <StyledLabel>* URL</StyledLabel>
+            <StyledLabel>URL</StyledLabel>
             <StyledInput value={bookmark.url} disabled />
 
             <StyledLabel>제목</StyledLabel>
@@ -91,7 +91,7 @@ const Edit = () => {
                   }}
                 />
                 <ErrorText style={{ marginBottom: "40px", marginTop: "3px" }}>
-                  ❗️ 200자 이내로 입력 가능합니다.
+                  * 200자 이내로 입력 가능합니다.
                 </ErrorText>
               </>
             ) : (
@@ -109,7 +109,7 @@ const Edit = () => {
               />
             )}
 
-            <StyledLabel>* 카테고리</StyledLabel>
+            <StyledLabel>카테고리</StyledLabel>
             <StyledSelect>
               <Select
                 selectedOption={INIT_OPTION}
@@ -125,7 +125,7 @@ const Edit = () => {
                   <Select.Option value="예술">예술</Select.Option>
                   <Select.Option value="과학">과학</Select.Option>
                   <Select.Option value="기술">기술</Select.Option>
-                  <Select.Option value="it">it</Select.Option>
+                  <Select.Option value="it">IT</Select.Option>
                   <Select.Option value="가정">가정</Select.Option>
                   <Select.Option value="건강">건강</Select.Option>
                   <Select.Option value="여행">여행</Select.Option>
@@ -137,7 +137,7 @@ const Edit = () => {
             <StyledLabel>태그</StyledLabel>
             <Tag tag={tag} setTag={setTag} />
 
-            <StyledLabel>* 공개 범위</StyledLabel>
+            <StyledLabel>공개 범위</StyledLabel>
             <div>{openType}</div>
             <RadioWrapper>
               <Contents>
