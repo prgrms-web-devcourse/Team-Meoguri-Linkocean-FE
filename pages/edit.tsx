@@ -138,7 +138,6 @@ const Edit = () => {
             <Tag tag={tag} setTag={setTag} />
 
             <StyledLabel>공개 범위</StyledLabel>
-            <div>{openType}</div>
             <RadioWrapper>
               <Contents>
                 <OptionLabel>전체공개</OptionLabel>
