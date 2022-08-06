@@ -39,12 +39,12 @@ const getBookMarkDetail: BookmarkDetail = {
 
 const getBookMarkListEmpty: BookmarkList = {
   totalCount: 0,
-  data: [],
+  bookmarks: [],
 };
 
 const getBookMarkList: BookmarkList = {
   totalCount: 122,
-  data: [
+  bookmarks: [
     {
       id: 1,
       title: "네이버 웹툰",

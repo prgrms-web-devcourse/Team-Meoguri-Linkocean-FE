@@ -115,7 +115,7 @@ const Favorite = () => {
             </SelectDiv>
           </FilterDiv>
           <ContentDiv>
-            {getBookMarkList.data.map((element) => (
+            {getBookMarkList.bookmarks.map((element) => (
               <BookmarkCard key={element.id} data={element} />
             ))}
           </ContentDiv>
@@ -138,7 +138,7 @@ const Wrapper = styled.div`
 
 const Title = styled.h1`
   ${text.$headline4}
-  color:${color.$gray800}
+  color:${color.$gray800};
   margin: 9px 0 0 15px;
 `;
 

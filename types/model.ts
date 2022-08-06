@@ -7,6 +7,10 @@ export interface Profile {
   isFollow: boolean;
 }
 
+export interface ProfileList {
+  profiles: Profile[];
+}
+
 export interface ProfileDetail {
   profileId: number;
   imageUrl?: string;
@@ -30,7 +34,7 @@ export interface Bookmark {
   updatedAt: string;
   openType: OpenType;
   likeCount: number;
-  isWriter?: boolean;
+  isWriter: boolean;
 }
 
 export interface BookmarkDetail {
@@ -57,8 +61,7 @@ export interface BookmarkDetail {
 
 export interface BookmarkList {
   totalCount: number;
-  name?: string; // name 미정
-  data: Bookmark[];
+  bookmarks: Bookmark[];
 }
 
 export interface Notification {
