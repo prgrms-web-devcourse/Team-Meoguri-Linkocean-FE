@@ -1,7 +1,7 @@
 import { color, text } from "@/styles/theme";
 import { CATEGORY } from "@/types/type";
 import styled from "@emotion/styled";
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import Button from "../common/button";
 import CategoryItem from "../common/categoryItem";
 import ErrorText from "../common/errorText";
@@ -17,7 +17,6 @@ const SelectCategoryModal = ({
   setCategories: (categories: string[]) => void;
 }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
-  const [isShowErrorMsg, setIsShowErrorMsg] = useState(false);
   const [favoriteCategories, setFavoriteCategories] =
     useState<string[]>(categories);
 
@@ -34,10 +33,8 @@ const SelectCategoryModal = ({
 
   const submitCategories = () => {
     if (favoriteCategories.length < 1) {
-      setIsShowErrorMsg(true);
       return;
     }
-    setIsShowErrorMsg(false);
     setCategories(favoriteCategories);
     setIsShowModal(false);
   };
@@ -46,10 +43,6 @@ const SelectCategoryModal = ({
     setFavoriteCategories(categories);
     setIsShowModal(false);
   };
-
-  useEffect(() => {
-    console.log(favoriteCategories);
-  }, [favoriteCategories]);
 
   return (
     <div>
@@ -79,12 +72,11 @@ const SelectCategoryModal = ({
                   name={category}
                   onChange={handleCategoryClick}
                   checked={favoriteCategories.includes(category)}
-                  // on={favoriteCategories.includes(category)}
                   key={category}
                 />
               ))}
             </CategoryContainer>
-            {isShowErrorMsg ? (
+            {favoriteCategories.length < 1 ? (
               <ErrorText style={{ height: "14px" }}>
                 1개 이상 선택해 주세요
               </ErrorText>
