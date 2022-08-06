@@ -6,7 +6,7 @@ import * as theme from "@/styles/theme";
 import LoginButton from "@/components/main/loginButton";
 import { useEffect, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/router";
-import profileAPI, { Login, OauthType } from "@/utils/apis/profile";
+import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import GoogleLoginButton from "../components/main/googleLoginButton";
 import NaverLoginButton from "../components/main/naverLoginButton";
@@ -40,7 +40,7 @@ export default function Home() {
     storage.removeItem(TOKEN_KEY);
   };
 
-  const login = useCallback(async (payload: Login) => {
+  const login = useCallback(async (payload: LoginPayload) => {
     try {
       const response = await profileAPI.login(payload);
       storage.setItem(TOKEN_KEY, response.data.token);
