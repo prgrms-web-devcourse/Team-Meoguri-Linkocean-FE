@@ -4,6 +4,7 @@ import { color } from "@/styles/theme";
 import Image from "next/image";
 import ProfileImage from "@/components/common/profileImage";
 import LogoutTooltip from "@/components/common/logoutTooltip";
+import Link from "next/link";
 
 const Header: React.FC = () => {
   const [show, setShow] = useState(false);
@@ -14,14 +15,27 @@ const Header: React.FC = () => {
 
   return (
     <StyledHeader>
-      <Logo>
-        <LinkOcean />
-        <Image src="/icon/logo.svg" alt="Link Ocean" width={252} height={48} />
-      </Logo>
+      <Link href="/my/favorite" passHref>
+        <Logo>
+          <LinkOcean />
+          <Image
+            src="/icon/logo.svg"
+            alt="Link Ocean"
+            width={252}
+            height={48}
+          />
+        </Logo>
+      </Link>
       <NavigatorWrapper>
-        <Navigator>피드</Navigator>
-        <Navigator>머구리 찾기</Navigator>
-        <Navigator>마이페이지</Navigator>
+        <Link href="/feed" passHref>
+          <Navigator>피드</Navigator>
+        </Link>
+        <Link href="/meoguri" passHref>
+          <Navigator>머구리 찾기</Navigator>
+        </Link>
+        <Link href="/my/favorite" passHref>
+          <Navigator>마이페이지</Navigator>
+        </Link>
       </NavigatorWrapper>
       <UserWrapper>
         <AlarmButton>
