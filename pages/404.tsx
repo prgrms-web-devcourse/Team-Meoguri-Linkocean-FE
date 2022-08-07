@@ -9,7 +9,9 @@ const NotFound = () => {
   return (
     <Layout>
       {HeaderMemo}
-      <Main>404~</Main>
+      <Main>
+        <Back />
+      </Main>
     </Layout>
   );
 };
@@ -18,28 +20,24 @@ export default NotFound;
 
 const Layout = styled.div`
   min-height: 100vh;
-  /* main {
+  main {
     display: flex;
-    min-height: calc(100vh-62px);
-  } */
+    min-height: calc(100vh - 62px);
+  }
   box-sizing: border-box;
 `;
 
 const Main = styled.main`
-  position: relative;
-  height: calc(100vh-62px);
+  height: calc(100vh - 62px);
+`;
 
-  &::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 719px;
-    min-height: calc(100vh-62px);
-    bottom: 0;
-    background: url("/image/404-background.png");
-    background-size: 1440px 719px;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    z-index: -100;
-  }
+const Back = styled.div`
+  display: block;
+  width: 100%;
+  height: calc(100vh - 62px);
+  background: url("/image/404-background.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 0 100%;
 `;
