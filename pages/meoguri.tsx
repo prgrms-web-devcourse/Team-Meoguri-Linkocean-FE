@@ -9,13 +9,23 @@ import { useRouter } from "next/router";
 import * as theme from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
-import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import profileAPI from "@/utils/apis/profile";
+import { Profile } from "@/types/model";
 import {
   DUMMY_FOLLOWE,
   DUMMY_USER_INFO,
   FollowCardContainer,
   Layout,
 } from "./my/follow";
+
+// TODO: 본인 제외하기, 무한 스크롤, 유저 컨텍스트 연결
 
 const PAGE_SIZE = 8;
 
@@ -34,11 +44,27 @@ const INITIAL_FILTERING: Filtering = {
 const Meoguri = () => {
   const router = useRouter();
 
-  const [state, setState] = useState(() => ({
-    ...INITIAL_FILTERING,
-    username: router.query.name ? (router.query.name as string) : "",
-  }));
-  const [profiles, setProfiles] = useState(DUMMY_FOLLOWE.profiles);
+  const [state, setState] = useState(INITIAL_FILTERING);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getProfiles = useCallback(
+    async (username: string) => {
+      setIsLoading(true);
+
+      const queryString = `username=${username}&page=${state.page}&size=${state.size}`;
+
+      try {
+        const response = await profileAPI.getProfilesByUsername(queryString);
+        setProfiles(response.data.profiles);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsLoading(false);
+    },
+    [state.page, state.size]
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, username: e.target.value });
@@ -47,14 +73,25 @@ const Meoguri = () => {
     e.preventDefault();
 
     const trimmedUsername = state.username.trim();
-    const nextPath = trimmedUsername === "" ? "" : `?name=${trimmedUsername}`;
-    router.push(`/meoguri${nextPath}`);
+    const isEmptyString = trimmedUsername === "";
+    if (isEmptyString) {
+      return;
+    }
+
+    router.push(`/meoguri?name=${trimmedUsername}`);
   };
 
   useEffect(() => {
-    setState({ ...state, username: router.query.name as string });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.name]);
+    if (router.query.name === undefined) {
+      return;
+    }
+
+    setState((prevState) => ({
+      ...prevState,
+      username: router.query.name as string,
+    }));
+    getProfiles(router.query.name as string);
+  }, [router.query.name, getProfiles]);
 
   return (
     <>
@@ -78,12 +115,10 @@ const Meoguri = () => {
 
             <Test>router {router.query.name}</Test>
             <Test>상태 {JSON.stringify(state, null, " ")}</Test>
-            <Test>{`API queryString: ${new URLSearchParams(
-              Object.entries(state).map(([key, value]) => [
-                key,
-                value === undefined ? "" : value.toString(),
-              ])
-            ).toString()}`}</Test>
+            <Test>{`API queryString: ${Object.entries(state)
+              .map((entry) => entry.join("="))
+              .join("&")}
+            `}</Test>
 
             <Form onSubmit={handleSubmit}>
               <Input
@@ -103,16 +138,23 @@ const Meoguri = () => {
               </Button>
             </Form>
 
-            <FollowCardContainer>
-              {profiles.map(({ profileId, imageUrl, isFollow, username }) => (
-                <Following
-                  profileImg={imageUrl}
-                  userName={username}
-                  following={isFollow}
-                  key={profileId}
-                />
-              ))}
-            </FollowCardContainer>
+            {isLoading ? "로딩 중..." : null}
+            <MeoguriCardContainer isLoading={isLoading}>
+              {!isLoading &&
+              router.query.name !== undefined &&
+              profiles.length === 0
+                ? "검색 결과가 없습니다."
+                : profiles.map(({ profileId, imageUrl, isFollow, username }) =>
+                    profileId === DUMMY_USER_INFO.profileId ? null : (
+                      <Following
+                        profileImg={imageUrl}
+                        userName={username}
+                        following={isFollow}
+                        key={profileId}
+                      />
+                    )
+                  )}
+            </MeoguriCardContainer>
           </Layout>
         </PageLayout.Article>
       </PageLayout>
@@ -130,6 +172,12 @@ const Form = styled.form`
   display: flex;
   gap: 10px;
   margin-bottom: 37px;
+`;
+
+const MeoguriCardContainer = styled(FollowCardContainer)<{
+  isLoading: boolean;
+}>`
+  display: ${(props) => (props.isLoading ? "none" : "flex")};
 `;
 
 const Test = styled.div``;
