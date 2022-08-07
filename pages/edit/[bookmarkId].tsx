@@ -9,7 +9,7 @@ import Select from "@/components/common/select";
 import Radio from "@/components/common/radio";
 import Button from "@/components/common/button";
 import ErrorText from "@/components/common/errorText";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
 
@@ -22,6 +22,9 @@ const Edit = () => {
   const [tag, setTag] = useState<string[]>(bookmark.tags);
   const [openType, setOpenType] = useState<string>();
   const [tags, setTags] = useState<string[]>();
+  const [submit, setSubmit] = useState(false);
+
+  const titleRef = useRef<HTMLInputElement>(null);
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -34,7 +37,12 @@ const Edit = () => {
     setOpenType(event.target.value);
   };
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    setSubmit(true);
+    if (title === "") {
+      titleRef.current?.focus();
+    }
+  };
 
   const item = [];
   item.push(tag);
@@ -57,14 +65,24 @@ const Edit = () => {
             <PageName>북마크 수정</PageName>
 
             <StyledLabel>URL</StyledLabel>
-            <StyledInput value={bookmark.url} disabled />
+            <StyledInput
+              style={{ marginBottom: "40px" }}
+              value={bookmark.url}
+              disabled
+            />
 
             <StyledLabel>제목</StyledLabel>
             <StyledInput
+              ref={titleRef}
               value={title}
               placeholder="제목을 입력하세요."
               onChange={(e) => setTitle(e.target.value)}
             />
+            {submit && title === "" ? (
+              <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
+            ) : (
+              <StyledErrorText> </StyledErrorText>
+            )}
 
             <StyledLabel>
               메모
@@ -217,9 +235,13 @@ const OverLine = styled.div`
   margin: auto 5px;
 `;
 
+const StyledErrorText = styled(ErrorText)`
+  margin-top: 2px;
+  margin-bottom: 40px;
+`;
+
 const StyledInput = styled(Input)`
   width: 470px;
-  margin-bottom: 40px;
 
   input::placeholder {
     font-size: 16px;
