@@ -96,6 +96,10 @@ const Navigator = styled.nav`
   font-size: 20px;
   line-height: 29px;
   cursor: pointer;
+
+  &:active {
+    color: ${color.$gray800};
+  }
 `;
 
 const UserWrapper = styled.div`
@@ -118,4 +122,8 @@ const UserName = styled.div`
   font-size: 20px;
   line-height: 29px;
   cursor: pointer;
+
+  &:active {
+    color: ${color.$gray800};
+  }
 `;
