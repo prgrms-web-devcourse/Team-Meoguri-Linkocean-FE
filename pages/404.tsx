@@ -9,17 +9,7 @@ const NotFound = () => {
   return (
     <Layout>
       {HeaderMemo}
-      <Main>
-        {" "}
-        <ImageWrapper>
-          <Image
-            src="/image/404-stone.png"
-            width="476px"
-            height="248px"
-            style={{ marginLeft: "45px", marginTop: "32px" }}
-          />
-        </ImageWrapper>
-      </Main>
+      <Main>404~</Main>
     </Layout>
   );
 };
@@ -28,30 +18,28 @@ export default NotFound;
 
 const Layout = styled.div`
   min-height: 100vh;
-  main {
+  /* main {
     display: flex;
     min-height: calc(100vh-62px);
-  }
+  } */
   box-sizing: border-box;
 `;
 
 const Main = styled.main`
+  position: relative;
+  height: calc(100vh-62px);
+
   &::before {
     content: "";
     position: absolute;
-    bottom: 0;
     width: 100%;
-    height: 80%;
-    background: url("/image/404-ocean.png") no-repeat;
-    background-size: 100%;
+    height: 719px;
+    min-height: calc(100vh-62px);
+    bottom: 0;
+    background: url("/image/404-background.png");
+    background-size: 1440px 719px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -100;
   }
-`;
-
-const ImageWrapper = styled.div`
-  position: absolute;
-  overflow: hidden;
-  width: 412px;
-  height: 205px;
-  bottom: 0;
-  right: 0;
 `;
