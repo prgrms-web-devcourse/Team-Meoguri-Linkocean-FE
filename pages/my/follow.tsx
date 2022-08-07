@@ -67,7 +67,7 @@ export const Layout = styled.div`
   margin: 0 auto;
 `;
 
-const Form = styled.form`
+export const Form = styled.form`
   margin-bottom: 37px;
   text-align: center;
 `;
