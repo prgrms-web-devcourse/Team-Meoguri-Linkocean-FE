@@ -15,6 +15,7 @@ import Tag from "@/components/create/tag";
 
 const Create = () => {
   const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
   const [tag, setTag] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState("");
@@ -23,6 +24,7 @@ const Create = () => {
   const [submit, setSubmit] = useState(false);
 
   const urlRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -39,6 +41,8 @@ const Create = () => {
     setSubmit(true);
     if (url === "") {
       urlRef.current?.focus();
+    } else if (title === "") {
+      titleRef.current?.focus();
     }
   };
 
@@ -79,9 +83,16 @@ const Create = () => {
 
             <StyledLabel>제목</StyledLabel>
             <StyledInput
-              style={{ marginBottom: "60px" }}
+              ref={titleRef}
               placeholder="제목을 입력하세요."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
+            {submit && title === "" ? (
+              <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
+            ) : (
+              <StyledErrorText> </StyledErrorText>
+            )}
 
             <StyledLabel>
               메모
