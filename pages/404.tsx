@@ -16,7 +16,7 @@ const NotFound = () => {
           <Title>404</Title>
           <Subtitle>Not Found</Subtitle>
         </Back>
-        <Link href="/my" passHref>
+        <Link href="/my/favorite" passHref>
           <StyledButton buttonType="large" colorType="main-color">
             마이 페이지로...
           </StyledButton>
