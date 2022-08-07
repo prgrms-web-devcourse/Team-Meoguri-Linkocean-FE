@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import Image from "next/image";
 import React from "react";
 import Header from "@/components/common/header";
-import { color, text } from "@/styles/theme";
+import { color } from "@/styles/theme";
+import Button from "@/components/common/button";
+import Link from "next/link";
 
 const NotFound = () => {
   const HeaderMemo = React.useMemo(() => <Header />, []);
@@ -14,8 +15,12 @@ const NotFound = () => {
         <Back>
           <Title>404</Title>
           <Subtitle>Not Found</Subtitle>
-          {/* <StyledImage src="/image/joy.png" width={325} height={176} /> */}
         </Back>
+        <Link href="/my" passHref>
+          <StyledButton buttonType="large" colorType="main-color">
+            마이 페이지로...
+          </StyledButton>
+        </Link>
       </Main>
     </Layout>
   );
@@ -64,6 +69,8 @@ const Subtitle = styled.div`
   font-weight: 700;
 `;
 
-// const StyledImage = styled(Image)`
-//   position: absolute;
-// `;
+const StyledButton = styled(Button)`
+  position: absolute;
+  bottom: 18%;
+  right: 12%;
+`;
