@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import React from "react";
 import Header from "@/components/common/header";
+import { color, text } from "@/styles/theme";
 
 const NotFound = () => {
   const HeaderMemo = React.useMemo(() => <Header />, []);
@@ -10,7 +11,11 @@ const NotFound = () => {
     <Layout>
       {HeaderMemo}
       <Main>
-        <Back />
+        <Back>
+          <Title>404</Title>
+          <Subtitle>Not Found</Subtitle>
+          {/* <StyledImage src="/image/joy.png" width={325} height={176} /> */}
+        </Back>
       </Main>
     </Layout>
   );
@@ -41,3 +46,24 @@ const Back = styled.div`
   background-attachment: fixed;
   background-position: 0 100%;
 `;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  color: ${color.$skyBlue};
+  font-size: 200px;
+  font-weight: 700;
+  margin-top: 5%;
+`;
+
+const Subtitle = styled.div`
+  display: flex;
+  justify-content: center;
+  color: ${color.$skyBlue};
+  font-size: 74px;
+  font-weight: 700;
+`;
+
+// const StyledImage = styled(Image)`
+//   position: absolute;
+// `;
