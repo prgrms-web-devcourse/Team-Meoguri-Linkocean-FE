@@ -1,6 +1,7 @@
 import { ProfileDetail } from "@/types/model";
 import styled from "@emotion/styled";
 import { text, color } from "@/styles/theme";
+import Link from "next/link";
 import Button from "./button";
 import ProfileImage from "./profileImage";
 
@@ -19,9 +20,13 @@ const UserInfo = ({ data }: UserInfoProps) => {
         <GridWrapper>
           <UserName>{data.username}</UserName>
           <FollowWrapper>
-            <FollowInfo>팔로워 {data.followerCount}</FollowInfo>
+            <Link href="/my/follow" passHref>
+              <FollowInfo>팔로워 {data.followerCount}</FollowInfo>
+            </Link>
             <StyledDiv />
-            <FollowInfo>팔로잉 {data.followeeCount}</FollowInfo>
+            <Link href="/my/follow" passHref>
+              <FollowInfo>팔로잉 {data.followeeCount}</FollowInfo>
+            </Link>
           </FollowWrapper>
         </GridWrapper>
       </Top>
@@ -76,6 +81,7 @@ const FollowWrapper = styled.div`
 
 const FollowInfo = styled.div`
   ${text.$caption};
+  cursor: pointer;
 `;
 
 const StyledDiv = styled.div`
