@@ -34,17 +34,10 @@ const Edit = () => {
     setOpenType(event.target.value);
   };
 
-  const handleEdit = () => {
-    if (category === "") {
-      alert("카테고리를 선택해주세요");
-    } else if (openType === undefined) {
-      alert("공개 범위를 선택해주세요");
-    }
-  };
+  const handleEdit = () => {};
 
   const item = [];
   item.push(tag);
-  // console.log(item);
 
   return (
     <PageLayout>
