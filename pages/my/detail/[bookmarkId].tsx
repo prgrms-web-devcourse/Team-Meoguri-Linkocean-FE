@@ -2,7 +2,8 @@ import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import DetailPage from "@/components/detail";
-import { getBookMarkDetail, getProfile } from "@/types/dummyData";
+import { getProfile } from "@/types/dummyData";
+import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ const MyDetail = () => {
   const getTags = (elements: string[]) => {
     setTags(elements);
   };
-  const [bookmarkData, setBookmarkData] = useState(getBookMarkDetail);
+  const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
 
   const getCategory = (element: string) => {
     setCategory(element);
@@ -45,7 +46,14 @@ const MyDetail = () => {
         />
       </PageLayout.Aside>
       <PageLayout.Article>
-        <DetailPage id={Number(router.query.bookmarkId)} data={bookmarkData} />
+        {bookmarkData ? (
+          <DetailPage
+            id={Number(router.query.bookmarkId)}
+            data={bookmarkData}
+          />
+        ) : (
+          <p>삭제된 북마크 페이지 입니다.</p>
+        )}
       </PageLayout.Article>
     </PageLayout>
   );

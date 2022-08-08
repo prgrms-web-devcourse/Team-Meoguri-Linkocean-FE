@@ -33,7 +33,14 @@ const MyDetail = () => {
         <FeedFilterMenu getCategoryData={getCategory} />
       </PageLayout.Aside>
       <PageLayout.Article>
-        <DetailPage id={Number(router.query.bookmarkId)} data={bookmarkData} />
+        {bookmarkData ? (
+          <DetailPage
+            id={Number(router.query.bookmarkId)}
+            data={bookmarkData}
+          />
+        ) : (
+          <p>삭제된 북마크 페이지 입니다.</p>
+        )}
       </PageLayout.Article>
     </PageLayout>
   );
