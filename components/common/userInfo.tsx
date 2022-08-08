@@ -2,14 +2,44 @@ import { ProfileDetail } from "@/types/model";
 import styled from "@emotion/styled";
 import { text, color } from "@/styles/theme";
 import Link from "next/link";
+import { useCallback, useState } from "react";
+import FollowAPI from "@/utils/apis/follow";
 import Button from "./button";
 import ProfileImage from "./profileImage";
 
 export interface UserInfoProps {
   data: ProfileDetail & { isFollow?: boolean };
+  handleClick?: (profileId: number) => void;
 }
 
-const UserInfo = ({ data }: UserInfoProps) => {
+const UserInfo = ({ data, handleClick }: UserInfoProps) => {
+  const [state, setState] = useState(data.isFollow);
+
+  const handleFollow = useCallback(async () => {
+    try {
+      await FollowAPI.createFollow(data.profileId);
+      setState(true);
+      if (handleClick) {
+        handleClick(data.profileId);
+      }
+      alert("a");
+    } catch (error) {
+      console.error(error);
+    }
+  }, [data.profileId, handleClick]);
+
+  const handleUnfollow = useCallback(async () => {
+    try {
+      await FollowAPI.deleteFollow(data.profileId);
+      setState(false);
+      if (handleClick) {
+        handleClick(data.profileId);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [data.profileId, handleClick]);
+
   return (
     <Card>
       <Top>
@@ -32,17 +62,29 @@ const UserInfo = ({ data }: UserInfoProps) => {
       </Top>
       <Bio>{data.bio}</Bio>
       {!Object.prototype.hasOwnProperty.call(data, "isFollow") && (
-        <Button buttonType="large" colorType="skyblue" width="277">
-          프로필 수정
-        </Button>
+        <Link href="/my/edit" passHref>
+          <Button buttonType="large" colorType="skyblue" width="277">
+            프로필 수정
+          </Button>
+        </Link>
       )}
       {Object.prototype.hasOwnProperty.call(data, "isFollow") &&
         (data.isFollow ? (
-          <Button buttonType="line" colorType="skyblue" width="277">
+          <Button
+            buttonType="line"
+            colorType="skyblue"
+            width="277"
+            onClick={handleUnfollow}
+          >
             팔로우 취소
           </Button>
         ) : (
-          <Button buttonType="large" colorType="skyblue" width="277">
+          <Button
+            buttonType="large"
+            colorType="skyblue"
+            width="277"
+            onClick={handleFollow}
+          >
             팔로우 +
           </Button>
         ))}
