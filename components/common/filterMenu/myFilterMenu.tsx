@@ -93,7 +93,7 @@ const MyFilterMenu = ({
   return (
     <div ref={filterMenuRef}>
       <FilterBorder>
-        <Link href="/create">
+        <Link href="create">
           <FilterHeader
             src="/icon/add.svg"
             alt="add"
@@ -104,7 +104,7 @@ const MyFilterMenu = ({
           </FilterHeader>
         </Link>
         <Seperator />
-        <Link href="/my/favorite">
+        <Link href="favorite">
           <FilterHeader
             src="/icon/full-star.svg"
             alt="star"
