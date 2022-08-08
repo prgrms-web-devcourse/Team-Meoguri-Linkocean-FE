@@ -1,5 +1,6 @@
 import useToggle from "@/hooks/useToggle";
 import { color, text } from "@/styles/theme";
+import bookmarkAPI from "@/utils/apis/bookmark";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 
@@ -23,8 +24,16 @@ const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
     e.stopPropagation();
   };
 
-  const deletePost = (e: React.MouseEvent<HTMLElement>) => {
-    alert("삭제하기");
+  const deletePost = async (e: React.MouseEvent<HTMLElement>) => {
+    const isDelete = window.confirm("북마크를 지우시겠습니까?");
+    if (isDelete) {
+      try {
+        await bookmarkAPI.deleteBookmark(id);
+        alert("북마크가 제거되었습니다.");
+      } catch (error) {
+        console.error(error);
+      }
+    }
     e.stopPropagation();
   };
 
