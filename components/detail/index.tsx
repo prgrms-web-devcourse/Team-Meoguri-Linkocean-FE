@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import React from "react";
 import { BookmarkDetail } from "@/types/model";
+import { useRouter } from "next/router";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
@@ -11,10 +12,13 @@ import ProfileImage from "../common/profileImage";
 const DetailPage = ({
   data,
   isWriter,
+  id,
 }: {
   data: BookmarkDetail;
   isWriter: boolean;
+  id: number;
 }) => {
+  const router = useRouter();
   const { title, url, imageUrl, profile, tags, isFavorite, updatedAt, memo } =
     data;
 
@@ -24,7 +28,12 @@ const DetailPage = ({
         <BackButton />
         {isWriter ? (
           <FlexBetween style={{ width: "190px" }}>
-            <Button buttonType="small" width="90" colorType="main-color">
+            <Button
+              onClick={() => router.push(`/edit/${id}`)}
+              buttonType="small"
+              width="90"
+              colorType="main-color"
+            >
               수정하기
             </Button>
             <Button buttonType="small" width="90" colorType="gray">

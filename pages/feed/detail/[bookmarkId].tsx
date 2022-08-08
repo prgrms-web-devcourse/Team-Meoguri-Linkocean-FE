@@ -33,7 +33,11 @@ const MyDetail = () => {
         <FeedFilterMenu getCategoryData={getCategory} />
       </PageLayout.Aside>
       <PageLayout.Article>
-        <DetailPage data={bookmarkData} isWriter />
+        <DetailPage
+          id={Number(router.query.bookmarkId)}
+          data={bookmarkData}
+          isWriter
+        />
       </PageLayout.Article>
     </PageLayout>
   );
