@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { BookmarkDetail } from "@/types/model";
 import { useRouter } from "next/router";
+import bookmarkAPI from "@/utils/apis/bookmark";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
@@ -22,6 +23,18 @@ const DetailPage = ({
   const { title, url, imageUrl, profile, tags, isFavorite, updatedAt, memo } =
     data;
 
+  const deleteRequest = async () => {
+    const deleteConfirm = window.confirm("해당 북마크를 삭제 하시겠습니까?");
+    if (deleteConfirm) {
+      try {
+        await bookmarkAPI.deleteBookmark(id);
+        router.back();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <Page>
       <FlexBetween>
@@ -36,7 +49,12 @@ const DetailPage = ({
             >
               수정하기
             </Button>
-            <Button buttonType="small" width="90" colorType="gray">
+            <Button
+              onClick={deleteRequest}
+              buttonType="small"
+              width="90"
+              colorType="gray"
+            >
               삭제하기
             </Button>
           </FlexBetween>
