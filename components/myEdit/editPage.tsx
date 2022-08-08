@@ -1,7 +1,7 @@
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usernameRegExp } from "@/utils/validation";
 import profileAPI from "@/utils/apis/profile";
 import Button from "../common/button";
@@ -16,11 +16,11 @@ import ImageUploader from "./imageUploader";
 const EditPage = () => {
   const [userNameErrorMsg, setUserNameErrorMsg] = useState("");
   const [bioErrorMsg, setBioErrorMsg] = useState("");
-  const [file, setFile] = useState<File>();
-  const [categories, setCategories] = useState(["IT"]);
+  const [file, setFile] = useState<File | string>("");
+  const [categories, setCategories] = useState([""]);
   const [input, setInput] = useState({
-    userName: "초기",
-    bio: "초기 세팅",
+    userName: "",
+    bio: "",
   });
   const router = useRouter();
 
@@ -28,6 +28,22 @@ const EditPage = () => {
     if (bioErrorMsg || userNameErrorMsg) return;
     submit();
   };
+
+  // 초기 세팅
+  // 이후 contextAPI로 변경
+  useEffect(() => {
+    const initialSetting = async () => {
+      try {
+        const { data } = await profileAPI.getMyProfile();
+        setFile(data.imageUrl || "");
+        setInput({ userName: data.username, bio: data.bio || "" });
+        setCategories(data.favoriteCategories);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    initialSetting();
+  }, []);
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -73,7 +89,7 @@ const EditPage = () => {
         editData.append("image", file);
       }
       await profileAPI.editProfile(editData);
-      alert("프로필이 변경되었습니다.");
+      alert("내 프로필 수정이 완료되었습니다.");
     } catch (e) {
       console.error(e);
     }
@@ -89,7 +105,7 @@ const EditPage = () => {
           width="100%"
           name="userName"
           placeholder="유저네임을 입력하세요"
-          defaultValue="초기"
+          defaultValue={input.userName}
         />
         {userNameErrorMsg ? (
           <ErrorText style={{ height: "14px" }}>{userNameErrorMsg}</ErrorText>
@@ -112,7 +128,7 @@ const EditPage = () => {
         <Textarea
           onChange={onChange}
           name="bio"
-          defaultValue="초기 세팅"
+          defaultValue={input.bio}
           width="100%"
           placeholder="텍스트를 입력해주세요"
         />
