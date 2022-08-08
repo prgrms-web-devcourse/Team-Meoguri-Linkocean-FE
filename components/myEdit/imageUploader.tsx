@@ -4,8 +4,8 @@ import styled from "@emotion/styled";
 import ProfileImage from "../common/profileImage";
 
 interface ImageUploaderProps {
-  file?: File;
-  setFile: (file?: File) => void;
+  file: File | string;
+  setFile: (file: File | string) => void;
 }
 
 const RegExp = /^image\/(gif|jpe?g|png)/i;
@@ -29,13 +29,20 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
   };
 
   const changeDefaultImage = () => {
-    setFile();
+    setFile("");
     toggle();
+  };
+
+  const imageFile = (): string => {
+    if (typeof file === "string") {
+      return file;
+    }
+    return URL.createObjectURL(file);
   };
 
   return (
     <Box>
-      <ProfileImage size="lg" src={file ? URL.createObjectURL(file) : ""} />
+      <ProfileImage size="lg" src={imageFile()} />
       <DropDownBox>
         <button type="button" onClick={openBox}>
           프로필 사진 바꾸기
