@@ -90,6 +90,7 @@ const EditPage = () => {
       }
       await profileAPI.editProfile(editData);
       alert("내 프로필 수정이 완료되었습니다.");
+      router.back();
     } catch (e) {
       console.error(e);
     }
