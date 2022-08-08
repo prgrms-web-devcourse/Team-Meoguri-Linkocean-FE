@@ -1,27 +1,38 @@
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BookmarkDetail } from "@/types/model";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
+import followAPI from "@/utils/apis/follow";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
 import ProfileImage from "../common/profileImage";
 
-const DetailPage = ({
-  data,
-  isWriter,
-  id,
-}: {
-  data: BookmarkDetail;
-  isWriter: boolean;
-  id: number;
-}) => {
+const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   const router = useRouter();
   const { title, url, imageUrl, profile, tags, isFavorite, updatedAt, memo } =
     data;
+  const [isFollow, setIsFollow] = useState(profile.isFollow);
+
+  useEffect(() => {
+    setIsFollow(profile.isFollow);
+  }, [profile.isFollow]);
+
+  const followRequest = async () => {
+    try {
+      if (isFollow) {
+        await followAPI.deleteFollow(profile.profileId);
+      } else {
+        await followAPI.createFollow(profile.profileId);
+      }
+      setIsFollow(!isFollow);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const deleteRequest = async () => {
     const deleteConfirm = window.confirm("해당 북마크를 삭제 하시겠습니까?");
@@ -30,7 +41,7 @@ const DetailPage = ({
         await bookmarkAPI.deleteBookmark(id);
         router.back();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
@@ -39,7 +50,7 @@ const DetailPage = ({
     <Page>
       <FlexBetween>
         <BackButton />
-        {isWriter ? (
+        {false ? (
           <FlexBetween style={{ width: "190px" }}>
             <Button
               onClick={() => router.push(`/edit/${id}`)}
@@ -62,11 +73,12 @@ const DetailPage = ({
           <UserFollow>
             <ProfileImage src={profile.imageUrl} size="sm" />
             <span>{profile.username}</span>
-            {profile.isFollow ? (
+            {isFollow ? (
               <Button
                 style={{ height: "33px", width: "128px" }}
                 buttonType="small"
                 colorType="gray"
+                onClick={followRequest}
               >
                 팔로우 취소
               </Button>
@@ -75,6 +87,7 @@ const DetailPage = ({
                 style={{ height: "33px", width: "128px" }}
                 buttonType="small"
                 colorType="main-color"
+                onClick={followRequest}
               >
                 팔로우+
               </Button>
