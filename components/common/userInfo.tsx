@@ -22,7 +22,7 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
       if (handleClick) {
         handleClick(data.profileId);
       }
-      alert("a");
+      alert("팔로우 완료");
     } catch (error) {
       console.error(error);
     }
@@ -35,6 +35,7 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
       if (handleClick) {
         handleClick(data.profileId);
       }
+      alert("팔로우 취소");
     } catch (error) {
       console.error(error);
     }
