@@ -93,7 +93,7 @@ const DetailPage = ({
             <div>
               <Title>
                 <h3>{title}</h3>
-                <Star favorite={isFavorite} size={30} />
+                <Star id={`${id}`} favorite={isFavorite} size={30} />
               </Title>
               <Tags>{tags?.map((tag) => `#${tag} `)}</Tags>
             </div>

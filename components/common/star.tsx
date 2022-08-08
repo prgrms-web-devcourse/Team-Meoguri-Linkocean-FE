@@ -1,23 +1,43 @@
+import bookmarkAPI from "@/utils/apis/bookmark";
 import styled from "@emotion/styled";
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, useEffect, useState } from "react";
 
 export interface FavoriteButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   favorite: boolean;
   size?: number;
+  id: string;
 }
 
-const onClick = (e: React.MouseEvent<HTMLElement>) => {
-  alert("좋아요><");
-  e.stopPropagation();
-};
+const Star = ({ favorite, size = 14, id, ...props }: FavoriteButtonProps) => {
+  const [isFavorite, setIsFavorite] = useState(favorite);
 
-const Star = ({ favorite, size = 14, ...props }: FavoriteButtonProps) => {
+  useEffect(() => {
+    setIsFavorite(favorite);
+  }, [favorite]);
+
+  const onClick = async (e: React.MouseEvent<HTMLElement>) => {
+    if (!id) return;
+    try {
+      if (isFavorite) {
+        await bookmarkAPI.deleteFavorite(id);
+      } else {
+        await bookmarkAPI.createFavorite(id);
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      e.stopPropagation();
+    }
+  };
+
   return (
     <FavoritButton
-      onClick={onClick}
-      favorite={favorite}
+      onClick={(e) => onClick(e)}
+      favorite={isFavorite}
       size={size}
+      id={id}
       {...props}
     />
   );

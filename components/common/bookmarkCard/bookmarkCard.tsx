@@ -62,7 +62,7 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
           <CreateDate>{updatedAt}</CreateDate>
         </div>
         <div>
-          <Star favorite={isFavorite} />
+          <Star id={`${id}`} favorite={isFavorite} />
           <DropBox isWriter={isWriter} id={id}>
             <More />
           </DropBox>
