@@ -73,7 +73,7 @@ const Favorite = () => {
   const AsideMemo = React.useMemo(
     () => (
       <PageLayout.Aside>
-        <UserInfo data={getProfile} />
+        <UserInfo data={{ ...getProfile, isFollow: true }} />
         <MyFilterMenu
           categoryList={getProfile.categories}
           tagList={dummyTag}
