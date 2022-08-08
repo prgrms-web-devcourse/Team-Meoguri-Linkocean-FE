@@ -8,7 +8,7 @@ import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
 
 export interface MyFilterMenuProps {
-  tagList?: { name: string; count: number }[];
+  tagList?: { tag: string; count: number }[];
   categoryList?: string[];
   isFavorite?: boolean;
   getTagsData: (arr: string[]) => void;
@@ -104,7 +104,7 @@ const MyFilterMenu = ({
           </FilterHeader>
         </Link>
         <Seperator />
-        <Link href="/my/favorite">
+        <Link href="favorite">
           <FilterHeader
             src="/icon/full-star.svg"
             alt="star"
@@ -141,7 +141,7 @@ const MyFilterMenu = ({
         </FilterHeader>
         <FilterFolder
           getCategory={getCategory}
-          categoryList={categoryList}
+          categoryList={categoryList ? ["전체", ...categoryList] : ["전체"]}
           isOpen={isCategoryListOpen}
           onClick={() => handleClick()}
         />
