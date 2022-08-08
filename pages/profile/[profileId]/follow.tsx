@@ -13,46 +13,129 @@ import {
   Form,
   Layout,
 } from "@/pages/my/follow";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { Profile, ProfileDetail } from "@/types/model";
+import profileAPI from "@/utils/apis/profile";
+
+const PAGE_SIZE = 8;
+
+type Filtering = {
+  tab: "follower" | "followee";
+  page: number;
+  size: number;
+};
+
+const INITIAL_FILTERING: Filtering = {
+  tab: "follower",
+  page: 1,
+  size: PAGE_SIZE,
+};
+
+// TODO: 자신의 profileID라면 my/follow로 보내기, 유저 정보가 없는 profileID값이 오면 404페이지로 보내기
 
 const Follow = () => {
   const router = useRouter();
 
+  const [userProfile, setUserProfile] = useState<ProfileDetail>();
+  const [state, setState] = useState(INITIAL_FILTERING);
+  const [followProfiles, setFollowProfiles] = useState<Profile[]>([]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.currentTarget;
+    setState({ ...state, [name]: id });
+  };
+
+  const getUserProfile = useCallback(async () => {
+    const profileId = parseInt(router.query.profileId as string, 10);
+
+    try {
+      const response = await profileAPI.getOtherProfile(profileId);
+      setUserProfile(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [router.query.profileId]);
+  const getFollowProfiles = useCallback(async () => {
+    if (!userProfile) {
+      return;
+    }
+
+    const { profileId } = userProfile;
+    const { tab, ...query } = state;
+    const queryString = Object.entries(query)
+      .map((entry) => entry.join("="))
+      .join("&");
+
+    try {
+      const response = await profileAPI.getFollow(profileId, tab, queryString);
+      setFollowProfiles(response.data.profiles);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [state, userProfile]);
+
+  useEffect(() => {
+    if (router.query.profileId === undefined) {
+      return;
+    }
+
+    getUserProfile();
+  }, [router.query.profileId, getUserProfile]);
+
+  useEffect(() => {
+    getFollowProfiles();
+  }, [getFollowProfiles]);
+
   return (
     <>
       <Head>
-        <title>LinkOcean | 팔로워</title>
+        <title>
+          {state.tab === "follower"
+            ? "LinkOcean | 팔로워"
+            : "LinkOcean | 팔로잉"}
+        </title>
       </Head>
 
       <PageLayout>
         <PageLayout.Aside>
-          <UserInfo data={getProfile} />
-          <MyFilterMenu
-            tagList={getProfile.tags}
-            categoryList={getProfile.categories}
-            getCategoryData={() => {}}
-            getTagsData={() => {}}
-          />
+          {userProfile ? (
+            <>
+              <UserInfo data={userProfile} />
+              <MyFilterMenu
+                tagList={userProfile.tags}
+                categoryList={userProfile.categories}
+                getCategoryData={() => {}}
+                getTagsData={() => {}}
+              />
+            </>
+          ) : (
+            "로딩 중..."
+          )}
         </PageLayout.Aside>
         <PageLayout.Article>
           <Layout>
-            <Test>profileId: {router.query.profileId}</Test>
-            <Form action="" onChange={(e) => {}}>
+            <Form>
               <FollowRadio
-                name="follow"
+                name="tab"
                 id="follower"
-                text={`팔로워 (${getProfile.followerCount})`}
-                checked
-                onChange={(e) => {}}
+                text={`팔로워 (${
+                  userProfile ? userProfile.followerCount : " "
+                })`}
+                checked={state.tab === "follower"}
+                onChange={handleChange}
               />
               <FollowRadio
-                name="follow"
+                name="tab"
                 id="followee"
-                text={`팔로잉 (${getProfile.followeeCount})`}
-                onChange={(e) => {}}
+                text={`팔로잉 (${
+                  userProfile ? userProfile.followerCount : " "
+                })`}
+                checked={state.tab === "followee"}
+                onChange={handleChange}
               />
             </Form>
             <FollowCardContainer>
-              {DUMMY_FOLLOWE.profiles.map(
+              {followProfiles.map(
                 ({ profileId, imageUrl, isFollow, username }) => (
                   <Following
                     profileImg={imageUrl}
@@ -69,7 +152,5 @@ const Follow = () => {
     </>
   );
 };
-
-const Test = styled.div``;
 
 export default Follow;
