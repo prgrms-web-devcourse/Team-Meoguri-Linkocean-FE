@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { usernameRegExp } from "@/utils/validation";
+import profileAPI from "@/utils/apis/profile";
 import Button from "../common/button";
 import ErrorText from "../common/errorText";
 import Input from "../common/input";
@@ -18,7 +19,7 @@ const EditPage = () => {
   const [file, setFile] = useState<File>();
   const [categories, setCategories] = useState(["IT"]);
   const [input, setInput] = useState({
-    userName: "초기 세팅",
+    userName: "초기",
     bio: "초기 세팅",
   });
   const router = useRouter();
@@ -62,20 +63,20 @@ const EditPage = () => {
     }
   };
 
-  const submit = () => {
-    const imageFile = new FormData();
-    if (file) {
-      imageFile.append("file", file);
+  const submit = async () => {
+    try {
+      const editData = new FormData();
+      editData.append("username", input.userName);
+      editData.append("categories", categories.join(","));
+      editData.append("bio", input.bio);
+      if (file) {
+        editData.append("image", file);
+      }
+      await profileAPI.editProfile(editData);
+      alert("프로필이 변경되었습니다.");
+    } catch (e) {
+      console.error(e);
     }
-
-    const submitData = {
-      username: input.userName,
-      categories: [...categories],
-      bio: input.bio,
-      image: imageFile,
-    };
-
-    console.log(submitData);
   };
 
   return (
@@ -88,7 +89,7 @@ const EditPage = () => {
           width="100%"
           name="userName"
           placeholder="유저네임을 입력하세요"
-          defaultValue="초기 세팅"
+          defaultValue="초기"
         />
         {userNameErrorMsg ? (
           <ErrorText style={{ height: "14px" }}>{userNameErrorMsg}</ErrorText>
