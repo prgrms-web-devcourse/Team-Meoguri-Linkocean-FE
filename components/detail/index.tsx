@@ -10,11 +10,22 @@ import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
 import ProfileImage from "../common/profileImage";
+import Reaction from "../common/reaction";
 
 const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   const router = useRouter();
-  const { title, url, imageUrl, profile, tags, isFavorite, updatedAt, memo } =
-    data;
+  const {
+    title,
+    url,
+    imageUrl,
+    profile,
+    tags,
+    isFavorite,
+    updatedAt,
+    memo,
+    reaction,
+    reactionCount,
+  } = data;
   const [isFollow, setIsFollow] = useState(profile.isFollow);
 
   useEffect(() => {
@@ -119,6 +130,12 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
           </Info>
         </BookMarkInfo>
         <Description>{memo}</Description>
+        <Reaction
+          isLike={reaction.like}
+          isHate={reaction.hate}
+          like={reactionCount.like}
+          hate={reactionCount.hate}
+        />
       </Content>
     </Page>
   );
@@ -190,6 +207,7 @@ const Date = styled.span`
 `;
 const Description = styled.p`
   ${text.$body1}
+  margin-bottom: 100px;
 `;
 
 export default DetailPage;

@@ -95,6 +95,7 @@ const Reaction = ({ like, hate, isLike, isHate }: ReactionProps) => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin: auto;
   width: 291px;
   gap: 10px;
   -webkit-user-select: none;
