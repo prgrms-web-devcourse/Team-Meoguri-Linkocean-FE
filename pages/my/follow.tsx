@@ -121,8 +121,9 @@ const Follow = () => {
             </Form>
             <FollowCardContainer>
               {followProfiles.map(
-                ({ profileId, imageUrl, isFollow, username }) => (
+                ({ profileId, imageUrl, isFollow = false, username }) => (
                   <Following
+                    profileId={profileId}
                     profileImg={imageUrl}
                     userName={username}
                     following={isFollow}
