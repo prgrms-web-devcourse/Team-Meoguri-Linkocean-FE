@@ -2,10 +2,11 @@ import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { BookmarkDetail } from "@/types/model";
+import { BookmarkDetail, ProfileDetail } from "@/types/model";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import followAPI from "@/utils/apis/follow";
+import profileAPI from "@/utils/apis/profile";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
@@ -31,6 +32,21 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   useEffect(() => {
     setIsFollow(profile.isFollow);
   }, [profile.isFollow]);
+
+  const [loginUser, setLoginUser] = useState<ProfileDetail>();
+
+  // 임시 로그인 중인 유저
+  // 이후 contextAPI로 변경
+  useEffect(() => {
+    (async () => {
+      try {
+        const loginUserData = await profileAPI.getMyProfile();
+        setLoginUser(loginUserData.data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, []);
 
   const followRequest = async () => {
     try {
@@ -61,7 +77,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     <Page>
       <FlexBetween>
         <BackButton />
-        {false ? (
+        {loginUser?.username === profile.username ? (
           <FlexBetween style={{ width: "190px" }}>
             <Button
               onClick={() => router.push(`/edit/${id}`)}
