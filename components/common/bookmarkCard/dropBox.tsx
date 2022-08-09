@@ -1,5 +1,6 @@
 import useToggle from "@/hooks/useToggle";
 import { color, text } from "@/styles/theme";
+import bookmarkAPI from "@/utils/apis/bookmark";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 
@@ -7,9 +8,15 @@ export interface DropBoxProps {
   children: JSX.Element;
   isWriter: boolean;
   id: number;
+  deleteBookmark: (id: number) => void;
 }
 
-const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
+const DropBox = ({
+  children,
+  isWriter = true,
+  id,
+  deleteBookmark,
+}: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
   const router = useRouter();
 
@@ -23,9 +30,21 @@ const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
     e.stopPropagation();
   };
 
-  const deletePost = (e: React.MouseEvent<HTMLElement>) => {
-    alert("삭제하기");
+  const deletePost = async (
+    callback: (id: number) => void,
+    e: React.MouseEvent<HTMLElement>
+  ) => {
     e.stopPropagation();
+    const isDelete = window.confirm("북마크를 지우시겠습니까?");
+    if (isDelete) {
+      try {
+        await bookmarkAPI.deleteBookmark(id);
+        alert("북마크가 제거되었습니다.");
+        callback(id);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   const openBox = (e: React.MouseEvent<HTMLElement>) => {
@@ -52,7 +71,10 @@ const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
               </button>
             </li>
             <li>
-              <button type="button" onClick={deletePost}>
+              <button
+                type="button"
+                onClick={(e) => deletePost(deleteBookmark, e)}
+              >
                 삭제하기
               </button>
             </li>
@@ -91,15 +113,15 @@ const List = styled.ul`
     border-bottom: 7px solid ${color.$gray100};
     content: "";
   }
-  li:not(:last-child) button {
+  li:not(:last-of-type) button {
     border-bottom: 1px solid ${color.$gray100};
   }
-  li:first-child {
+  li:first-of-type {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     overflow: hidden;
   }
-  li:last-child {
+  li:last-of-type {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     overflow: hidden;

@@ -1,7 +1,7 @@
 import { color, text } from "@/styles/theme";
 import { CATEGORY } from "@/types/type";
 import styled from "@emotion/styled";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { ChangeEventHandler, useEffect, useState } from "react";
 import Button from "../common/button";
 import CategoryItem from "../common/categoryItem";
 import ErrorText from "../common/errorText";
@@ -43,6 +43,20 @@ const SelectCategoryModal = ({
     setFavoriteCategories(categories);
     setIsShowModal(false);
   };
+
+  useEffect(() => {
+    setFavoriteCategories(categories);
+  }, [categories]);
+
+  useEffect(() => {
+    if (typeof window !== "object") return;
+    const body = document.getElementsByTagName("body")[0];
+    if (isShowModal) {
+      body.classList.add("scrollLock");
+    } else {
+      body.classList.remove("scrollLock");
+    }
+  }, [isShowModal]);
 
   return (
     <div>

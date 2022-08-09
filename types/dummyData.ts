@@ -1,4 +1,9 @@
-import { BookmarkDetail, BookmarkList, Notification } from "./model";
+import {
+  BookmarkDetail,
+  BookmarkList,
+  Notification,
+  ProfileDetail,
+} from "./model";
 
 export {
   getBookMarkDetail,
@@ -156,7 +161,7 @@ const getBookMarkList: BookmarkList = {
   ],
 };
 
-const getProfile = {
+const getProfile: ProfileDetail = {
   profileId: 1,
   imageUrl:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyT-fcCPkfYWQQ1UwkNyRPevaYT1hpA8dRMYk1zFvar4t5KDrDHji_e74bM_cV-MreDM&usqp=CAU",

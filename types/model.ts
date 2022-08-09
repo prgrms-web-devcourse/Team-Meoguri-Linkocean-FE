@@ -20,6 +20,7 @@ export interface ProfileDetail {
   bio?: string;
   followerCount: number;
   followeeCount: number;
+  isFollow?: boolean;
   tags?: TagType[];
 }
 
