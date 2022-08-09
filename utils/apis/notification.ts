@@ -1,3 +1,4 @@
+import { Notification } from "@/types/model";
 import { authInstance } from "./instance";
 
 export type ShareNotificationPayload = {
