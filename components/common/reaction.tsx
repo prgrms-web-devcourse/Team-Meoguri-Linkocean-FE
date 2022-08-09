@@ -7,6 +7,7 @@ export interface ReactionProps {
   hate: number;
   isLike?: boolean;
   isHate?: boolean;
+  id: number;
 }
 interface LikeProps {
   isLikeClicked?: boolean;
@@ -16,7 +17,7 @@ interface HateProps {
   isHateClicked?: boolean;
 }
 
-const Reaction = ({ like, hate, isLike, isHate }: ReactionProps) => {
+const Reaction = ({ like, hate, isLike, isHate, id }: ReactionProps) => {
   const [selectLike, setSelectLike] = useState(isLike);
   const [selectHate, setSelectHate] = useState(isHate);
   const [likeCount, setLikeCount] = useState(like);

@@ -29,8 +29,6 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   } = data;
   const [isFollow, setIsFollow] = useState(profile.isFollow);
 
-  console.log(data);
-
   useEffect(() => {
     setIsFollow(profile.isFollow);
   }, [profile.isFollow]);
@@ -149,6 +147,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
         </BookMarkInfo>
         <Description>{memo}</Description>
         <Reaction
+          id={id}
           isLike={reaction.LIKE}
           isHate={reaction.HATE}
           like={reactionCount.LIKE}
