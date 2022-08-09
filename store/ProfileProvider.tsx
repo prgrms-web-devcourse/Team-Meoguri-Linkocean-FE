@@ -1,4 +1,3 @@
-import { getProfile } from "@/types/dummyData";
 import { ProfileDetail } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import {
@@ -9,7 +8,13 @@ import {
   useEffect,
 } from "react";
 
-const initialUser = getProfile; // 더미data
+const initialUser = {
+  profileId: 1,
+  favoriteCategories: [""],
+  username: "",
+  followerCount: 0,
+  followeeCount: 0,
+};
 type SampleDispatch = Dispatch<Action>;
 type Action = { type: "GET_PROFILES"; profile: ProfileDetail };
 
