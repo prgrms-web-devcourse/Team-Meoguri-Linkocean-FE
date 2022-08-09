@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { usernameRegExp } from "@/utils/validation";
 import profileAPI from "@/utils/apis/profile";
+import { useProfileState } from "@/hooks/useProfile";
 import Button from "../common/button";
 import ErrorText from "../common/errorText";
 import Input from "../common/input";
@@ -23,27 +24,19 @@ const EditPage = () => {
     bio: "",
   });
   const router = useRouter();
+  const { bio, username, favoriteCategories, imageUrl } = useProfileState();
 
   const edit = () => {
     if (bioErrorMsg || userNameErrorMsg) return;
     submit();
   };
 
-  // 초기 세팅
-  // 이후 contextAPI로 변경
   useEffect(() => {
-    const initialSetting = async () => {
-      try {
-        const { data } = await profileAPI.getMyProfile();
-        setFile(data.imageUrl || "");
-        setInput({ userName: data.username, bio: data.bio || "" });
-        setCategories(data.favoriteCategories);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    initialSetting();
-  }, []);
+    setCategories(favoriteCategories);
+    if (imageUrl) {
+      setFile(imageUrl);
+    }
+  }, [favoriteCategories, imageUrl]);
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -106,7 +99,7 @@ const EditPage = () => {
           width="100%"
           name="userName"
           placeholder="유저네임을 입력하세요"
-          defaultValue={input.userName}
+          defaultValue={username}
         />
         {userNameErrorMsg ? (
           <ErrorText style={{ height: "14px" }}>{userNameErrorMsg}</ErrorText>
@@ -129,7 +122,7 @@ const EditPage = () => {
         <Textarea
           onChange={onChange}
           name="bio"
-          defaultValue={input.bio}
+          defaultValue={bio}
           width="100%"
           placeholder="텍스트를 입력해주세요"
         />
