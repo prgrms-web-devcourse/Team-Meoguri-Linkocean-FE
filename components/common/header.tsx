@@ -38,9 +38,11 @@ const Header: React.FC = () => {
         </Link>
       </NavigatorWrapper>
       <UserWrapper>
-        <AlarmButton>
-          <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
-        </AlarmButton>
+        <Link href="/notification" passHref>
+          <AlarmButton>
+            <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
+          </AlarmButton>
+        </Link>
         <UserImg onClick={toggle}>
           <ProfileImage size="sm" />
         </UserImg>
@@ -56,7 +58,7 @@ const Header: React.FC = () => {
 
 export default Header;
 
-const StyledHeader = styled.header`
+const StyledHeader = styled.h1`
   min-width: 820px;
   height: 62px;
   padding: 0 20px;
@@ -66,7 +68,7 @@ const StyledHeader = styled.header`
   border-bottom: 1px solid ${color.$gray400};
 `;
 
-const Logo = styled.div`
+const Logo = styled.a`
   cursor: pointer;
   padding-top: 5px;
 `;
@@ -89,15 +91,16 @@ const NavigatorWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Navigator = styled.nav`
+const Navigator = styled.a`
   margin: auto 20px;
   color: ${color.$gray600};
   font-weight: 600;
   font-size: 20px;
   line-height: 29px;
+  text-decoration: none;
   cursor: pointer;
 
-  &:active {
+  &:hover {
     color: ${color.$gray800};
   }
 `;
@@ -122,6 +125,7 @@ const UserName = styled.div`
   font-size: 20px;
   line-height: 29px;
   cursor: pointer;
+  user-select: none;
 
   &:active {
     color: ${color.$gray800};
