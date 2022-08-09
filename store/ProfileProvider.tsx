@@ -1,5 +1,5 @@
 import { ProfileDetail } from "@/types/model";
-import { CATEGORY } from "@/types/type";
+import { CATEGORY, TagType } from "@/types/type";
 import profileAPI from "@/utils/apis/profile";
 import {
   createContext,
@@ -15,6 +15,7 @@ const initialUser: ProfileDetail = {
   username: "",
   followerCount: 0,
   followeeCount: 0,
+  categories: [],
 };
 type SampleDispatch = Dispatch<Action>;
 type Action =
@@ -29,7 +30,17 @@ type Action =
       };
     }
   | { type: "FOLLOW" }
-  | { type: "UN_FOLLOW" };
+  | { type: "UN_FOLLOW" }
+  | {
+      type: "CREATE_BOOKMARK";
+      tags?: string[];
+      categories?: typeof CATEGORY[number];
+    }
+  | {
+      type: "REMOVE_BOOKMARK";
+      tags?: string[];
+      categories?: typeof CATEGORY[number];
+    };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
 export const ProfileDispatchContext =
@@ -54,20 +65,63 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
     case "FOLLOW":
       return {
         ...state,
-        followerCount: state.followeeCount + 1,
+        followeeCount: state.followeeCount + 1,
       };
     case "UN_FOLLOW": {
       if (state.followeeCount < 1) {
-        return {
-          ...state,
-        };
+        return { ...state };
       }
       return {
         ...state,
-        followerCount: state.followeeCount - 1,
+        followeeCount: state.followeeCount - 1,
       };
     }
+    case "CREATE_BOOKMARK": {
+      const { tags, categories } = action;
+      let setCategories = state.categories;
+      let setTags = state.tags;
 
+      if (categories) {
+        if (state.categories?.includes(categories)) {
+          setCategories = [...state.categories];
+        } else {
+          setCategories = [
+            ...(state.categories as typeof CATEGORY[number][]),
+            categories,
+          ];
+        }
+      }
+
+      if (tags) {
+        tags.forEach((newTag) => {
+          const isExistTag = state.tags?.some((tag) => tag.tag === newTag);
+          if (isExistTag) {
+            setTags = setTags?.map((tag) => {
+              if (tag.tag === newTag) {
+                return {
+                  ...tag,
+                  count: tag.count + 1,
+                };
+              }
+              return tag;
+            });
+          } else {
+            setTags = [...(setTags as TagType[]), { tag: newTag, count: 1 }];
+          }
+        });
+      }
+      return {
+        ...state,
+        categories: setCategories,
+        tags: setTags,
+      };
+    }
+    case "REMOVE_BOOKMARK": {
+      const { tags, categories } = state;
+      return {
+        ...state,
+      };
+    }
     default:
       throw new Error(`Unhanded action type`);
   }
