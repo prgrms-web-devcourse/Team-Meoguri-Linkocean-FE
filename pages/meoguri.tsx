@@ -13,6 +13,7 @@ import { FormEvent, useState, useEffect, useCallback } from "react";
 import profileAPI from "@/utils/apis/profile";
 import { Profile } from "@/types/model";
 import { getQueryString } from "@/utils/queryString";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import {
   DUMMY_USER_INFO,
@@ -39,6 +40,9 @@ const INITIAL_FILTERING: Filtering = {
 
 const Meoguri = () => {
   const router = useRouter();
+
+  const userProfile = useProfileState();
+  const userProfileDispatcher = useProfileDispatch();
 
   const [state, setState] = useState(INITIAL_FILTERING);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -106,6 +110,27 @@ const Meoguri = () => {
     setState({ ...INITIAL_FILTERING, username: trimmedUsername });
     router.push(`/meoguri?name=${trimmedUsername}`);
   };
+  const handleFollow = (profileId: number) => {
+    const index = profiles.findIndex(
+      (profile) => profile.profileId === profileId
+    );
+    const isDeleteFollowAction = profiles[index].isFollow;
+
+    const nextFolloweeCount = isDeleteFollowAction
+      ? userProfile.followeeCount - 1
+      : userProfile.followeeCount + 1;
+    userProfileDispatcher({
+      type: "GET_PROFILES",
+      profile: {
+        ...userProfile,
+        followeeCount: nextFolloweeCount,
+      },
+    });
+
+    const copiedValue = [...profiles];
+    copiedValue[index].isFollow = !copiedValue[index].isFollow;
+    setProfiles(copiedValue);
+  };
 
   useEffect(() => {
     if (!router.isReady || router.query.name === undefined) {
@@ -130,10 +155,13 @@ const Meoguri = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          <UserInfo data={DUMMY_USER_INFO} />
+          <UserInfo data={userProfile} />
           <MyFilterMenu
-            tagList={getProfile.tags}
-            categoryList={getProfile.categories}
+            tagList={userProfile.tags?.map(({ tag, count }) => ({
+              name: tag,
+              count,
+            }))}
+            categoryList={userProfile.categories}
             getCategoryData={() => {}}
             getTagsData={() => {}}
           />
@@ -178,6 +206,7 @@ const Meoguri = () => {
                           userName={username}
                           following={isFollow}
                           key={profileId}
+                          handleClick={handleFollow}
                         />
                       </div>
                     )
