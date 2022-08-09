@@ -14,8 +14,8 @@ export interface ProfileList {
 export interface ProfileDetail {
   profileId: number;
   imageUrl?: string;
-  favoriteCategories: string[];
-  categories?: string[];
+  favoriteCategories: typeof CATEGORY[number][];
+  categories?: typeof CATEGORY[number][];
   username: string;
   bio?: string;
   followerCount: number;
