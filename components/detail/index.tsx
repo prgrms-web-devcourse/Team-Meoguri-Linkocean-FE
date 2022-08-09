@@ -116,7 +116,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
                 colorType="main-color"
                 onClick={followRequest}
               >
-                팔로우+
+                팔로우 +
               </Button>
             )}
           </UserFollow>
