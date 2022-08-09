@@ -14,9 +14,8 @@ import { useRouter } from "next/router";
 import profileAPI from "@/utils/apis/profile";
 import { getBookMarkList, getProfile } from "@/types/dummyData";
 import { ProfileDetail } from "@/types/model";
-import MyBookmark from "@/components/myBookmark/myBookmark";
 
-const Favorite = () => {
+const My = (PageTitle: string) => {
   const router = useRouter();
   const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
@@ -71,7 +70,39 @@ const Favorite = () => {
     <PageLayout>
       {AsideMemo}
       <PageLayout.Article>
-        <MyBookmark PageTitle="즐겨찾기 목록" />
+        <Wrapper>
+          <Title>{PageTitle}</Title>
+          <FilterDiv>
+            <SearchDiv>
+              <Input
+                searchIcon
+                onChange={(e) => {
+                  console.log("onChange");
+                }}
+              />
+              <Button buttonType="small" colorType="main-color">
+                검색
+              </Button>
+            </SearchDiv>
+            <SelectDiv>
+              <Select>
+                <Select.Trigger>선택</Select.Trigger>
+                <Select.OptionList>
+                  <Select.Option value="upload">최신 순</Select.Option>
+                  <Select.Option value="like">좋아요 순</Select.Option>
+                </Select.OptionList>
+              </Select>
+            </SelectDiv>
+          </FilterDiv>
+          <ContentDiv>
+            {getBookMarkList.bookmarks.map((element) => (
+              <BookmarkCard key={element.id} data={element} />
+            ))}
+          </ContentDiv>
+          <PaginationDiv>
+            <Pagination count={3} onChange={() => console.log("onChange")} />
+          </PaginationDiv>
+        </Wrapper>
       </PageLayout.Article>
     </PageLayout>
   );
@@ -112,4 +143,4 @@ const PaginationDiv = styled.div`
   justify-content: center;
   margin-top: 26px;
 `;
-export default Favorite;
+export default My;

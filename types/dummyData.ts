@@ -173,11 +173,11 @@ const getProfile: ProfileDetail = {
   isFollow: true,
   tags: [
     {
-      name: "JAVA",
+      tag: "JAVA",
       count: 5,
     },
     {
-      name: "JAVASCRIPT",
+      tag: "JAVASCRIPT",
       count: 5,
     },
   ],
