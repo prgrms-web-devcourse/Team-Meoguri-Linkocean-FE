@@ -51,11 +51,25 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
         <GridWrapper>
           <UserName>{data.username}</UserName>
           <FollowWrapper>
-            <Link href="/my/follow" passHref>
+            <Link
+              href={
+                !Object.prototype.hasOwnProperty.call(data, "isFollow")
+                  ? "/my/follow"
+                  : `/profile/:${data.profileId}/follow?tab=follower`
+              }
+              passHref
+            >
               <FollowInfo>팔로워 {data.followerCount}</FollowInfo>
             </Link>
             <StyledDiv />
-            <Link href="/my/follow" passHref>
+            <Link
+              href={
+                !Object.prototype.hasOwnProperty.call(data, "isFollow")
+                  ? "/my/follow"
+                  : `/profile/:${data.profileId}/follow?tab=followee`
+              }
+              passHref
+            >
               <FollowInfo>팔로잉 {data.followeeCount}</FollowInfo>
             </Link>
           </FollowWrapper>
