@@ -32,15 +32,14 @@ const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(ProfileReducer, initialUser);
 
   useEffect(() => {
-    const setProfile = async () => {
+    (async () => {
       try {
         const { data } = await profileAPI.getMyProfile();
         dispatch({ type: "GET_PROFILES", profile: data });
       } catch (error) {
         console.error(error);
       }
-    };
-    setProfile();
+    })();
   }, []);
 
   return (
