@@ -18,7 +18,7 @@ export type OpenType = "private" | "all" | "partial";
 export type NotificationType = "SHARE" | "FEED" | "OLD";
 
 export type TagType = {
-  name: string;
+  tag: string;
   count: number;
 };
 
