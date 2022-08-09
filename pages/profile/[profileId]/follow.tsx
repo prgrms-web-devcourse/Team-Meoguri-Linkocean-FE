@@ -128,7 +128,7 @@ const Follow = () => {
                 name="tab"
                 id="followee"
                 text={`팔로잉 (${
-                  userProfile ? userProfile.followerCount : " "
+                  userProfile ? userProfile.followeeCount : " "
                 })`}
                 checked={state.tab === "followee"}
                 onChange={handleChange}
@@ -138,6 +138,7 @@ const Follow = () => {
               {followProfiles.map(
                 ({ profileId, imageUrl, isFollow, username }) => (
                   <Following
+                    profileId={profileId}
                     profileImg={imageUrl}
                     userName={username}
                     following={isFollow}
