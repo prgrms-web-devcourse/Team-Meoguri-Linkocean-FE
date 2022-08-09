@@ -30,9 +30,10 @@ const MyDetail = () => {
         setBookmarkData(data);
       } catch (error) {
         console.error(error);
+        router.push("/404");
       }
     })();
-  }, [router.query, router.isReady]);
+  }, [router.query, router.isReady, router]);
 
   return (
     <PageLayout>
@@ -51,9 +52,7 @@ const MyDetail = () => {
             id={Number(router.query.bookmarkId)}
             data={bookmarkData}
           />
-        ) : (
-          <p>삭제된 북마크 페이지 입니다.</p>
-        )}
+        ) : null}
       </PageLayout.Article>
     </PageLayout>
   );

@@ -1,7 +1,7 @@
 import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
 import DetailPage from "@/components/detail";
-import { getBookMarkDetail } from "@/types/dummyData";
+import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ const MyDetail = () => {
   const getCategory = (element: string) => {
     setCategory(element);
   };
-  const [bookmarkData, setBookmarkData] = useState(getBookMarkDetail);
+  const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -21,11 +21,12 @@ const MyDetail = () => {
       try {
         const { data } = await bookmarkAPI.getBookmarkDetail(id);
         setBookmarkData(data);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error(error);
+        router.push("/404");
       }
     })();
-  }, [router.query, router.isReady]);
+  }, [router.query, router.isReady, router]);
 
   return (
     <PageLayout>
@@ -38,9 +39,7 @@ const MyDetail = () => {
             id={Number(router.query.bookmarkId)}
             data={bookmarkData}
           />
-        ) : (
-          <p>삭제된 북마크 페이지 입니다.</p>
-        )}
+        ) : null}
       </PageLayout.Article>
     </PageLayout>
   );
