@@ -113,15 +113,15 @@ const List = styled.ul`
     border-bottom: 7px solid ${color.$gray100};
     content: "";
   }
-  li:not(:last-child) button {
+  li:not(:last-of-type) button {
     border-bottom: 1px solid ${color.$gray100};
   }
-  li:first-child {
+  li:first-of-type {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     overflow: hidden;
   }
-  li:last-child {
+  li:last-of-type {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     overflow: hidden;
