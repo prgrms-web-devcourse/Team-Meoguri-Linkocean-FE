@@ -64,7 +64,12 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
         </div>
         <div>
           <Star id={id.toString()} favorite={isFavorite} />
-          <DropBox deleteBookmark={deleteBookmark} isWriter={isWriter} id={id}>
+          <DropBox
+            tags={tags}
+            deleteBookmark={deleteBookmark}
+            isWriter={isWriter}
+            id={id}
+          >
             <More />
           </DropBox>
         </div>
