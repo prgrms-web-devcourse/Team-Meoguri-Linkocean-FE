@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
+import Link from "next/link";
 
 const LogoutTooltip = ({ ...props }) => {
   const handleLogout = () => {
@@ -9,7 +10,9 @@ const LogoutTooltip = ({ ...props }) => {
   return (
     <Tooltip {...props}>
       <Arrow />
-      <Logout onClick={() => handleLogout}>logout</Logout>
+      <Link href="/" passHref>
+        <Logout onClick={() => handleLogout}>logout</Logout>
+      </Link>
     </Tooltip>
   );
 };
