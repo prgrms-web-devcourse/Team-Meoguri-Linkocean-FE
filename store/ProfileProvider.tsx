@@ -27,7 +27,9 @@ type Action =
         imageUrl: string;
         favoriteCategories: typeof CATEGORY[number][];
       };
-    };
+    }
+  | { type: "FOLLOW" }
+  | { type: "UN_FOLLOW" };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
 export const ProfileDispatchContext =
@@ -49,6 +51,23 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
         favoriteCategories,
       };
     }
+    case "FOLLOW":
+      return {
+        ...state,
+        followerCount: state.followeeCount + 1,
+      };
+    case "UN_FOLLOW": {
+      if (state.followeeCount < 1) {
+        return {
+          ...state,
+        };
+      }
+      return {
+        ...state,
+        followerCount: state.followeeCount - 1,
+      };
+    }
+
     default:
       throw new Error(`Unhanded action type`);
   }
