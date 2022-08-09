@@ -8,9 +8,15 @@ export interface DropBoxProps {
   children: JSX.Element;
   isWriter: boolean;
   id: number;
+  deleteBookmark: (id: number) => void;
 }
 
-const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
+const DropBox = ({
+  children,
+  isWriter = true,
+  id,
+  deleteBookmark,
+}: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
   const router = useRouter();
 
@@ -24,17 +30,21 @@ const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
     e.stopPropagation();
   };
 
-  const deletePost = async (e: React.MouseEvent<HTMLElement>) => {
+  const deletePost = async (
+    callback: (id: number) => void,
+    e: React.MouseEvent<HTMLElement>
+  ) => {
+    e.stopPropagation();
     const isDelete = window.confirm("북마크를 지우시겠습니까?");
     if (isDelete) {
       try {
         await bookmarkAPI.deleteBookmark(id);
         alert("북마크가 제거되었습니다.");
+        callback(id);
       } catch (error) {
         console.error(error);
       }
     }
-    e.stopPropagation();
   };
 
   const openBox = (e: React.MouseEvent<HTMLElement>) => {
@@ -61,7 +71,10 @@ const DropBox = ({ children, isWriter = true, id }: DropBoxProps) => {
               </button>
             </li>
             <li>
-              <button type="button" onClick={deletePost}>
+              <button
+                type="button"
+                onClick={(e) => deletePost(deleteBookmark, e)}
+              >
                 삭제하기
               </button>
             </li>
