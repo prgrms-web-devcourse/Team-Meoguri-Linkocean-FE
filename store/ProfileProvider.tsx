@@ -39,7 +39,6 @@ type Action =
   | {
       type: "REMOVE_BOOKMARK";
       tags?: string[];
-      categories?: typeof CATEGORY[number];
     };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
@@ -117,9 +116,30 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
       };
     }
     case "REMOVE_BOOKMARK": {
-      const { tags, categories } = state;
+      const { tags } = action;
+      let setTags: TagType[] = [];
+
+      if (tags) {
+        tags?.forEach((removeTag) => {
+          state.tags?.forEach((tag, i) => {
+            if (tag.tag === removeTag) {
+              if (tag.count <= 1) {
+                setTags.splice(i, 1);
+              } else {
+                setTags = [
+                  ...setTags,
+                  { tag: removeTag, count: tag.count - 1 },
+                ];
+              }
+            } else {
+              setTags = [...setTags, { tag: tag.tag, count: tag.count }];
+            }
+          });
+        });
+      }
       return {
         ...state,
+        tags: setTags,
       };
     }
     default:
