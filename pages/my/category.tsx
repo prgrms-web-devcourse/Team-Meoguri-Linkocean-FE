@@ -12,22 +12,6 @@ const Category = () => {
   const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<string>();
-
-  // useEffect(() => {
-  //   const categoryParamsObj = category ? { category } : { category: "" };
-  //   const categorySearchParams = new URLSearchParams(
-  //     categoryParamsObj
-  //   ).toString();
-  //   if (category !== undefined) {
-  //     router.push(`category/?${categorySearchParams}`);
-  //   }
-  //   const tagsString = tags === undefined ? "" : tags.join(",");
-  //   const tagParamsObj = { tag: tagsString };
-  //   const tagSearchParams = new URLSearchParams(tagParamsObj).toString();
-  //   if (tags.length !== 0) {
-  //     router.push(`tag/?${tagSearchParams}`);
-  //   }
-  // }, [category, tags]);
   useEffect(() => {
     const tagsString = tags === undefined ? "" : tags.join(",");
     const tagParamsObj = { tags: tagsString };
