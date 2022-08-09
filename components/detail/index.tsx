@@ -133,7 +133,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
             <div>
               <Title>
                 <h3>{title}</h3>
-                <Star id={`${id}`} favorite={isFavorite} size={30} />
+                <Star id={id.toString()} favorite={isFavorite} size={30} />
               </Title>
               <Tags>{tags?.map((tag) => `#${tag} `)}</Tags>
             </div>

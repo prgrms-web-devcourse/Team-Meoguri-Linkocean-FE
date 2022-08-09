@@ -28,8 +28,8 @@ const MyDetail = () => {
       try {
         const { data } = await bookmarkAPI.getBookmarkDetail(id);
         setBookmarkData(data);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error(error);
       }
     })();
   }, [router.query, router.isReady]);
