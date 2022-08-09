@@ -9,9 +9,12 @@ import { color, text } from "@/styles/theme";
 import { Notification } from "@/types/model";
 import notificationAPI from "@/utils/apis/notification";
 import { getQueryString } from "@/utils/queryString";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileState } from "@/hooks/useProfile";
 
 const PAGE_SIZE = 8;
+const isLastCard = (index: number, length: number) =>
+  index === Math.max(0, length - 1);
 
 type Page = {
   page: number;
@@ -27,7 +30,11 @@ const Notifications = () => {
   const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
   const [state, setState] = useState<Page>(INITIAL_PAGE);
-  const [notification, setNotification] = useState<Notification[]>();
+  const [notification, setNotification] = useState<{
+    value: Notification[];
+    isLoading: boolean;
+  }>({ value: [], isLoading: false });
+  const [isEndPage, setIsEndPage] = useState(false);
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -39,16 +46,50 @@ const Notifications = () => {
   console.log(userData);
 
   const getNotification = useCallback(async () => {
-    try {
-      const queryString = getQueryString(state);
-      const response = await notificationAPI.getNotifications(queryString);
+    const { ...query } = state;
+    const queryString = getQueryString(state);
 
-      // console.log(response.data.notifications);
-      setNotification(response.data.notifications);
+    try {
+      setNotification(({ value }) => ({ value, isLoading: true }));
+
+      const {
+        data: { notifications },
+      } = await notificationAPI.getNotifications(queryString);
+
+      if (notifications.length === 0 || notifications.length < query.size) {
+        setIsEndPage(true);
+      }
+
+      setNotification(({ value }) => {
+        const nextValue =
+          query.page === INITIAL_PAGE.page
+            ? notifications
+            : [...value, ...notifications];
+
+        return {
+          value: nextValue,
+          isLoading: false,
+        };
+      });
     } catch (error) {
       console.error(error);
     }
   }, [state]);
+
+  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+    if (isEndPage) {
+      setTarget(undefined);
+      return;
+    }
+
+    if (isIntersecting && !notification.isLoading) {
+      setState({ ...state, page: state.page + 1 });
+    }
+  };
+  const { setTarget } = useIntersectionObserver({
+    onIntersect,
+    threshold: 0.8,
+  });
 
   useEffect(() => {
     getNotification();
@@ -70,11 +111,15 @@ const Notifications = () => {
           <DivWrapper>
             <PageName>알림</PageName>
             <AlarmWrapper>
-              {notification?.map((index) => (
-                <>
+              {notification.value.map((index, i) => (
+                <div
+                  ref={
+                    isLastCard(i, notification.value.length) ? setTarget : null
+                  }
+                >
                   <Alarm data={index} />
                   <Contents style={{ height: "10px" }} />
-                </>
+                </div>
               ))}
             </AlarmWrapper>
           </DivWrapper>
