@@ -12,6 +12,7 @@ import Star from "../common/star";
 import Button from "../common/button";
 import ProfileImage from "../common/profileImage";
 import Reaction from "../common/reaction";
+import CopyLink from "./copyLink";
 
 const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   const router = useRouter();
@@ -138,9 +139,12 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
               <Tags>{tags?.map((tag) => `#${tag} `)}</Tags>
             </div>
             <FlexBetween>
-              <Link href={url} target="_blank">
-                {url}
-              </Link>
+              <Flex>
+                <Link href={url} target="_blank">
+                  {url}
+                </Link>
+                <CopyLink copyUrl={url} />
+              </Flex>
               <Date>{updatedAt}</Date>
             </FlexBetween>
           </Info>
@@ -168,7 +172,10 @@ const FlexBetween = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const UserFollow = styled.div`
   display: flex;
   align-items: center;
