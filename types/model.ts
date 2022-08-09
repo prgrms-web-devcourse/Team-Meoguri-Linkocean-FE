@@ -51,12 +51,12 @@ export interface BookmarkDetail {
   updatedAt: string;
   tags?: string[];
   reactionCount: {
-    like: number;
-    hate: number;
+    LIKE: number;
+    HATE: number;
   };
   reaction: {
-    like: true;
-    hate: false;
+    LIKE: true;
+    HATE: false;
   };
 }
 
