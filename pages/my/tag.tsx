@@ -6,11 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import BookmarkTemplate from "@/components/myBookmark/bookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
-import { BookmarkList, ProfileDetail } from "@/types/model";
-import bookmarkAPI from "@/utils/apis/bookmark";
-import profileAPI from "@/utils/apis/profile";
-import MyBookmark from "@/components/myBookmark/myBookmark";
-import { TagType } from "@/types/type";
 
 const Tag = () => {
   const profile = useProfileState();
