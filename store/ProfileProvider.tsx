@@ -1,4 +1,5 @@
 import { ProfileDetail } from "@/types/model";
+import { CATEGORY } from "@/types/type";
 import profileAPI from "@/utils/apis/profile";
 import {
   createContext,
@@ -8,15 +9,25 @@ import {
   useEffect,
 } from "react";
 
-const initialUser = {
+const initialUser: ProfileDetail = {
   profileId: 1,
-  favoriteCategories: [""],
+  favoriteCategories: [],
   username: "",
   followerCount: 0,
   followeeCount: 0,
 };
 type SampleDispatch = Dispatch<Action>;
-type Action = { type: "GET_PROFILES"; profile: ProfileDetail };
+type Action =
+  | { type: "GET_PROFILES"; profile: ProfileDetail }
+  | {
+      type: "EDIT_PROFILES";
+      profile: {
+        bio: string;
+        username: string;
+        imageUrl: string;
+        favoriteCategories: typeof CATEGORY[number][];
+      };
+    };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
 export const ProfileDispatchContext =
@@ -28,6 +39,16 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
   switch (action.type) {
     case "GET_PROFILES":
       return { ...action.profile };
+    case "EDIT_PROFILES": {
+      const { bio, username, imageUrl, favoriteCategories } = action.profile;
+      return {
+        ...state,
+        bio,
+        username,
+        imageUrl,
+        favoriteCategories,
+      };
+    }
     default:
       throw new Error(`Unhanded action type`);
   }

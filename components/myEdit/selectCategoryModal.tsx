@@ -13,22 +13,25 @@ const SelectCategoryModal = ({
   setCategories,
   categories,
 }: {
-  categories: string[];
-  setCategories: (categories: string[]) => void;
+  categories: typeof CATEGORY[number][];
+  setCategories: (categories: typeof CATEGORY[number][]) => void;
 }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [favoriteCategories, setFavoriteCategories] =
-    useState<string[]>(categories);
+    useState<typeof CATEGORY[number][]>(categories);
 
   const handleCategoryClick: ChangeInputHandler = (e) => {
-    if (favoriteCategories.includes(e.target.name)) {
+    if (favoriteCategories.includes(e.target.name as typeof CATEGORY[number])) {
       const filtered = favoriteCategories.filter(
         (category) => category !== e.target.name
       );
       setFavoriteCategories(filtered);
       return;
     }
-    setFavoriteCategories([...favoriteCategories, e.target.name]);
+    setFavoriteCategories([
+      ...favoriteCategories,
+      e.target.name as typeof CATEGORY[number],
+    ]);
   };
 
   const submitCategories = () => {
