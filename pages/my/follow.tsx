@@ -15,7 +15,7 @@ import { getQueryString } from "@/utils/queryString";
 
 // TODO: 팔로우 하기, 언팔로우 하기, 전역 유저 정보, 라우팅
 const PAGE_SIZE = 8;
-const isLastCard = (index: number, length: number) =>
+export const isLastCard = (index: number, length: number) =>
   index === Math.max(0, length - 1);
 
 type Filtering = {
