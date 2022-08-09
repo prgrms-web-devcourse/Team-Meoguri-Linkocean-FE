@@ -9,11 +9,11 @@ import Following from "@/components/common/following";
 import { useCallback, useEffect, useState } from "react";
 import { Profile } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
-import { useRouter } from "next/router";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { getQueryString } from "@/utils/queryString";
+import { useProfileState, useProfileDispatch } from "@/hooks/useProfile";
 
-// TODO: 팔로우 하기, 언팔로우 하기, 전역 유저 정보, 라우팅
+// TODO:  라우팅
 const PAGE_SIZE = 8;
 export const isLastCard = (index: number, length: number) =>
   index === Math.max(0, length - 1);
@@ -31,8 +31,8 @@ const INITIAL_FILTERING: Filtering = {
 };
 
 const Follow = () => {
-  const [tempUser, setTempUser] = useState(DUMMY_USER.HYONI); // 유저 context로 대체될 코드
-
+  const userProfile = useProfileState();
+  const userProfileDispatcher = useProfileDispatch();
   const [state, setState] = useState(INITIAL_FILTERING);
   const [followProfiles, setFollowProfiles] = useState<{
     value: Profile[];
@@ -44,9 +44,38 @@ const Follow = () => {
     setState({ ...state, [type]: value, page: INITIAL_FILTERING.page });
     setIsEndPage(false);
   };
+  const handleFollow = (profileId: number) => {
+    const index = followProfiles.value.findIndex(
+      (followProfile) => followProfile.profileId === profileId
+    );
+    const isDeleteFollowAction = followProfiles.value[index].isFollow;
+    const isFolloweeTab = state.tab === "followee";
+
+    const nextFolloweeCount = isDeleteFollowAction
+      ? userProfile.followeeCount - 1
+      : userProfile.followeeCount + 1;
+    userProfileDispatcher({
+      type: "GET_PROFILES",
+      profile: {
+        ...userProfile,
+        followeeCount: nextFolloweeCount,
+      },
+    });
+
+    const copiedValue = [...followProfiles.value];
+    if (isFolloweeTab) {
+      copiedValue.splice(index, 1);
+    } else {
+      copiedValue[index].isFollow = !copiedValue[index].isFollow;
+    }
+
+    setFollowProfiles({
+      ...followProfiles,
+      value: copiedValue,
+    });
+  };
 
   const getFollowProfiles = useCallback(async () => {
-    const { profileId } = tempUser;
     const { tab, ...query } = state;
     const queryString = getQueryString(query);
 
@@ -55,7 +84,7 @@ const Follow = () => {
 
       const {
         data: { profiles },
-      } = await profileAPI.getFollow(profileId, tab, queryString);
+      } = await profileAPI.getFollow(userProfile.profileId, tab, queryString);
 
       if (profiles.length === 0 || profiles.length < query.size) {
         setIsEndPage(true);
@@ -75,7 +104,7 @@ const Follow = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [state, tempUser]);
+  }, [state, userProfile.profileId]);
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     if (isEndPage) {
@@ -108,10 +137,10 @@ const Follow = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          <UserInfo data={{ ...tempUser, imageUrl: "", bio: "" }} />
+          <UserInfo data={userProfile} />
           <MyFilterMenu
-            tagList={getProfile.tags}
-            categoryList={getProfile.categories}
+            tagList={userProfile.tags}
+            categoryList={userProfile.categories}
             getCategoryData={() => {}}
             getTagsData={() => {}}
           />
@@ -122,7 +151,7 @@ const Follow = () => {
               <FollowRadio
                 name="follow"
                 id="follower"
-                text={`팔로워 (${tempUser.followerCount})`}
+                text={`팔로워 (${userProfile.followerCount})`}
                 checked={state.tab === "follower"}
                 onChange={() => {
                   handleChange("tab", "follower");
@@ -131,7 +160,7 @@ const Follow = () => {
               <FollowRadio
                 name="follow"
                 id="followee"
-                text={`팔로잉 (${tempUser.followeeCount})`}
+                text={`팔로잉 (${userProfile.followeeCount})`}
                 checked={state.tab === "followee"}
                 onChange={() => {
                   handleChange("tab", "followee");
@@ -150,10 +179,12 @@ const Follow = () => {
                     }
                   >
                     <Following
+                      profileId={profileId}
                       profileImg={imageUrl}
                       userName={username}
                       following={isFollow}
                       key={profileId}
+                      handleClick={handleFollow}
                     />
                   </div>
                 )
