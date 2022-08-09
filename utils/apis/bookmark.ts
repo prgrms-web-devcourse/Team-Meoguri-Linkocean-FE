@@ -2,11 +2,11 @@ import { CATEGORY, OpenType } from "@/types/type";
 import { BookmarkDetail, BookmarkList } from "@/types/model";
 import { authInstance } from "./instance";
 
-type CreateBookmarkPayload = {
+export type CreateBookmarkPayload = {
   title: string;
 } & EditBookmarkPayload;
 
-type EditBookmarkPayload = {
+export type EditBookmarkPayload = {
   url: string;
   memo: string;
   category: typeof CATEGORY[number];
