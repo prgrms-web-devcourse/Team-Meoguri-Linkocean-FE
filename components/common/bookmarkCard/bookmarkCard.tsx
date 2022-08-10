@@ -62,6 +62,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
     <Wrapper>
       {isShowShareBookmark ? (
         <ShareBookmark
+          bookmarkId={id}
           isShow={isShowShareBookmark}
           setIsShow={setIsShowShareBookmark}
         />

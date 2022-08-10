@@ -1,6 +1,7 @@
 import { useProfileState } from "@/hooks/useProfile";
 import { color, text } from "@/styles/theme";
 import { Profile } from "@/types/model";
+import notificationAPI from "@/utils/apis/notification";
 import profileAPI from "@/utils/apis/profile";
 import styled from "@emotion/styled";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -13,10 +14,16 @@ import Radio from "./radio";
 interface ShareBookmarkProps {
   isShow: boolean;
   setIsShow: Dispatch<SetStateAction<boolean>>;
+  bookmarkId: number;
 }
 
-const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
+const ShareBookmark = ({
+  isShow,
+  setIsShow,
+  bookmarkId,
+}: ShareBookmarkProps) => {
   const [userList, setUserList] = useState<Profile[]>([]);
+  const [selectUser, setSelectUser] = useState<number>();
   const { profileId } = useProfileState();
 
   useEffect(() => {
@@ -25,10 +32,24 @@ const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
         const { data } = await profileAPI.getFollow(profileId, "follower", "");
         setUserList(data.profiles);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     })();
   }, [profileId]);
+
+  const clickShare = async () => {
+    try {
+      if (!selectUser) return;
+      await notificationAPI.shareNotification({
+        targetId: selectUser,
+        bookmarkId,
+      });
+      setIsShow(false);
+      alert("북마크가 공유 되었습니다.");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Modal width={400} height={700} isShow={isShow} setIsShow={setIsShow}>
@@ -42,7 +63,7 @@ const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
         </SearchBox>
         <UserBox>
           {userList?.map((user) => (
-            <UserList>
+            <UserList key={user.profileId}>
               <Label
                 style={{
                   margin: "0 10px",
@@ -54,7 +75,12 @@ const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
                 <p style={{ flexGrow: 1, marginLeft: "8px" }}>
                   {user.username}
                 </p>
-                <Radio name="user" id={user.profileId.toString()} />
+                <Radio
+                  name="user"
+                  id={user.profileId.toString()}
+                  checked={selectUser === user.profileId}
+                  onClick={() => setSelectUser(user.profileId)}
+                />
               </Label>
             </UserList>
           ))}
@@ -63,6 +89,7 @@ const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
           style={{ width: "100%", borderRadius: 0 }}
           buttonType="large"
           colorType="skyblue"
+          onClick={clickShare}
         >
           공유하기
         </Button>
