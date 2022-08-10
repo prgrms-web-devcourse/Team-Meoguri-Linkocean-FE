@@ -19,6 +19,8 @@ const OPEN_TYPE = {
   private: "비공개",
 };
 
+const feedUrlRegExp = /feed.*/g;
+
 const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   const {
     category,
@@ -43,7 +45,11 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
 
   const clickCard = () => {
     const link = router.asPath.split("/")[1];
-    router.push(`/${link}/detail/${id}`);
+    if (feedUrlRegExp.test(link)) {
+      router.push(`/feed/detail/${id}`);
+    } else {
+      router.push(`/${link}/detail/${id}`);
+    }
   };
 
   const unitConversion = (num: number) => {
