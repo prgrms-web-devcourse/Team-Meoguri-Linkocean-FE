@@ -10,6 +10,7 @@ import { Notification } from "@/types/model";
 import notificationAPI from "@/utils/apis/notification";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import bookmarkCardStories from "stories/components/bookmarkCard.stories";
 
 const PAGE_SIZE = 8;
 const isLastCard = (index: number, length: number) =>
@@ -113,6 +114,7 @@ const Notifications = () => {
                   ref={
                     isLastCard(i, notification.value.length) ? setTarget : null
                   }
+                  key={notification.value[i].info.bookmark.id}
                 >
                   <Alarm data={index} />
                   <Contents style={{ height: "10px" }} />
