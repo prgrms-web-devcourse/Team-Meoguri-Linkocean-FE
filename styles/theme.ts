@@ -68,4 +68,11 @@ const text = {
     line-height: 12px;`,
 };
 
-export { color, text };
+const shortenOneLine = `
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export { color, text, shortenOneLine };

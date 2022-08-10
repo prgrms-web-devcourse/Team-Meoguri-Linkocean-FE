@@ -43,6 +43,8 @@ const Star = ({ favorite, size = 14, id, ...props }: FavoriteButtonProps) => {
 };
 
 const FavoritButton = styled.button<FavoriteButtonProps>`
+  min-width: ${(props) => props.size}px;
+  min-height: ${(props) => props.size}px;
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border: none;
