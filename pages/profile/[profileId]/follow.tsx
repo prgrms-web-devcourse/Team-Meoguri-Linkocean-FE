@@ -8,7 +8,6 @@ import FollowRadio from "@/components/follow/followRadio";
 import Following from "@/components/common/following";
 import { useRouter } from "next/router";
 import {
-  DUMMY_FOLLOWE,
   FollowCardContainer,
   Form,
   isLastCard,
@@ -18,7 +17,8 @@ import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Profile, ProfileDetail } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import { getQueryString } from "@/utils/queryString";
-import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 
 const PAGE_SIZE = 8;
 
@@ -39,6 +39,9 @@ const INITIAL_FILTERING: Filtering = {
 const Follow = () => {
   const router = useRouter();
 
+  const myProfile = useProfileState();
+  const myProfileDispatcher = useProfileDispatch();
+
   const [userProfile, setUserProfile] = useState<ProfileDetail>();
   const [state, setState] = useState(INITIAL_FILTERING);
   const [followProfiles, setFollowProfiles] = useState<{
@@ -52,6 +55,72 @@ const Follow = () => {
     setState({ ...state, [name]: id, page: INITIAL_FILTERING.page });
     setIsEndPage(false);
   };
+  const handleUserInfo = () => {
+    if (!userProfile) {
+      return;
+    }
+
+    const isDeleteFollowAction = userProfile.isFollow;
+
+    const nextFollowerCount = isDeleteFollowAction
+      ? userProfile.followerCount - 1
+      : userProfile.followerCount + 1;
+    setUserProfile({
+      ...userProfile,
+      followerCount: nextFollowerCount,
+      isFollow: !userProfile.isFollow,
+    });
+
+    const nextFolloweeCount = isDeleteFollowAction
+      ? myProfile.followeeCount - 1
+      : myProfile.followeeCount + 1;
+    myProfileDispatcher({
+      type: "GET_PROFILES",
+      profile: { ...myProfile, followeeCount: nextFolloweeCount },
+    });
+
+    if (state.tab === "follower") {
+      const { profileId, imageUrl, username, isFollow } = myProfile;
+
+      const nextFollowProfilesValue = isDeleteFollowAction
+        ? followProfiles.value.filter(
+            (profile) => profile.profileId !== profileId
+          )
+        : [
+            ...followProfiles.value,
+            { profileId, imageUrl, username, isFollow } as Profile,
+          ];
+      setFollowProfiles({ ...followProfiles, value: nextFollowProfilesValue });
+    }
+  };
+  const handleFollowing = (profileId: number) => {
+    if (!userProfile) {
+      return;
+    }
+
+    const index = followProfiles.value.findIndex(
+      (followProfile) => followProfile.profileId === profileId
+    );
+    const isDeleteFollowAction = followProfiles.value[index].isFollow;
+
+    const nextFolloweeCount = isDeleteFollowAction
+      ? myProfile.followeeCount - 1
+      : myProfile.followeeCount + 1;
+    myProfileDispatcher({
+      type: "GET_PROFILES",
+      profile: {
+        ...myProfile,
+        followeeCount: nextFolloweeCount,
+      },
+    });
+
+    const copiedValue = [...followProfiles.value];
+    copiedValue[index].isFollow = !copiedValue[index].isFollow;
+    setFollowProfiles({
+      ...followProfiles,
+      value: copiedValue,
+    });
+  };
 
   const getUserProfile = useCallback(async () => {
     const profileId = parseInt(router.query.profileId as string, 10);
@@ -64,11 +133,10 @@ const Follow = () => {
     }
   }, [router.query.profileId]);
   const getFollowProfiles = useCallback(async () => {
-    if (!userProfile) {
+    if (!userProfile?.profileId) {
       return;
     }
 
-    const { profileId } = userProfile;
     const { tab, ...query } = state;
     const queryString = getQueryString(query);
 
@@ -77,7 +145,7 @@ const Follow = () => {
 
       const {
         data: { profiles },
-      } = await profileAPI.getFollow(profileId, tab, queryString);
+      } = await profileAPI.getFollow(userProfile.profileId, tab, queryString);
 
       if (profiles.length === 0 || profiles.length < query.size) {
         setIsEndPage(true);
@@ -97,7 +165,7 @@ const Follow = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [state, userProfile]);
+  }, [state, userProfile?.profileId]);
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     if (isEndPage) {
@@ -140,9 +208,12 @@ const Follow = () => {
         <PageLayout.Aside>
           {userProfile ? (
             <>
-              <UserInfo data={userProfile} />
+              <UserInfo data={userProfile} handleClick={handleUserInfo} />
               <MyFilterMenu
-                tagList={userProfile.tags}
+                tagList={userProfile.tags?.map(({ tag, count }) => ({
+                  name: tag,
+                  count,
+                }))}
                 categoryList={userProfile.categories}
                 getCategoryData={() => {}}
                 getTagsData={() => {}}
@@ -183,13 +254,14 @@ const Follow = () => {
                         ? setTarget
                         : null
                     }
+                    key={profileId}
                   >
                     <Following
                       profileId={profileId}
                       profileImg={imageUrl}
                       userName={username}
                       following={isFollow}
-                      key={profileId}
+                      handleClick={handleFollowing}
                     />
                   </div>
                 )

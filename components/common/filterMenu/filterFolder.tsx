@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import FilterElement from "./filterElement";
 
 interface FilterFolderProps extends React.HTMLAttributes<HTMLDivElement> {
-  tagList?: { name: string; count: number }[];
+  tagList?: { tag: string; count: number }[];
   categoryList?: string[];
   getCategory: (arr: string) => void;
 }
@@ -39,7 +39,7 @@ const FilterFolder = ({
     if ($checkboxCollection !== undefined) {
       setCheckbox($checkboxCollection);
     }
-  }, []);
+  }, [tagList]);
 
   const handleTagClick = (index: number) => {
     let checkedCount = 0;
@@ -67,10 +67,9 @@ const FilterFolder = ({
   };
 
   const defaultCheck = (tag: string) => {
-    const tags = router.query.tag;
+    const { tags } = router.query;
     if (typeof tags === "string") {
       const tagArr = tags.split(",");
-      console.log(tagArr);
       return tagArr.filter((element) => element === tag).length !== 0;
     }
     return false;
@@ -83,12 +82,12 @@ const FilterFolder = ({
           ? tagList.map((element, index) => (
               <FilterElement
                 count={element.count}
-                title={element.name}
-                key={element.name}
+                title={element.tag}
+                key={element.tag}
                 type="tag"
                 isSelected={false}
                 disabled={disabled}
-                checked={defaultCheck(element.name)}
+                checked={defaultCheck(element.tag)}
                 onClick={() => handleTagClick(index)}
               />
             ))

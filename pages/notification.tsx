@@ -1,22 +1,97 @@
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
-import Alarm, { AlarmProps } from "@/components/common/alarm";
+import Alarm from "@/components/common/alarm";
 import Top from "@/components/common/top";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { color, text } from "@/styles/theme";
 import { Notification } from "@/types/model";
+import notificationAPI from "@/utils/apis/notification";
+import { getQueryString } from "@/utils/queryString";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import bookmarkCardStories from "stories/components/bookmarkCard.stories";
+
+const PAGE_SIZE = 8;
+const isLastCard = (index: number, length: number) =>
+  index === Math.max(0, length - 1);
+
+type Page = {
+  page: number;
+  size: number;
+};
+
+const INITIAL_PAGE: Page = {
+  page: 1,
+  size: PAGE_SIZE,
+};
 
 const Notifications = () => {
   const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
+  const [state, setState] = useState<Page>(INITIAL_PAGE);
+  const [notification, setNotification] = useState<{
+    value: Notification[];
+    isLoading: boolean;
+  }>({ value: [], isLoading: false });
+  const [isEndPage, setIsEndPage] = useState(false);
+
   const getTags = (elements: string[]) => {
     setTags(elements);
   };
   const getCategory = (element: string) => {
     setCategory(element);
   };
+
+  const getNotification = useCallback(async () => {
+    const { ...query } = state;
+    const queryString = getQueryString(state);
+
+    try {
+      setNotification(({ value }) => ({ value, isLoading: true }));
+
+      const {
+        data: { notifications },
+      } = await notificationAPI.getNotifications(queryString);
+
+      if (notifications.length === 0 || notifications.length < query.size) {
+        setIsEndPage(true);
+      }
+
+      setNotification(({ value }) => {
+        const nextValue =
+          query.page === INITIAL_PAGE.page
+            ? notifications
+            : [...value, ...notifications];
+
+        return {
+          value: nextValue,
+          isLoading: false,
+        };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [state]);
+
+  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+    if (isEndPage) {
+      setTarget(undefined);
+      return;
+    }
+
+    if (isIntersecting && !notification.isLoading) {
+      setState({ ...state, page: state.page + 1 });
+    }
+  };
+  const { setTarget } = useIntersectionObserver({
+    onIntersect,
+    threshold: 0.7,
+  });
+
+  useEffect(() => {
+    getNotification();
+  }, [getNotification]);
 
   return (
     <PageLayout>
@@ -34,11 +109,16 @@ const Notifications = () => {
           <DivWrapper>
             <PageName>알림</PageName>
             <AlarmWrapper>
-              {dummyNotification.map((i) => (
-                <>
-                  <Alarm data={i} />
+              {notification.value.map((index, i) => (
+                <div
+                  ref={
+                    isLastCard(i, notification.value.length) ? setTarget : null
+                  }
+                  key={notification.value[i].info.bookmark.id}
+                >
+                  <Alarm data={index} />
                   <Contents style={{ height: "10px" }} />
-                </>
+                </div>
               ))}
             </AlarmWrapper>
           </DivWrapper>
@@ -130,197 +210,4 @@ const categoryList = [
   "health",
   "travel",
   "cooking",
-];
-
-const dummyNotification: Notification[] = [
-  {
-    type: "SHARE",
-    info: {
-      bookmark: {
-        id: 1,
-        title: "네이버",
-        link: "https://www.naver.com",
-      },
-      sender: {
-        id: 1,
-        username: "haha",
-      },
-    },
-  },
-  {
-    type: "FEED",
-    info: {
-      bookmark: {
-        id: 2,
-        title: "구글",
-        link: "https://www.google.com",
-      },
-      sender: {
-        id: 2,
-        username: "jacob",
-      },
-    },
-  },
-  {
-    type: "OLD",
-    info: {
-      bookmark: {
-        id: 3,
-        title: "프로그래머스",
-        link: "https://school.programmers.co.kr/my-courses/learning",
-      },
-    },
-  },
-  {
-    type: "SHARE",
-    info: {
-      bookmark: {
-        id: 1,
-        title: "네이버",
-        link: "https://www.naver.com",
-      },
-      sender: {
-        id: 1,
-        username: "haha",
-      },
-    },
-  },
-  {
-    type: "FEED",
-    info: {
-      bookmark: {
-        id: 2,
-        title: "구글",
-        link: "https://www.google.com",
-      },
-      sender: {
-        id: 2,
-        username: "jacob",
-      },
-    },
-  },
-  {
-    type: "OLD",
-    info: {
-      bookmark: {
-        id: 3,
-        title: "프로그래머스",
-        link: "https://school.programmers.co.kr/my-courses/learning",
-      },
-    },
-  },
-  {
-    type: "SHARE",
-    info: {
-      bookmark: {
-        id: 1,
-        title: "네이버",
-        link: "https://www.naver.com",
-      },
-      sender: {
-        id: 1,
-        username: "haha",
-      },
-    },
-  },
-  {
-    type: "FEED",
-    info: {
-      bookmark: {
-        id: 2,
-        title: "구글",
-        link: "https://www.google.com",
-      },
-      sender: {
-        id: 2,
-        username: "jacob",
-      },
-    },
-  },
-  {
-    type: "OLD",
-    info: {
-      bookmark: {
-        id: 3,
-        title: "프로그래머스",
-        link: "https://school.programmers.co.kr/my-courses/learning",
-      },
-    },
-  },
-  {
-    type: "SHARE",
-    info: {
-      bookmark: {
-        id: 1,
-        title: "네이버",
-        link: "https://www.naver.com",
-      },
-      sender: {
-        id: 1,
-        username: "haha",
-      },
-    },
-  },
-  {
-    type: "FEED",
-    info: {
-      bookmark: {
-        id: 2,
-        title: "구글",
-        link: "https://www.google.com",
-      },
-      sender: {
-        id: 2,
-        username: "jacob",
-      },
-    },
-  },
-  {
-    type: "OLD",
-    info: {
-      bookmark: {
-        id: 3,
-        title: "프로그래머스",
-        link: "https://school.programmers.co.kr/my-courses/learning",
-      },
-    },
-  },
-  {
-    type: "SHARE",
-    info: {
-      bookmark: {
-        id: 1,
-        title: "네이버",
-        link: "https://www.naver.com",
-      },
-      sender: {
-        id: 1,
-        username: "haha",
-      },
-    },
-  },
-  {
-    type: "FEED",
-    info: {
-      bookmark: {
-        id: 2,
-        title: "구글",
-        link: "https://www.google.com",
-      },
-      sender: {
-        id: 2,
-        username: "jacob",
-      },
-    },
-  },
-  {
-    type: "OLD",
-    info: {
-      bookmark: {
-        id: 3,
-        title: "프로그래머스",
-        link: "https://school.programmers.co.kr/my-courses/learning",
-      },
-    },
-  },
 ];

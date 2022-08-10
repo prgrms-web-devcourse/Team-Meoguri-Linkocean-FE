@@ -8,7 +8,7 @@ import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
 
 export interface MyFilterMenuProps {
-  tagList?: { name: string; count: number }[];
+  tagList?: { tag: string; count: number }[];
   categoryList?: string[];
   isFavorite?: boolean;
   getTagsData: (arr: string[]) => void;
@@ -70,7 +70,7 @@ const MyFilterMenu = ({
     if ($checkboxCollection !== undefined) {
       setCheckbox($checkboxCollection);
     }
-  }, []);
+  }, [tagList]);
 
   const handleClick = () => {
     const checkedArr: string[] = [];
@@ -81,6 +81,7 @@ const MyFilterMenu = ({
         }
       });
     }
+
     setSelectedTag(checkedArr);
     getTagsData(checkedArr);
   };
@@ -93,7 +94,7 @@ const MyFilterMenu = ({
   return (
     <div ref={filterMenuRef}>
       <FilterBorder>
-        <Link href="create">
+        <Link href="/create">
           <FilterHeader
             src="/icon/add.svg"
             alt="add"
@@ -141,9 +142,8 @@ const MyFilterMenu = ({
         </FilterHeader>
         <FilterFolder
           getCategory={getCategory}
-          categoryList={categoryList}
+          categoryList={categoryList ? ["전체", ...categoryList] : ["전체"]}
           isOpen={isCategoryListOpen}
-          onClick={() => handleClick()}
         />
       </FilterBorder>
     </div>
