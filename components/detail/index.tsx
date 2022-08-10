@@ -2,12 +2,11 @@ import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { BookmarkDetail, ProfileDetail } from "@/types/model";
+import { BookmarkDetail } from "@/types/model";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import followAPI from "@/utils/apis/follow";
-import profileAPI from "@/utils/apis/profile";
-import { useProfileState } from "@/hooks/useProfile";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
@@ -30,6 +29,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   } = data;
   const [isFollow, setIsFollow] = useState(profile.isFollow);
   const { username } = useProfileState();
+  const dispatch = useProfileDispatch();
 
   useEffect(() => {
     setIsFollow(profile.isFollow);
@@ -39,8 +39,10 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     try {
       if (isFollow) {
         await followAPI.deleteFollow(profile.profileId);
+        dispatch({ type: "UN_FOLLOW" });
       } else {
         await followAPI.createFollow(profile.profileId);
+        dispatch({ type: "FOLLOW" });
       }
       setIsFollow(!isFollow);
     } catch (error) {
@@ -53,6 +55,10 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     if (deleteConfirm) {
       try {
         await bookmarkAPI.deleteBookmark(id);
+        dispatch({
+          type: "REMOVE_BOOKMARK",
+          tags,
+        });
         router.back();
       } catch (error) {
         console.error(error);

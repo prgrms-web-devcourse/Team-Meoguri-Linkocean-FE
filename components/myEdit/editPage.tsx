@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { usernameRegExp } from "@/utils/validation";
 import profileAPI from "@/utils/apis/profile";
-import { useProfileState } from "@/hooks/useProfile";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import { CATEGORY } from "@/types/type";
 import Button from "../common/button";
 import ErrorText from "../common/errorText";
 import Input from "../common/input";
@@ -18,13 +19,14 @@ const EditPage = () => {
   const [userNameErrorMsg, setUserNameErrorMsg] = useState("");
   const [bioErrorMsg, setBioErrorMsg] = useState("");
   const [file, setFile] = useState<File | string>("");
-  const [categories, setCategories] = useState([""]);
+  const [categories, setCategories] = useState<typeof CATEGORY[number][]>([]);
   const [input, setInput] = useState({
     userName: "",
     bio: "",
   });
   const router = useRouter();
   const { bio, username, favoriteCategories, imageUrl } = useProfileState();
+  const dispatch = useProfileDispatch();
 
   const edit = () => {
     if (bioErrorMsg || userNameErrorMsg) return;
@@ -73,6 +75,11 @@ const EditPage = () => {
   };
 
   const submit = async () => {
+    if (!categories) {
+      console.error("categories 값이 비어있습니다.");
+      return;
+    }
+
     try {
       const editData = new FormData();
       editData.append("username", input.userName);
@@ -82,6 +89,16 @@ const EditPage = () => {
         editData.append("image", file);
       }
       await profileAPI.editProfile(editData);
+      dispatch({
+        type: "EDIT_PROFILES",
+        profile: {
+          bio: input.bio,
+          username: input.userName,
+          imageUrl: URL.createObjectURL(file as File),
+          favoriteCategories: categories,
+        },
+      });
+
       alert("내 프로필 수정이 완료되었습니다.");
       router.back();
     } catch (e) {
@@ -114,7 +131,7 @@ const EditPage = () => {
         categories={categories}
         setCategories={setCategories}
       />
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <CategoryTag key={category}>{category}</CategoryTag>
       ))}
       <InputBox>
