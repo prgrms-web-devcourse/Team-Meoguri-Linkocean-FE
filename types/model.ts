@@ -55,8 +55,8 @@ export interface BookmarkDetail {
     HATE: number;
   };
   reaction: {
-    LIKE: true;
-    HATE: false;
+    LIKE: boolean;
+    HATE: boolean;
   };
 }
 
