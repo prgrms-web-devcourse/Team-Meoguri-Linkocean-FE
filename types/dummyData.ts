@@ -14,31 +14,25 @@ export {
 };
 
 const getBookMarkDetail: BookmarkDetail = {
-  id: 3,
-  title: "더미값입니다.",
-  url: "https://comic.naver.com/index",
-  imageUrl:
-    "http://www.urbanbrush.net/web/wp-content/uploads/edd/2020/02/urbanbrush-20200227023608426223.jpg",
+  id: 0,
+  title: "",
+  url: "",
   category: "IT",
-  memo: "해당 페이지는 더미데이터 입니다~",
   openType: "all",
   isFavorite: false,
-  updatedAt: "2022-01-01",
-  tags: ["Spring", "React"],
+  updatedAt: "",
   reactionCount: {
-    like: 12,
-    hate: 10,
+    LIKE: 0,
+    HATE: 0,
   },
   reaction: {
-    like: true,
-    hate: false,
+    LIKE: false,
+    HATE: false,
   },
   profile: {
-    profileId: 1,
-    username: "crush",
-    imageUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyT-fcCPkfYWQQ1UwkNyRPevaYT1hpA8dRMYk1zFvar4t5KDrDHji_e74bM_cV-MreDM&usqp=CAU",
-    isFollow: true,
+    profileId: 0,
+    username: "",
+    isFollow: false,
   },
 };
 
