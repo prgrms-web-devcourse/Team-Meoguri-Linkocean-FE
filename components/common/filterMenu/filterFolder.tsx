@@ -39,7 +39,7 @@ const FilterFolder = ({
     if ($checkboxCollection !== undefined) {
       setCheckbox($checkboxCollection);
     }
-  }, []);
+  }, [tagList]);
 
   const handleTagClick = (index: number) => {
     let checkedCount = 0;
