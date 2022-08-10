@@ -1,27 +1,34 @@
+import { useProfileDispatch } from "@/hooks/useProfile";
 import useToggle from "@/hooks/useToggle";
 import { color, text } from "@/styles/theme";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
+import { Dispatch, SetStateAction } from "react";
 
 export interface DropBoxProps {
   children: JSX.Element;
   isWriter: boolean;
   id: number;
+  tags?: string[];
   deleteBookmark: (id: number) => void;
+  setIsShowShareBookmark: Dispatch<SetStateAction<boolean>>;
 }
 
 const DropBox = ({
   children,
   isWriter = true,
   id,
+  tags,
   deleteBookmark,
+  setIsShowShareBookmark,
 }: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
   const router = useRouter();
+  const dispatch = useProfileDispatch();
 
   const share = (e: React.MouseEvent<HTMLElement>) => {
-    alert("공유하기");
+    setIsShowShareBookmark(true);
     e.stopPropagation();
   };
 
@@ -39,6 +46,10 @@ const DropBox = ({
     if (isDelete) {
       try {
         await bookmarkAPI.deleteBookmark(id);
+        dispatch({
+          type: "REMOVE_BOOKMARK",
+          tags,
+        });
         alert("북마크가 제거되었습니다.");
         callback(id);
       } catch (error) {

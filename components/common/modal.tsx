@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 export interface ModalProps {
   isShow: boolean;
@@ -17,12 +17,23 @@ const Modal = ({
   children,
   closed,
 }: ModalProps) => {
-  const closedModal = () => {
+  const closedModal = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     setIsShow(false);
     if (closed) {
       closed();
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== "object") return;
+    const body = document.getElementsByTagName("body")[0];
+    if (isShow) {
+      body.classList.add("scrollLock");
+    } else {
+      body.classList.remove("scrollLock");
+    }
+  }, [isShow]);
 
   return (
     <Wrapper isShow={isShow}>
@@ -51,6 +62,10 @@ const ModalBox = styled.div`
 
 const Wrapper = styled.div`
   display: ${(props: { isShow: boolean }) => (props.isShow ? "block" : "none")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 `;
 
 const Background = styled.div`

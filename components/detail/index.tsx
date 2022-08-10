@@ -2,16 +2,17 @@ import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { BookmarkDetail, ProfileDetail } from "@/types/model";
+import { BookmarkDetail } from "@/types/model";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import followAPI from "@/utils/apis/follow";
-import profileAPI from "@/utils/apis/profile";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
 import ProfileImage from "../common/profileImage";
 import Reaction from "../common/reaction";
+import CopyLink from "./copyLink";
 
 const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   const router = useRouter();
@@ -28,32 +29,21 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     reactionCount,
   } = data;
   const [isFollow, setIsFollow] = useState(profile.isFollow);
+  const { username } = useProfileState();
+  const dispatch = useProfileDispatch();
 
   useEffect(() => {
     setIsFollow(profile.isFollow);
   }, [profile.isFollow]);
 
-  const [loginUser, setLoginUser] = useState<ProfileDetail>();
-
-  // 임시 로그인 중인 유저
-  // 이후 contextAPI로 변경
-  useEffect(() => {
-    (async () => {
-      try {
-        const loginUserData = await profileAPI.getMyProfile();
-        setLoginUser(loginUserData.data);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
-
   const followRequest = async () => {
     try {
       if (isFollow) {
         await followAPI.deleteFollow(profile.profileId);
+        dispatch({ type: "UN_FOLLOW" });
       } else {
         await followAPI.createFollow(profile.profileId);
+        dispatch({ type: "FOLLOW" });
       }
       setIsFollow(!isFollow);
     } catch (error) {
@@ -66,6 +56,10 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     if (deleteConfirm) {
       try {
         await bookmarkAPI.deleteBookmark(id);
+        dispatch({
+          type: "REMOVE_BOOKMARK",
+          tags,
+        });
         router.back();
       } catch (error) {
         console.error(error);
@@ -77,7 +71,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     <Page>
       <FlexBetween>
         <BackButton />
-        {loginUser?.username === profile.username ? (
+        {username === profile.username ? (
           <FlexBetween style={{ width: "190px" }}>
             <Button
               onClick={() => router.push(`/edit/${id}`)}
@@ -138,9 +132,12 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
               <Tags>{tags?.map((tag) => `#${tag} `)}</Tags>
             </div>
             <FlexBetween>
-              <Link href={url} target="_blank">
-                {url}
-              </Link>
+              <Flex>
+                <Link href={url} target="_blank">
+                  {url}
+                </Link>
+                <CopyLink copyUrl={url} />
+              </Flex>
               <Date>{updatedAt}</Date>
             </FlexBetween>
           </Info>
@@ -168,7 +165,10 @@ const FlexBetween = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const UserFollow = styled.div`
   display: flex;
   align-items: center;
