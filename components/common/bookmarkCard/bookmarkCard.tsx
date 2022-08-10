@@ -94,7 +94,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
             <Title>{title}</Title>
             <p>
               {tags?.map((tag) => (
-                <Tag>{`#${tag} `}</Tag>
+                <Tag key={tag}>{`#${tag} `}</Tag>
               ))}
             </p>
           </div>
