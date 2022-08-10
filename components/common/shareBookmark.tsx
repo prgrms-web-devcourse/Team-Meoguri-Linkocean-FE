@@ -91,7 +91,7 @@ const ShareBookmark = ({
                 <Radio
                   name="user"
                   id={user.profileId.toString()}
-                  checked={selectUser === user.profileId}
+                  defaultChecked={selectUser === user.profileId}
                   onClick={() => setSelectUser(user.profileId)}
                 />
               </Label>
