@@ -10,7 +10,6 @@ import { Notification } from "@/types/model";
 import notificationAPI from "@/utils/apis/notification";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import { useProfileState } from "@/hooks/useProfile";
 
 const PAGE_SIZE = 8;
 const isLastCard = (index: number, length: number) =>
@@ -42,8 +41,6 @@ const Notifications = () => {
   const getCategory = (element: string) => {
     setCategory(element);
   };
-  const userData = useProfileState();
-  console.log(userData);
 
   const getNotification = useCallback(async () => {
     const { ...query } = state;
@@ -88,7 +85,7 @@ const Notifications = () => {
   };
   const { setTarget } = useIntersectionObserver({
     onIntersect,
-    threshold: 0.8,
+    threshold: 0.7,
   });
 
   useEffect(() => {
