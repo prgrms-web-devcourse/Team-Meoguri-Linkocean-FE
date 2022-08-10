@@ -78,7 +78,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       if (value === "전체") {
         routerQuery = "";
       } else if (typeof value === "string") {
-        routerQuery = `${key}=${value}&`;
+        routerQuery = `${key}=${value}`;
       }
     } else {
       routerQuery = "favorite=true&";
