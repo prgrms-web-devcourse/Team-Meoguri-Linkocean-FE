@@ -58,29 +58,31 @@ const Following = ({
         src={profileImg || "/image/default-profile-image.png"}
       />
       <UserName>{userName}</UserName>
-      {isMine && following ? (
-        <FollowingBtn
-          colorType="skyblue"
-          width="128"
-          height="42"
-          buttonType={following ? "line" : "small"}
-          onClick={handleUnfollow}
-          {...props}
-        >
-          팔로우 취소
-        </FollowingBtn>
-      ) : (
-        <FollowingBtn
-          colorType="skyblue"
-          width="128"
-          height="42"
-          buttonType={following ? "line" : "small"}
-          onClick={handleFollow}
-          {...props}
-        >
-          팔로우 +
-        </FollowingBtn>
-      )}
+      {following
+        ? !isMine && (
+            <FollowingBtn
+              colorType="skyblue"
+              width="128"
+              height="42"
+              buttonType={following ? "line" : "small"}
+              onClick={handleUnfollow}
+              {...props}
+            >
+              팔로우 취소
+            </FollowingBtn>
+          )
+        : !isMine && (
+            <FollowingBtn
+              colorType="skyblue"
+              width="128"
+              height="42"
+              buttonType={following ? "line" : "small"}
+              onClick={handleFollow}
+              {...props}
+            >
+              팔로우 +
+            </FollowingBtn>
+          )}
     </Card>
   );
 };
