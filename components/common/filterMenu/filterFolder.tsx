@@ -67,7 +67,7 @@ const FilterFolder = ({
   };
 
   const defaultCheck = (tag: string) => {
-    const tags = router.query.tag;
+    const { tags } = router.query;
     if (typeof tags === "string") {
       const tagArr = tags.split(",");
       return tagArr.filter((element) => element === tag).length !== 0;

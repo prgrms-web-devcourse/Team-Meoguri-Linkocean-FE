@@ -48,6 +48,30 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       setSearchQuery(`${searchQuery}&searchTitle=${keyword}`);
     }
   };
+  useEffect(() => {
+    // router에 따른 filtering(category|tag|favorite)
+    let routerQuery = "";
+    const key = Object.keys(router.query)[0];
+    const value = router.query[key];
+    if (key === "category" || key === "tags") {
+      if (value === "전체") {
+        routerQuery = "";
+      } else if (typeof value === "string") {
+        routerQuery = `${key}=${value}&`;
+      }
+    } else {
+      routerQuery = "favorite=true&";
+    }
+    (async () => {
+      try {
+        const res = await bookmarkAPI.getMyBookmarks(routerQuery);
+        setMyBookmarks(res.data as BookmarkList);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+    setSearchQuery(routerQuery);
+  }, []);
 
   useEffect(() => {
     // router에 따른 filtering(category|tag|favorite)
@@ -75,6 +99,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   }, [router.asPath, router.query]);
 
   useEffect(() => {
+    // 검색
     (async () => {
       try {
         const res = await bookmarkAPI.getMyBookmarks(searchQuery);
@@ -84,6 +109,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       }
     })();
   }, [searchQuery]);
+
   useEffect(() => {
     // sort
     const query = `${searchQuery}sort=${sort}`;

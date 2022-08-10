@@ -30,8 +30,8 @@ const Tag = () => {
     }
   }, [category]);
 
-  const AsideMemo = React.useMemo(
-    () => (
+  return (
+    <PageLayout>
       <PageLayout.Aside>
         <UserInfo data={profile} />
         <MyFilterMenu
@@ -41,13 +41,6 @@ const Tag = () => {
           getTagsData={setTags}
         />
       </PageLayout.Aside>
-    ),
-    [profile]
-  );
-
-  return (
-    <PageLayout>
-      {AsideMemo}
       <PageLayout.Article>
         <MyBookmark PageTitle="태그 목록" />
       </PageLayout.Article>
