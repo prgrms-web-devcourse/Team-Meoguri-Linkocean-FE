@@ -5,9 +5,12 @@ import Image from "next/image";
 import ProfileImage from "@/components/common/profileImage";
 import LogoutTooltip from "@/components/common/logoutTooltip";
 import Link from "next/link";
+import { useProfileState } from "@/hooks/useProfile";
 
 const Header: React.FC = () => {
   const [show, setShow] = useState(false);
+
+  const { username, imageUrl } = useProfileState();
 
   const toggle = () => {
     setShow(!show);
@@ -44,9 +47,9 @@ const Header: React.FC = () => {
           </AlarmButton>
         </Link>
         <UserImg onClick={toggle}>
-          <ProfileImage size="sm" />
+          <ProfileImage size="sm" src={imageUrl} />
         </UserImg>
-        <UserName onClick={toggle}>username</UserName>
+        <UserName onClick={toggle}>{username}</UserName>
         <LogoutTooltip
           onMouseLeave={toggle}
           style={{ display: show ? "block" : "none" }}
