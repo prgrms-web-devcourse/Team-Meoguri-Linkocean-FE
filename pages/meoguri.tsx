@@ -19,7 +19,7 @@ import Top from "@/components/common/top";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import { FollowCardContainer, isLastCard, Layout } from "./my/follow";
 
-// TODO: 본인 제외하기, 무한 스크롤, 유저 컨텍스트 연결
+// TODO: 유저 컨텍스트 연결
 
 const PAGE_SIZE = 8;
 
@@ -206,6 +206,7 @@ const Meoguri = () => {
                         following={isFollow}
                         key={profileId}
                         handleClick={handleFollow}
+                        isMine={profileId === userProfile.profileId}
                       />
                     </div>
                   )
