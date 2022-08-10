@@ -23,7 +23,7 @@ const ShareBookmark = ({
   bookmarkId,
 }: ShareBookmarkProps) => {
   const [userList, setUserList] = useState<Profile[]>([]);
-  const [searchList, setSearchList] = useState<Profile[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
   const [selectUser, setSelectUser] = useState<number>();
   const { profileId } = useProfileState();
 
@@ -32,7 +32,6 @@ const ShareBookmark = ({
       try {
         const { data } = await profileAPI.getFollow(profileId, "follower", "");
         setUserList(data.profiles);
-        setSearchList(data.profiles);
       } catch (error) {
         console.error(error);
       }
@@ -54,14 +53,7 @@ const ShareBookmark = ({
   };
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setSearchList(userList);
-    }
-    const searchRegExp = new RegExp(`.*${e.target.value}.*`, "ig");
-    const searchUsers = userList.filter(({ username }) =>
-      searchRegExp.test(username)
-    );
-    setSearchList(searchUsers);
+    setSearchText(e.target.value);
   };
 
   return (
@@ -75,28 +67,33 @@ const ShareBookmark = ({
           <input onChange={search} type="text" />
         </SearchBox>
         <UserBox>
-          {searchList?.map((user) => (
-            <UserList key={user.profileId}>
-              <Label
-                style={{
-                  margin: "0 10px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <ProfileImage size={50} src={user.imageUrl} />
-                <p style={{ flexGrow: 1, marginLeft: "8px" }}>
-                  {user.username}
-                </p>
-                <Radio
-                  name="user"
-                  id={user.profileId.toString()}
-                  defaultChecked={selectUser === user.profileId}
-                  onClick={() => setSelectUser(user.profileId)}
-                />
-              </Label>
-            </UserList>
-          ))}
+          {userList
+            ?.filter(({ username }) => {
+              const searchRegExp = new RegExp(`.*${searchText}.*`, "ig");
+              return searchRegExp.test(username);
+            })
+            .map((user) => (
+              <UserList key={user.profileId}>
+                <Label
+                  style={{
+                    margin: "0 10px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <ProfileImage size={50} src={user.imageUrl} />
+                  <p style={{ flexGrow: 1, marginLeft: "8px" }}>
+                    {user.username}
+                  </p>
+                  <Radio
+                    name="user"
+                    id={user.profileId.toString()}
+                    defaultChecked={selectUser === user.profileId}
+                    onClick={() => setSelectUser(user.profileId)}
+                  />
+                </Label>
+              </UserList>
+            ))}
         </UserBox>
         <Button
           style={{ width: "100%", borderRadius: 0 }}
