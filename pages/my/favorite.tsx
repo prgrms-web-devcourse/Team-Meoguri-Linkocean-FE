@@ -13,26 +13,9 @@ const Favorite = () => {
   const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
 
-  // useEffect(() => {
-  //   const tagsString = tags === undefined ? "" : tags.join(",");
-  //   const tagParamsObj = { tag: tagsString };
-  //   const searchParams = new URLSearchParams(tagParamsObj).toString();
-  //   if (tags !== undefined) {
-  //     router.push(`tag/?${searchParams}`);
-  //   }
-  // }, [tags]);
-
-  // useEffect(() => {
-  //   const categoryParamsObj = category ? { category } : { category: "" };
-  //   const searchParams = new URLSearchParams(categoryParamsObj).toString();
-  //   if (category !== undefined) {
-  //     router.push(`category/?${searchParams}`);
-  //   }
-  // }, [category]);
-
   useEffect(() => {
     const tagsString = tags === undefined ? "" : tags.join(",");
-    const tagParamsObj = { tag: tagsString };
+    const tagParamsObj = { tags: tagsString };
     const searchParams = new URLSearchParams(tagParamsObj).toString();
     if (tags !== undefined) {
       router.push(`tag/?${searchParams}`);
