@@ -12,6 +12,9 @@ import ErrorText from "@/components/common/errorText";
 import { useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
+import Link from "next/link";
+import Router from "next/router";
+import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
 
 const Edit = () => {
   const INIT_OPTION = { value: bookmark.category, text: bookmark.category };
@@ -32,6 +35,7 @@ const Edit = () => {
   const getCategory = (element: string) => {
     setCategory(element);
   };
+
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     bookmark.openType = event.target.value;
     setOpenType(event.target.value);
@@ -42,10 +46,18 @@ const Edit = () => {
     if (title === "") {
       titleRef.current?.focus();
     }
+
+    edit(bookmark.id, { title, memo, category, tags: tag, openType });
   };
 
-  const item = [];
-  item.push(tag);
+  const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
+    try {
+      await bookmarkAPI.editBookmark(bookmarkId, payload);
+      Router.push("my/favorite");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <PageLayout>
@@ -180,7 +192,6 @@ const Edit = () => {
             </RadioWrapper>
 
             <ButtonWrapper>
-              {/* 북마크 수정 */}
               <Button
                 buttonType="large"
                 colorType="main-color"
@@ -190,14 +201,16 @@ const Edit = () => {
               >
                 수정 완료
               </Button>
-              <Button
-                buttonType="large"
-                colorType="gray"
-                width="194"
-                style={{ margin: "120px auto" }}
-              >
-                취소
-              </Button>
+              <Link href="/" passHref>
+                <Button
+                  buttonType="large"
+                  colorType="gray"
+                  width="194"
+                  style={{ margin: "120px auto" }}
+                >
+                  취소
+                </Button>
+              </Link>
             </ButtonWrapper>
           </DivWrapper>
         </Contents>
