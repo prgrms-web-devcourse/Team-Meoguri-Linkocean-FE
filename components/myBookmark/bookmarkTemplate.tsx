@@ -14,10 +14,6 @@ import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
 
 const PAGE_SIZE = 8;
 
-// 1. router.pathname을 매개변수로 넘기면
-// base_url 반환하는 함수 (/my/favorite, /my/tag, /my/category)
-// 2. favorite=true&sort=upload, favorite 넘기면
-// sort=upload 만 반환하는 함수
 interface MyBookmarkProps {
   PageTitle: string;
 }
@@ -25,7 +21,6 @@ interface MyBookmarkProps {
 const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [sort, setSort] = useState<string>("upload");
   const [requestQuery, setRequestQuery] = useState("");
   const [myBookmarks, setMyBookmarks] = useState<BookmarkList>({
     totalCount: 0,
@@ -46,13 +41,19 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   const searching = () => {
     const keyword = searchInput.current?.value;
     if (keyword) {
-      const temp = deleteDuplicateQuery(requestQuery, "searchTitle");
-      setRequestQuery(`${temp}&searchTitle=${keyword}`);
+      const query = deleteDuplicateQuery(requestQuery, "searchTitle");
+      setRequestQuery(`${query}&searchTitle=${keyword}`);
     }
   };
 
+  const sorting = (element: string) => {
+    const query = deleteDuplicateQuery(requestQuery, "sort");
+    const queryWithSort = `${query}&sort=${element}&`;
+    setRequestQuery(queryWithSort);
+  };
+
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite)
+    // router에 따른 filtering(category|tag|favorite) 새로고침할 때
     let routerQuery = "";
     const key = Object.keys(router.query)[0];
     const value = router.query[key];
@@ -65,12 +66,11 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     } else {
       routerQuery = "favorite=true&";
     }
-    getMyBookmarksApi(routerQuery);
     setRequestQuery(routerQuery);
   }, []);
 
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite)
+    // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
     let routerQuery = "";
     const key = Object.keys(router.query)[0];
     const value = router.query[key];
@@ -83,23 +83,15 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     } else {
       routerQuery = "favorite=true&";
     }
-    getMyBookmarksApi(routerQuery);
+    setRequestQuery(routerQuery);
   }, [router.asPath, router.query]);
 
   useEffect(() => {
-    // 검색
+    // requestQuery가 변경될 때 api 호출
     getMyBookmarksApi(requestQuery);
+    // const temp = deleteDuplicateQuery(requestQuery, "favorite");
+    // router.push(`${router.pathname}?&${temp}`);
   }, [requestQuery]);
-
-  useEffect(() => {
-    // sort
-    const query = deleteDuplicateQuery(requestQuery, "sort");
-    const queryWithSort = `${query}sort=${sort}&`;
-    getMyBookmarksApi(queryWithSort);
-  }, [sort]);
-  // useCallback(()=>{
-
-  // })
 
   const changePage = (pageNum: number) => {
     console.log(pageNum);
@@ -120,7 +112,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           </Button>
         </SearchDiv>
         <SelectDiv>
-          <Select onChange={setSort}>
+          <Select onChange={(e) => sorting(e)}>
             <Select.Trigger>선택</Select.Trigger>
             <Select.OptionList>
               <Select.Option value="upload">최신 순</Select.Option>
