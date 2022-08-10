@@ -48,16 +48,6 @@ const SelectCategoryModal = ({
     setFavoriteCategories(categories);
   }, [categories]);
 
-  useEffect(() => {
-    if (typeof window !== "object") return;
-    const body = document.getElementsByTagName("body")[0];
-    if (isShowModal) {
-      body.classList.add("scrollLock");
-    } else {
-      body.classList.remove("scrollLock");
-    }
-  }, [isShowModal]);
-
   return (
     <div>
       <Button
