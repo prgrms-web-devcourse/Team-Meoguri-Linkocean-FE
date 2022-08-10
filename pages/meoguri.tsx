@@ -15,6 +15,7 @@ import { Profile } from "@/types/model";
 import { getQueryString } from "@/utils/queryString";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import NoResult from "@/components/common/noResult";
+import Top from "@/components/common/top";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import { FollowCardContainer, isLastCard, Layout } from "./my/follow";
 
@@ -211,6 +212,7 @@ const Meoguri = () => {
                 )
               )}
             </MeoguriCardContainer>
+            <Top />
           </Layout>
         </PageLayout.Article>
       </PageLayout>
