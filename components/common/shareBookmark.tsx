@@ -1,6 +1,9 @@
+import { useProfileState } from "@/hooks/useProfile";
 import { color, text } from "@/styles/theme";
+import { Profile } from "@/types/model";
+import profileAPI from "@/utils/apis/profile";
 import styled from "@emotion/styled";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Button from "./button";
 import Label from "./label";
 import Modal from "./modal";
@@ -13,22 +16,19 @@ interface ShareBookmarkProps {
 }
 
 const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
-  const [userList, setUserList] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-  ]);
+  const [userList, setUserList] = useState<Profile[]>([]);
+  const { profileId } = useProfileState();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await profileAPI.getFollow(profileId, "follower", "");
+        setUserList(data.profiles);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [profileId]);
 
   return (
     <Modal width={400} height={700} isShow={isShow} setIsShow={setIsShow}>
@@ -41,7 +41,7 @@ const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
           <input type="text" />
         </SearchBox>
         <UserBox>
-          {userList.map((id) => (
+          {userList?.map((user) => (
             <UserList>
               <Label
                 style={{
@@ -50,9 +50,11 @@ const ShareBookmark = ({ isShow, setIsShow }: ShareBookmarkProps) => {
                   alignItems: "center",
                 }}
               >
-                <ProfileImage size={50} />
-                <p style={{ flexGrow: 1, marginLeft: "8px" }}>나디아</p>
-                <Radio name="user" id={id} />
+                <ProfileImage size={50} src={user.imageUrl} />
+                <p style={{ flexGrow: 1, marginLeft: "8px" }}>
+                  {user.username}
+                </p>
+                <Radio name="user" id={user.profileId.toString()} />
               </Label>
             </UserList>
           ))}
