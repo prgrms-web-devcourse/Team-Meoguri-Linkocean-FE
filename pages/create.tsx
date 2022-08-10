@@ -59,20 +59,35 @@ const Create = () => {
       return;
     }
 
+    // const response = await bookmarkAPI.getIsDuplicateUrl(url);
+    // console.log(response);
+
+    // if (response) {
+    //   if (
+    //     confirm(
+    //       "이미 등록된 url입니다. \n해당 url로 작성된 북마크로 이동하시겠습니까?"
+    //     )
+    //   ) {
+    //     // router.push();
+    //   } else {
+    //     urlRef.current?.focus();
+    //   }
+    // }
+
     create({ title, url, memo, category, tags: tag, openType });
   };
 
-  const item = [];
-  item.push(tag);
-
   const handleBlur = async () => {
-    console.log("handleBlur");
+    const IsDuplicateUrl = await bookmarkAPI.getIsDuplicateUrl(url);
+    console.log(IsDuplicateUrl.headers);
+    console.log(IsDuplicateUrl.headers.location);
     const response = await bookmarkAPI.getLinkMetadata(url);
     setTitle(response.data.title);
   };
 
   const create = async (payload: CreateBookmarkPayload) => {
     try {
+      console.log(payload);
       await bookmarkAPI.createBookmark(payload);
       router.push("/my/favorite");
     } catch (error) {
@@ -98,7 +113,6 @@ const Create = () => {
             <PageName>북마크 추가</PageName>
 
             <StyledLabel>URL</StyledLabel>
-            {/* TODO URL 중복 확인 요청, 링크메타데이터 요청 */}
             <StyledInput
               ref={urlRef}
               placeholder="URL을 입력하세요."
@@ -164,9 +178,7 @@ const Create = () => {
               <Select width="470px" onChange={handleChangeCategory}>
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                  <Select.Option value="self-development">
-                    자기계발
-                  </Select.Option>
+                  <Select.Option value="자기계발">자기계발</Select.Option>
                   <Select.Option value="humanities">인문</Select.Option>
                   <Select.Option value="politics">정치</Select.Option>
                   <Select.Option value="social">사회</Select.Option>
@@ -227,7 +239,6 @@ const Create = () => {
             )}
 
             <ButtonWrapper>
-              {/* TODO 북마크 등록 */}
               <Button
                 buttonType="large"
                 colorType="main-color"
