@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import FollowAPI from "@/utils/apis/follow";
 
 export interface FollowingProps {
+  isMine?: boolean;
   profileId: number;
   profileImg?: string;
   userName: string;
@@ -14,6 +15,7 @@ export interface FollowingProps {
 }
 
 const Following = ({
+  isMine,
   profileId,
   profileImg,
   userName,
@@ -56,29 +58,31 @@ const Following = ({
         src={profileImg || "/image/default-profile-image.png"}
       />
       <UserName>{userName}</UserName>
-      {following ? (
-        <FollowingBtn
-          colorType="skyblue"
-          width="128"
-          height="42"
-          buttonType={following ? "line" : "small"}
-          onClick={handleUnfollow}
-          {...props}
-        >
-          팔로우 취소
-        </FollowingBtn>
-      ) : (
-        <FollowingBtn
-          colorType="skyblue"
-          width="128"
-          height="42"
-          buttonType={following ? "line" : "small"}
-          onClick={handleFollow}
-          {...props}
-        >
-          팔로우 +
-        </FollowingBtn>
-      )}
+      {following
+        ? !isMine && (
+            <FollowingBtn
+              colorType="skyblue"
+              width="128"
+              height="42"
+              buttonType={following ? "line" : "small"}
+              onClick={handleUnfollow}
+              {...props}
+            >
+              팔로우 취소
+            </FollowingBtn>
+          )
+        : !isMine && (
+            <FollowingBtn
+              colorType="skyblue"
+              width="128"
+              height="42"
+              buttonType={following ? "line" : "small"}
+              onClick={handleFollow}
+              {...props}
+            >
+              팔로우 +
+            </FollowingBtn>
+          )}
     </Card>
   );
 };
