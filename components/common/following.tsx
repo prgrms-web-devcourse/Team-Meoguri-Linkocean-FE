@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import FollowAPI from "@/utils/apis/follow";
 
 export interface FollowingProps {
+  isMine?: boolean;
   profileId: number;
   profileImg?: string;
   userName: string;
@@ -14,6 +15,7 @@ export interface FollowingProps {
 }
 
 const Following = ({
+  isMine,
   profileId,
   profileImg,
   userName,
@@ -56,7 +58,7 @@ const Following = ({
         src={profileImg || "/image/default-profile-image.png"}
       />
       <UserName>{userName}</UserName>
-      {following ? (
+      {isMine && following ? (
         <FollowingBtn
           colorType="skyblue"
           width="128"
