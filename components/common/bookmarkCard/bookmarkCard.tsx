@@ -2,6 +2,8 @@ import { color, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import ShareBookmark from "../shareBookmark";
 import Star from "../star";
 import DropBox from "./dropBox";
 
@@ -32,6 +34,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   } = data;
 
   const router = useRouter();
+  const [isShowShareBookmark, setIsShowShareBookmark] = useState(false);
   const urlClick = (e: React.MouseEvent<HTMLElement>) => {
     window.open(url);
     e.stopPropagation();
@@ -56,55 +59,63 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   };
 
   return (
-    <Card onClick={clickCard}>
-      <Top>
-        <div>
-          <Category>{category}</Category>
-          <CreateDate>{updatedAt}</CreateDate>
-        </div>
-        <div>
-          <Star id={id.toString()} favorite={isFavorite} />
-          <DropBox deleteBookmark={deleteBookmark} isWriter={isWriter} id={id}>
-            <More />
-          </DropBox>
-        </div>
-      </Top>
-      <MetaImage
-        src={imageUrl || "/image/default-card-meta-image.jpg"}
-        alt={title}
-      />
-      <Contents>
-        <div>
-          <Title>{title}</Title>
-          <p>
-            {tags?.map((tag) => (
-              <Tag>{`#${tag} `}</Tag>
-            ))}
-          </p>
-        </div>
-        <div>
-          <Url onClick={urlClick} href={url} target="_blank">
-            {url}
-          </Url>
-          <CardBottom>
-            <span>{OPEN_TYPE[openType]}</span>
-            <Like>
-              <i /> {unitConversion(likeCount)}
-            </Like>
-          </CardBottom>
-        </div>
-      </Contents>
-    </Card>
+    <Wrapper>
+      {isShowShareBookmark ? (
+        <ShareBookmark
+          isShow={isShowShareBookmark}
+          setIsShow={setIsShowShareBookmark}
+        />
+      ) : null}
+      <Card onClick={clickCard}>
+        <Top>
+          <div>
+            <Category>{category}</Category>
+            <CreateDate>{updatedAt}</CreateDate>
+          </div>
+          <div>
+            <Star id={id.toString()} favorite={isFavorite} />
+            <DropBox
+              setIsShowShareBookmark={setIsShowShareBookmark}
+              deleteBookmark={deleteBookmark}
+              isWriter={isWriter}
+              id={id}
+            >
+              <More />
+            </DropBox>
+          </div>
+        </Top>
+        <MetaImage
+          src={imageUrl || "/image/default-card-meta-image.jpg"}
+          alt={title}
+        />
+        <Contents>
+          <div>
+            <Title>{title}</Title>
+            <p>
+              {tags?.map((tag) => (
+                <Tag>{`#${tag} `}</Tag>
+              ))}
+            </p>
+          </div>
+          <div>
+            <Url onClick={urlClick} href={url} target="_blank">
+              {url}
+            </Url>
+            <CardBottom>
+              <span>{OPEN_TYPE[openType]}</span>
+              <Like>
+                <i /> {unitConversion(likeCount)}
+              </Like>
+            </CardBottom>
+          </div>
+        </Contents>
+      </Card>
+    </Wrapper>
   );
 };
 
-const Card = styled.div`
-  display: inline-flex;
-  flex-direction: column;
-  width: 190px;
-  height: 260px;
-  border-radius: 8px;
-  background-color: #fff;
+const Wrapper = styled.div`
+  display: inline-block;
   margin-right: calc((100% - (190px * 4)) / 3);
   margin-bottom: 29px;
   &:nth-child(4) {
@@ -113,6 +124,15 @@ const Card = styled.div`
   &:nth-child(8) {
     margin-right: 0px;
   }
+`;
+
+const Card = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  width: 190px;
+  height: 260px;
+  border-radius: 8px;
+  background-color: #fff;
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.15));
   transition: all 0.5s;
   box-sizing: border-box;

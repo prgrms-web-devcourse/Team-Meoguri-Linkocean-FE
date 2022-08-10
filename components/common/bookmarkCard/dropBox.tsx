@@ -3,12 +3,14 @@ import { color, text } from "@/styles/theme";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
+import { Dispatch, SetStateAction } from "react";
 
 export interface DropBoxProps {
   children: JSX.Element;
   isWriter: boolean;
   id: number;
   deleteBookmark: (id: number) => void;
+  setIsShowShareBookmark: Dispatch<SetStateAction<boolean>>;
 }
 
 const DropBox = ({
@@ -16,12 +18,13 @@ const DropBox = ({
   isWriter = true,
   id,
   deleteBookmark,
+  setIsShowShareBookmark,
 }: DropBoxProps) => {
   const [checked, toggle] = useToggle(false);
   const router = useRouter();
 
   const share = (e: React.MouseEvent<HTMLElement>) => {
-    alert("공유하기");
+    setIsShowShareBookmark(true);
     e.stopPropagation();
   };
 
