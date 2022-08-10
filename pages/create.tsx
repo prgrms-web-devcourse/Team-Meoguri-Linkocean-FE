@@ -26,6 +26,7 @@ const Create = () => {
   const [openType, setOpenType] = useState<OpenType>("all");
   const [memo, setMemo] = useState("");
   const [submit, setSubmit] = useState(false);
+  const [result, setResult] = useState(false);
 
   const urlRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -64,17 +65,17 @@ const Create = () => {
 
   const handleBlur = async () => {
     const IsDuplicateUrl = await bookmarkAPI.getIsDuplicateUrl(url);
-    console.log(IsDuplicateUrl.data.isDuplicateUrl);
+    setResult(false);
     if (IsDuplicateUrl.data.isDuplicateUrl === true) {
       if (
-        // eslint-disable-next-line no-restricted-globals
-        confirm(
+        window.confirm(
           "이미 등록된 url입니다. \n해당 url로 작성된 북마크로 이동하시겠습니까?"
         )
       ) {
-        router.push(IsDuplicateUrl.headers.location.substring(6));
+        const location = IsDuplicateUrl.headers.location.split("/");
+        router.push(`/my/detail/${location[3]}`);
       } else {
-        urlRef.current?.focus();
+        setResult(true);
         return;
       }
     }
@@ -118,11 +119,13 @@ const Create = () => {
               onChange={(e) => setUrl(e.target.value)}
               onBlur={handleBlur}
             />
-            {submit && url === "" ? (
-              <StyledErrorText>* url은 필수 입력값입니다.</StyledErrorText>
-            ) : (
-              <StyledErrorText> </StyledErrorText>
+            {submit && url === "" && (
+              <ErrorText>* url은 필수 입력값입니다.</ErrorText>
             )}
+            {result && (
+              <ErrorText>* 중복된 url은 등록할 수 없습니다.</ErrorText>
+            )}
+            <div style={{ marginBottom: "40px" }} />
 
             <StyledLabel>제목</StyledLabel>
             <StyledInput
