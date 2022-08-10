@@ -129,6 +129,7 @@ const UserName = styled.div`
   line-height: 29px;
   cursor: pointer;
   user-select: none;
+  margin-right: 20px;
 
   &:active {
     color: ${color.$gray800};
