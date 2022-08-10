@@ -8,7 +8,6 @@ import FollowRadio from "@/components/follow/followRadio";
 import Following from "@/components/common/following";
 import { useRouter } from "next/router";
 import {
-  DUMMY_FOLLOWE,
   FollowCardContainer,
   Form,
   isLastCard,
