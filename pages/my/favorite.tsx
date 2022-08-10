@@ -4,7 +4,7 @@ import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import MyBookmark from "@/components/myBookmark/myBookmark";
+import BookmarkTemplate from "@/components/myBookmark/bookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
 
 const Favorite = () => {
@@ -50,7 +50,7 @@ const Favorite = () => {
     <PageLayout>
       {AsideMemo}
       <PageLayout.Article>
-        <MyBookmark PageTitle="즐겨찾기 목록" />
+        <BookmarkTemplate PageTitle="즐겨찾기 목록" />
       </PageLayout.Article>
     </PageLayout>
   );
