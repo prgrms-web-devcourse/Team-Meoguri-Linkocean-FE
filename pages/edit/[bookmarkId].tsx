@@ -15,15 +15,18 @@ import Tag from "@/components/create/tag";
 import Link from "next/link";
 import Router from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
+import { CATEGORY, OpenType } from "@/types/type";
 
 const Edit = () => {
   const INIT_OPTION = { value: bookmark.category, text: bookmark.category };
 
   const [title, setTitle] = useState<string>(bookmark.title);
   const [memo, setMemo] = useState(bookmark.memo);
-  const [category, setCategory] = useState(INIT_OPTION.value);
+  const [category, setCategory] = useState<typeof CATEGORY[number]>(
+    INIT_OPTION.value as typeof CATEGORY[number]
+  );
   const [tag, setTag] = useState<string[]>(bookmark.tags);
-  const [openType, setOpenType] = useState<string>();
+  const [openType, setOpenType] = useState<OpenType>();
   const [tags, setTags] = useState<string[]>();
   const [submit, setSubmit] = useState(false);
 
@@ -32,13 +35,18 @@ const Edit = () => {
   const getTags = (elements: string[]) => {
     setTags(elements);
   };
+
+  const handleChangeCategory = (elements: string) => {
+    setCategory(elements as typeof CATEGORY[number]);
+  };
+
   const getCategory = (element: string) => {
-    setCategory(element);
+    setCategory(element as typeof CATEGORY[number]);
   };
 
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     bookmark.openType = event.target.value;
-    setOpenType(event.target.value);
+    setOpenType(event.target.value as OpenType);
   };
 
   const handleEdit = () => {
@@ -137,7 +145,7 @@ const Edit = () => {
               <Select
                 selectedOption={INIT_OPTION}
                 width="470px"
-                onChange={setCategory}
+                onChange={handleChangeCategory}
               >
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
