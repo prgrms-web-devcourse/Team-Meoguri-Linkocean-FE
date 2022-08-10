@@ -70,7 +70,7 @@ const OtherFilterMenu = ({
     if ($checkboxCollection !== undefined) {
       setCheckbox($checkboxCollection);
     }
-  }, []);
+  }, [tagList]);
 
   const handleClick = () => {
     const checkedArr: string[] = [];
