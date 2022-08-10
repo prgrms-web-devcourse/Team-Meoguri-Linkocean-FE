@@ -155,8 +155,12 @@ const Meoguri = () => {
           <MyFilterMenu
             tagList={userProfile.tags}
             categoryList={userProfile.categories}
-            getCategoryData={() => {}}
-            getTagsData={() => {}}
+            getCategoryData={(category) => {
+              router.push(`/my/category?category=${category}`);
+            }}
+            getTagsData={(tags) => {
+              router.push(`/my/tag?tags=${tags[0]}`);
+            }}
           />
         </PageLayout.Aside>
         <PageLayout.Article>
