@@ -179,17 +179,17 @@ const Create = () => {
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
                   <Select.Option value="자기계발">자기계발</Select.Option>
-                  <Select.Option value="humanities">인문</Select.Option>
-                  <Select.Option value="politics">정치</Select.Option>
-                  <Select.Option value="social">사회</Select.Option>
-                  <Select.Option value="art">예술</Select.Option>
-                  <Select.Option value="science">과학</Select.Option>
-                  <Select.Option value="technology">기술</Select.Option>
-                  <Select.Option value="it">IT</Select.Option>
-                  <Select.Option value="home">가정</Select.Option>
-                  <Select.Option value="health">건강</Select.Option>
-                  <Select.Option value="travel">여행</Select.Option>
-                  <Select.Option value="cooking">요리</Select.Option>
+                  <Select.Option value="인문">인문</Select.Option>
+                  <Select.Option value="정치">정치</Select.Option>
+                  <Select.Option value="사회">사회</Select.Option>
+                  <Select.Option value="예술">예술</Select.Option>
+                  <Select.Option value="과학">과학</Select.Option>
+                  <Select.Option value="기술">기술</Select.Option>
+                  <Select.Option value="IT">IT</Select.Option>
+                  <Select.Option value="가정">가정</Select.Option>
+                  <Select.Option value="건강">건강</Select.Option>
+                  <Select.Option value="여행">여행</Select.Option>
+                  <Select.Option value="요리">요리</Select.Option>
                 </Select.OptionList>
               </Select>
             </div>
