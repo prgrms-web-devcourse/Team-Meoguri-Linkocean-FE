@@ -59,28 +59,25 @@ const Create = () => {
       return;
     }
 
-    // const response = await bookmarkAPI.getIsDuplicateUrl(url);
-    // console.log(response);
-
-    // if (response) {
-    //   if (
-    //     confirm(
-    //       "이미 등록된 url입니다. \n해당 url로 작성된 북마크로 이동하시겠습니까?"
-    //     )
-    //   ) {
-    //     // router.push();
-    //   } else {
-    //     urlRef.current?.focus();
-    //   }
-    // }
-
     create({ title, url, memo, category, tags: tag, openType });
   };
 
   const handleBlur = async () => {
     const IsDuplicateUrl = await bookmarkAPI.getIsDuplicateUrl(url);
-    console.log(IsDuplicateUrl.headers);
-    console.log(IsDuplicateUrl);
+
+    if (IsDuplicateUrl.data.isDuplicateUrl) {
+      if (
+        // eslint-disable-next-line no-restricted-globals
+        confirm(
+          "이미 등록된 url입니다. \n해당 url로 작성된 북마크로 이동하시겠습니까?"
+        )
+      ) {
+        router.push(IsDuplicateUrl.headers.location.substring(6));
+      } else {
+        urlRef.current?.focus();
+        return;
+      }
+    }
     const response = await bookmarkAPI.getLinkMetadata(url);
     setTitle(response.data.title);
   };
