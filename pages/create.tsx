@@ -80,7 +80,7 @@ const Create = () => {
   const handleBlur = async () => {
     const IsDuplicateUrl = await bookmarkAPI.getIsDuplicateUrl(url);
     console.log(IsDuplicateUrl.headers);
-    console.log(IsDuplicateUrl.headers.location);
+    console.log(IsDuplicateUrl);
     const response = await bookmarkAPI.getLinkMetadata(url);
     setTitle(response.data.title);
   };
