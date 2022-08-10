@@ -17,6 +17,7 @@ const Star = ({ favorite, size = 14, id, ...props }: FavoriteButtonProps) => {
   }, [favorite]);
 
   const onClick = async (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     if (!id) return;
     try {
       if (isFavorite) {
@@ -27,8 +28,6 @@ const Star = ({ favorite, size = 14, id, ...props }: FavoriteButtonProps) => {
       setIsFavorite(!isFavorite);
     } catch (error) {
       console.error(error);
-    } finally {
-      e.stopPropagation();
     }
   };
 
