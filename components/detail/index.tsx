@@ -67,6 +67,10 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     }
   };
 
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    (e.target as HTMLImageElement).src = "/image/default-card-meta-image.jpg";
+  };
+
   return (
     <Page>
       <FlexBetween>
@@ -122,6 +126,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
             src={imageUrl || "/image/default-card-meta-image.jpg"}
             width={325}
             height={176}
+            onError={handleImgError}
           />
           <Info>
             <div>
