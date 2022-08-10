@@ -1,8 +1,9 @@
 import { color, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
+import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import React, { useState } from "react";
 import ShareBookmark from "../shareBookmark";
 import Star from "../star";
 import DropBox from "./dropBox";
@@ -17,6 +18,8 @@ const OPEN_TYPE = {
   partial: "일부공개",
   private: "비공개",
 };
+
+const feedUrlRegExp = /feed.*/g;
 
 const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   const {
@@ -42,7 +45,11 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
 
   const clickCard = () => {
     const link = router.asPath.split("/")[1];
-    router.push(`/${link}/detail/${id}`);
+    if (feedUrlRegExp.test(link)) {
+      router.push(`/feed/detail/${id}`);
+    } else {
+      router.push(`/${link}/detail/${id}`);
+    }
   };
 
   const unitConversion = (num: number) => {
@@ -58,6 +65,10 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
     return num;
   };
 
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    (e.target as HTMLImageElement).src = "/image/default-card-meta-image.jpg";
+  };
+
   return (
     <Wrapper>
       {isShowShareBookmark ? (
@@ -71,7 +82,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
         <Top>
           <div>
             <Category>{category}</Category>
-            <CreateDate>{updatedAt}</CreateDate>
+            <CreateDate>{dateFormat(updatedAt)}</CreateDate>
           </div>
           <div>
             <Star id={id.toString()} favorite={isFavorite} />
@@ -88,6 +99,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
         <MetaImage
           src={imageUrl || "/image/default-card-meta-image.jpg"}
           alt={title}
+          onError={handleImgError}
         />
         <Contents>
           <div>
@@ -156,7 +168,6 @@ const Top = styled.div`
 const MetaImage = styled.img`
   min-height: 110px;
   object-fit: cover;
-  background-image: url("/image/default-card-meta-image.jpg");
   background-position: center;
   background-size: 190px, 110px;
 `;
