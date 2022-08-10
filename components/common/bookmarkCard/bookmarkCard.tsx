@@ -1,5 +1,6 @@
 import { color, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
+import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -75,7 +76,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
         <Top>
           <div>
             <Category>{category}</Category>
-            <CreateDate>{updatedAt}</CreateDate>
+            <CreateDate>{dateFormat(updatedAt)}</CreateDate>
           </div>
           <div>
             <Star id={id.toString()} favorite={isFavorite} />
