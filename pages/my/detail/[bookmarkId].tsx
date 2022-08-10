@@ -38,7 +38,7 @@ const MyDetail = () => {
   return (
     <PageLayout>
       <PageLayout.Aside>
-        <UserInfo data={getProfile} />
+        <UserInfo />
         <MyFilterMenu
           tagList={getProfile.tags}
           categoryList={getProfile.favoriteCategories}
