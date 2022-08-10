@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import Pagination from "@/components/common/pagination";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -10,6 +10,7 @@ import BookmarkCard from "@/components/common/bookmarkCard";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
+import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
 
 const PAGE_SIZE = 8;
 
@@ -25,19 +26,31 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
   const [sort, setSort] = useState<string>("upload");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [requestQuery, setRequestQuery] = useState("");
   const [myBookmarks, setMyBookmarks] = useState<BookmarkList>({
     totalCount: 0,
     bookmarks: [],
   });
 
+  const getMyBookmarksApi = (query: string) => {
+    (async () => {
+      try {
+        const res = await bookmarkAPI.getMyBookmarks(query);
+        setMyBookmarks(res.data as BookmarkList);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  };
+
   const searching = () => {
-    // searchTitle 쌓이는 문제
     const keyword = searchInput.current?.value;
     if (keyword) {
-      setSearchQuery(`${searchQuery}&searchTitle=${keyword}`);
+      const temp = deleteDuplicateQuery(requestQuery, "searchTitle");
+      setRequestQuery(`${temp}&searchTitle=${keyword}`);
     }
   };
+
   useEffect(() => {
     // router에 따른 filtering(category|tag|favorite)
     let routerQuery = "";
@@ -53,7 +66,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       routerQuery = "favorite=true&";
     }
     getMyBookmarksApi(routerQuery);
-    // setSearchQuery(routerQuery);
+    setRequestQuery(routerQuery);
   }, []);
 
   useEffect(() => {
@@ -75,27 +88,18 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
 
   useEffect(() => {
     // 검색
-    getMyBookmarksApi(searchQuery);
-  }, [searchQuery]);
+    getMyBookmarksApi(requestQuery);
+  }, [requestQuery]);
 
   useEffect(() => {
     // sort
-    console.log(router.pathname);
-    const query = `${searchQuery}sort=${sort}&`;
-    // router.push(`${router.pathname}?${query}`);
-    getMyBookmarksApi(query);
+    const query = deleteDuplicateQuery(requestQuery, "sort");
+    const queryWithSort = `${query}sort=${sort}&`;
+    getMyBookmarksApi(queryWithSort);
   }, [sort]);
+  // useCallback(()=>{
 
-  const getMyBookmarksApi = (query: string) => {
-    (async () => {
-      try {
-        const res = await bookmarkAPI.getMyBookmarks(query);
-        setMyBookmarks(res.data as BookmarkList);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  };
+  // })
 
   const changePage = (pageNum: number) => {
     console.log(pageNum);
@@ -136,7 +140,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       </ContentDiv>
       <PaginationDiv>
         <Pagination
-          count={Math.ceil(100 / PAGE_SIZE)}
+          count={Math.ceil(myBookmarks.totalCount / PAGE_SIZE)}
           onChange={(pageNum) => {
             changePage(pageNum);
           }}

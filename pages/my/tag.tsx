@@ -4,7 +4,7 @@ import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import MyBookmark from "@/components/myBookmark/myBookmark";
+import BookmarkTemplate from "@/components/myBookmark/bookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
 
 const Tag = () => {
@@ -42,7 +42,7 @@ const Tag = () => {
         />
       </PageLayout.Aside>
       <PageLayout.Article>
-        <MyBookmark PageTitle="태그 목록" />
+        <BookmarkTemplate PageTitle="태그 목록" />
       </PageLayout.Article>
     </PageLayout>
   );
