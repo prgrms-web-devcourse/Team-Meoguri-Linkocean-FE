@@ -12,8 +12,8 @@ import profileAPI from "@/utils/apis/profile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { getQueryString } from "@/utils/queryString";
 import { useProfileState, useProfileDispatch } from "@/hooks/useProfile";
+import { useRouter } from "next/router";
 
-// TODO:  라우팅
 const PAGE_SIZE = 8;
 export const isLastCard = (index: number, length: number) =>
   index === Math.max(0, length - 1);
@@ -39,6 +39,7 @@ const Follow = () => {
     isLoading: boolean;
   }>({ value: [], isLoading: false });
   const [isEndPage, setIsEndPage] = useState(false);
+  const router = useRouter();
 
   const handleChange = (type: string, value: string | number) => {
     setState({ ...state, [type]: value, page: INITIAL_FILTERING.page });
@@ -141,8 +142,12 @@ const Follow = () => {
           <MyFilterMenu
             tagList={userProfile.tags}
             categoryList={userProfile.categories}
-            getCategoryData={() => {}}
-            getTagsData={() => {}}
+            getCategoryData={(category: string) => {
+              router.push(`/my/category?category=${category}`);
+            }}
+            getTagsData={(tags: string[]) => {
+              router.push(`/my/tag?tags=${tags[0]}`);
+            }}
           />
         </PageLayout.Aside>
         <PageLayout.Article>
@@ -177,13 +182,13 @@ const Follow = () => {
                         ? setTarget
                         : null
                     }
+                    key={profileId}
                   >
                     <Following
                       profileId={profileId}
                       profileImg={imageUrl}
                       userName={username}
                       following={isFollow}
-                      key={profileId}
                       handleClick={handleFollow}
                     />
                   </div>
