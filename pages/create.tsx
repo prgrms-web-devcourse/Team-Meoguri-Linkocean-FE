@@ -64,8 +64,8 @@ const Create = () => {
 
   const handleBlur = async () => {
     const IsDuplicateUrl = await bookmarkAPI.getIsDuplicateUrl(url);
-
-    if (IsDuplicateUrl.data.isDuplicateUrl) {
+    console.log(IsDuplicateUrl.data.isDuplicateUrl);
+    if (IsDuplicateUrl.data.isDuplicateUrl === true) {
       if (
         // eslint-disable-next-line no-restricted-globals
         confirm(
@@ -78,6 +78,7 @@ const Create = () => {
         return;
       }
     }
+
     const response = await bookmarkAPI.getLinkMetadata(url);
     setTitle(response.data.title);
   };
