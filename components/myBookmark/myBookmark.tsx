@@ -12,6 +12,11 @@ import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
 
 const PAGE_SIZE = 8;
+
+// 1. router.pathname을 매개변수로 넘기면
+// base_url 반환하는 함수 (/my/favorite, /my/tag, /my/category)
+// 2. favorite=true&sort=upload, favorite 넘기면
+// sort=upload 만 반환하는 함수
 interface MyBookmarkProps {
   PageTitle: string;
 }
@@ -25,21 +30,6 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     totalCount: 0,
     bookmarks: [],
   });
-
-  // const filtering = () => {
-  //   const key = Object.keys(router.query)[0];
-  //   const value = router.query[key];
-  //   if (key === "category" || key === "tags") {
-  //     if (value === "전체") {
-  //       setQuery("");
-  //     } else {
-  //       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  //       setQuery(`${key}=${value}&`);
-  //     }
-  //   } else {
-  //     setQuery("favorite=true");
-  //   }
-  // };
 
   const searching = () => {
     // searchTitle 쌓이는 문제
@@ -62,15 +52,8 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     } else {
       routerQuery = "favorite=true&";
     }
-    (async () => {
-      try {
-        const res = await bookmarkAPI.getMyBookmarks(routerQuery);
-        setMyBookmarks(res.data as BookmarkList);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-    setSearchQuery(routerQuery);
+    getMyBookmarksApi(routerQuery);
+    // setSearchQuery(routerQuery);
   }, []);
 
   useEffect(() => {
@@ -87,32 +70,23 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     } else {
       routerQuery = "favorite=true&";
     }
-    (async () => {
-      try {
-        const res = await bookmarkAPI.getMyBookmarks(routerQuery);
-        setMyBookmarks(res.data as BookmarkList);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-    setSearchQuery(routerQuery);
+    getMyBookmarksApi(routerQuery);
   }, [router.asPath, router.query]);
 
   useEffect(() => {
     // 검색
-    (async () => {
-      try {
-        const res = await bookmarkAPI.getMyBookmarks(searchQuery);
-        setMyBookmarks(res.data as BookmarkList);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    getMyBookmarksApi(searchQuery);
   }, [searchQuery]);
 
   useEffect(() => {
     // sort
-    const query = `${searchQuery}sort=${sort}`;
+    console.log(router.pathname);
+    const query = `${searchQuery}sort=${sort}&`;
+    // router.push(`${router.pathname}?${query}`);
+    getMyBookmarksApi(query);
+  }, [sort]);
+
+  const getMyBookmarksApi = (query: string) => {
     (async () => {
       try {
         const res = await bookmarkAPI.getMyBookmarks(query);
@@ -121,7 +95,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
         console.error(error);
       }
     })();
-  }, [sort]);
+  };
 
   const changePage = (pageNum: number) => {
     console.log(pageNum);

@@ -10,8 +10,8 @@ import { useProfileState } from "@/hooks/useProfile";
 const Favorite = () => {
   const profile = useProfileState();
   const router = useRouter();
-  const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
+  const [tags, setTags] = useState<string[]>();
 
   useEffect(() => {
     const tagsString = tags === undefined ? "" : tags.join(",");
