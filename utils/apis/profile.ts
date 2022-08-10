@@ -26,10 +26,12 @@ const profileAPI = {
   getMyProfile: () => authInstance.get<ProfileDetail>("/profiles/me"),
   editProfile: (formData: FormData) =>
     authInstance({
-      method: "post",
+      method: "put",
       url: "/profiles/me",
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     }),
   getProfilesByUsername: (queryString: string) =>
     authInstance.get<ProfileList>(`/profiles?${queryString}`),

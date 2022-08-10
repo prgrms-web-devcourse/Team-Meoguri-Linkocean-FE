@@ -1,4 +1,9 @@
-import { BookmarkDetail, BookmarkList, Notification } from "./model";
+import {
+  BookmarkDetail,
+  BookmarkList,
+  Notification,
+  ProfileDetail,
+} from "./model";
 
 export {
   getBookMarkDetail,
@@ -9,13 +14,13 @@ export {
 };
 
 const getBookMarkDetail: BookmarkDetail = {
-  id: 123,
-  title: "네이버 웹툰",
+  id: 3,
+  title: "더미값입니다.",
   url: "https://comic.naver.com/index",
   imageUrl:
     "http://www.urbanbrush.net/web/wp-content/uploads/edd/2020/02/urbanbrush-20200227023608426223.jpg",
   category: "IT",
-  memo: "해당 링크는 네이버 카툰 사이트 링크 입니다. 많이 이용해주세요~~",
+  memo: "해당 페이지는 더미데이터 입니다~",
   openType: "all",
   isFavorite: false,
   updatedAt: "2022-01-01",
@@ -156,7 +161,7 @@ const getBookMarkList: BookmarkList = {
   ],
 };
 
-const getProfile = {
+const getProfile: ProfileDetail = {
   profileId: 1,
   imageUrl:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyT-fcCPkfYWQQ1UwkNyRPevaYT1hpA8dRMYk1zFvar4t5KDrDHji_e74bM_cV-MreDM&usqp=CAU",

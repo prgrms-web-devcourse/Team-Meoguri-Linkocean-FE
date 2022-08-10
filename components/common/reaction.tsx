@@ -7,6 +7,7 @@ export interface ReactionProps {
   hate: number;
   isLike?: boolean;
   isHate?: boolean;
+  id: number;
 }
 interface LikeProps {
   isLikeClicked?: boolean;
@@ -16,7 +17,7 @@ interface HateProps {
   isHateClicked?: boolean;
 }
 
-const Reaction = ({ like, hate, isLike, isHate }: ReactionProps) => {
+const Reaction = ({ like, hate, isLike, isHate, id }: ReactionProps) => {
   const [selectLike, setSelectLike] = useState(isLike);
   const [selectHate, setSelectHate] = useState(isHate);
   const [likeCount, setLikeCount] = useState(like);
@@ -95,6 +96,7 @@ const Reaction = ({ like, hate, isLike, isHate }: ReactionProps) => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin: auto;
   width: 291px;
   gap: 10px;
   -webkit-user-select: none;

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export interface ModalProps {
   isShow: boolean;
@@ -17,16 +17,6 @@ const Modal = ({
   children,
   closed,
 }: ModalProps) => {
-  useEffect(() => {
-    if (typeof window !== "object") return;
-    const body = document.getElementsByTagName("body")[0];
-    if (isShow) {
-      body.classList.add("scrollLock");
-    } else {
-      body.classList.remove("scrollLock");
-    }
-  }, [isShow]);
-
   const closedModal = () => {
     setIsShow(false);
     if (closed) {

@@ -7,6 +7,7 @@ import DropBox from "./dropBox";
 
 export interface BookmarkProps {
   data: Bookmark;
+  deleteBookmark: (id: number) => void;
 }
 
 const OPEN_TYPE = {
@@ -15,7 +16,7 @@ const OPEN_TYPE = {
   private: "비공개",
 };
 
-const BookmarkCard = ({ data }: BookmarkProps) => {
+const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   const {
     category,
     url,
@@ -62,8 +63,8 @@ const BookmarkCard = ({ data }: BookmarkProps) => {
           <CreateDate>{updatedAt}</CreateDate>
         </div>
         <div>
-          <Star favorite={isFavorite} />
-          <DropBox isWriter={isWriter} id={id}>
+          <Star id={id.toString()} favorite={isFavorite} />
+          <DropBox deleteBookmark={deleteBookmark} isWriter={isWriter} id={id}>
             <More />
           </DropBox>
         </div>

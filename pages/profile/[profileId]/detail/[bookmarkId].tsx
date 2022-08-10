@@ -1,18 +1,24 @@
-import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
+import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
+import UserInfo from "@/components/common/userInfo";
 import DetailPage from "@/components/detail";
-import { BookmarkDetail } from "@/types/model";
+import { getBookMarkDetail, getProfile } from "@/types/dummyData";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const MyDetail = () => {
   const router = useRouter();
+  const [tags, setTags] = useState<string[]>();
   const [category, setCategory] = useState<string>();
+  const getTags = (elements: string[]) => {
+    setTags(elements);
+  };
+  const [bookmarkData, setBookmarkData] = useState(getBookMarkDetail);
+
   const getCategory = (element: string) => {
     setCategory(element);
   };
-  const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -21,8 +27,8 @@ const MyDetail = () => {
       try {
         const { data } = await bookmarkAPI.getBookmarkDetail(id);
         setBookmarkData(data);
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.log(e);
         router.push("/404");
       }
     })();
@@ -31,7 +37,13 @@ const MyDetail = () => {
   return (
     <PageLayout>
       <PageLayout.Aside>
-        <FeedFilterMenu getCategoryData={getCategory} />
+        <UserInfo data={getProfile} />
+        <MyFilterMenu
+          tagList={getProfile.tags}
+          categoryList={getProfile.favoriteCategories}
+          getTagsData={getTags}
+          getCategoryData={getCategory}
+        />
       </PageLayout.Aside>
       <PageLayout.Article>
         {bookmarkData ? (
@@ -44,5 +56,4 @@ const MyDetail = () => {
     </PageLayout>
   );
 };
-
 export default MyDetail;

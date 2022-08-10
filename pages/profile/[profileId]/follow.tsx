@@ -11,11 +11,14 @@ import {
   DUMMY_FOLLOWE,
   FollowCardContainer,
   Form,
+  isLastCard,
   Layout,
 } from "@/pages/my/follow";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Profile, ProfileDetail } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
+import { getQueryString } from "@/utils/queryString";
+import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
 
 const PAGE_SIZE = 8;
 
@@ -38,11 +41,16 @@ const Follow = () => {
 
   const [userProfile, setUserProfile] = useState<ProfileDetail>();
   const [state, setState] = useState(INITIAL_FILTERING);
-  const [followProfiles, setFollowProfiles] = useState<Profile[]>([]);
+  const [followProfiles, setFollowProfiles] = useState<{
+    value: Profile[];
+    isLoading: boolean;
+  }>({ value: [], isLoading: false });
+  const [isEndPage, setIsEndPage] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, id } = e.currentTarget;
-    setState({ ...state, [name]: id });
+    setState({ ...state, [name]: id, page: INITIAL_FILTERING.page });
+    setIsEndPage(false);
   };
 
   const getUserProfile = useCallback(async () => {
@@ -62,17 +70,49 @@ const Follow = () => {
 
     const { profileId } = userProfile;
     const { tab, ...query } = state;
-    const queryString = Object.entries(query)
-      .map((entry) => entry.join("="))
-      .join("&");
+    const queryString = getQueryString(query);
 
     try {
-      const response = await profileAPI.getFollow(profileId, tab, queryString);
-      setFollowProfiles(response.data.profiles);
+      setFollowProfiles(({ value }) => ({ value, isLoading: true }));
+
+      const {
+        data: { profiles },
+      } = await profileAPI.getFollow(profileId, tab, queryString);
+
+      if (profiles.length === 0 || profiles.length < query.size) {
+        setIsEndPage(true);
+      }
+
+      setFollowProfiles(({ value }) => {
+        const nextValue =
+          query.page === INITIAL_FILTERING.page
+            ? profiles
+            : [...value, ...profiles];
+
+        return {
+          value: nextValue,
+          isLoading: false,
+        };
+      });
     } catch (error) {
       console.error(error);
     }
   }, [state, userProfile]);
+
+  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+    if (isEndPage) {
+      setTarget(undefined);
+      return;
+    }
+
+    if (isIntersecting && !followProfiles.isLoading) {
+      setState({ ...state, page: state.page + 1 });
+    }
+  };
+  const { setTarget } = useIntersectionObserver({
+    onIntersect,
+    threshold: 0.8,
+  });
 
   useEffect(() => {
     if (router.query.profileId === undefined) {
@@ -128,21 +168,30 @@ const Follow = () => {
                 name="tab"
                 id="followee"
                 text={`팔로잉 (${
-                  userProfile ? userProfile.followerCount : " "
+                  userProfile ? userProfile.followeeCount : " "
                 })`}
                 checked={state.tab === "followee"}
                 onChange={handleChange}
               />
             </Form>
             <FollowCardContainer>
-              {followProfiles.map(
-                ({ profileId, imageUrl, isFollow, username }) => (
-                  <Following
-                    profileImg={imageUrl}
-                    userName={username}
-                    following={isFollow}
-                    key={profileId}
-                  />
+              {followProfiles.value.map(
+                ({ profileId, imageUrl, isFollow, username }, index) => (
+                  <div
+                    ref={
+                      isLastCard(index, followProfiles.value.length)
+                        ? setTarget
+                        : null
+                    }
+                  >
+                    <Following
+                      profileId={profileId}
+                      profileImg={imageUrl}
+                      userName={username}
+                      following={isFollow}
+                      key={profileId}
+                    />
+                  </div>
                 )
               )}
             </FollowCardContainer>
