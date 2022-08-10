@@ -42,13 +42,13 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     const keyword = searchInput.current?.value;
     if (keyword) {
       const query = deleteDuplicateQuery(requestQuery, "searchTitle");
-      setRequestQuery(`${query}&searchTitle=${keyword}`);
+      setRequestQuery(`${query}searchTitle=${keyword}`);
     }
   };
 
   const sorting = (element: string) => {
     const query = deleteDuplicateQuery(requestQuery, "sort");
-    const queryWithSort = `${query}&sort=${element}&`;
+    const queryWithSort = `${query}sort=${element}`;
     setRequestQuery(queryWithSort);
   };
 
@@ -61,7 +61,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       if (value === "전체") {
         routerQuery = "";
       } else if (typeof value === "string") {
-        routerQuery = `${key}=${value}&`;
+        routerQuery = `${key}=${value}`;
       }
     } else {
       routerQuery = "favorite=true&";
