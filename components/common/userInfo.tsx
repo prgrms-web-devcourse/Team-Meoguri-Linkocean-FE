@@ -2,89 +2,104 @@ import { ProfileDetail } from "@/types/model";
 import styled from "@emotion/styled";
 import { text, color } from "@/styles/theme";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FollowAPI from "@/utils/apis/follow";
+import { useProfileState } from "@/hooks/useProfile";
 import Button from "./button";
 import ProfileImage from "./profileImage";
 
 export interface UserInfoProps {
-  data: ProfileDetail & { isFollow?: boolean };
+  data?: ProfileDetail & { isFollow?: boolean };
   handleClick?: (profileId: number) => void;
 }
 
+const defaultUserData: ProfileDetail = {
+  profileId: 0,
+  favoriteCategories: [],
+  username: "",
+  followerCount: 0,
+  followeeCount: 0,
+};
+
 const UserInfo = ({ data, handleClick }: UserInfoProps) => {
-  const [state, setState] = useState(data.isFollow);
+  const [userData, setUserData] = useState<ProfileDetail>(defaultUserData);
+  const loginUser = useProfileState();
+  const { username, imageUrl, bio, followeeCount, followerCount, profileId } =
+    userData;
+
+  useEffect(() => {
+    if (data) {
+      setUserData(data);
+    } else {
+      setUserData(loginUser);
+    }
+  }, [data, loginUser]);
 
   const handleFollow = useCallback(async () => {
     try {
-      await FollowAPI.createFollow(data.profileId);
-      setState(true);
+      await FollowAPI.createFollow(profileId);
       if (handleClick) {
-        handleClick(data.profileId);
+        handleClick(profileId);
       }
       alert("팔로우 완료");
     } catch (error) {
       console.error(error);
     }
-  }, [data.profileId, handleClick]);
+  }, [profileId, handleClick]);
 
   const handleUnfollow = useCallback(async () => {
     try {
-      await FollowAPI.deleteFollow(data.profileId);
-      setState(false);
+      await FollowAPI.deleteFollow(profileId);
       if (handleClick) {
-        handleClick(data.profileId);
+        handleClick(profileId);
       }
       alert("팔로우 취소");
     } catch (error) {
       console.error(error);
     }
-  }, [data.profileId, handleClick]);
+  }, [profileId, handleClick]);
 
   return (
     <Card>
       <Top>
-        <UserImg
-          size="md"
-          src={data.imageUrl || "/image/default-profile-image.png"}
-        />
+        <UserImg size="md" src={imageUrl} />
         <GridWrapper>
-          <UserName>{data.username}</UserName>
+          <UserName>{username}</UserName>
           <FollowWrapper>
             <Link
               href={
-                !Object.prototype.hasOwnProperty.call(data, "isFollow")
+                !Object.hasOwnProperty.call(userData, "isFollow")
                   ? "/my/follow?tab=follower"
-                  : `/profile/${data.profileId}/follow?tab=follower`
+                  : `/profile/${profileId}/follow?tab=follower`
               }
               passHref
             >
-              <FollowInfo>팔로워 {data.followerCount}</FollowInfo>
+              <FollowInfo>팔로워 {followerCount}</FollowInfo>
             </Link>
             <StyledDiv />
             <Link
               href={
-                !Object.prototype.hasOwnProperty.call(data, "isFollow")
+                !Object.hasOwnProperty.call(userData, "isFollow")
                   ? "/my/follow?tab=followee"
-                  : `/profile/${data.profileId}/follow?tab=followee`
+                  : `/profile/${profileId}/follow?tab=followee`
               }
               passHref
             >
-              <FollowInfo>팔로잉 {data.followeeCount}</FollowInfo>
+              <FollowInfo>팔로잉 {followeeCount}</FollowInfo>
             </Link>
           </FollowWrapper>
         </GridWrapper>
       </Top>
-      <Bio>{data.bio}</Bio>
-      {!Object.prototype.hasOwnProperty.call(data, "isFollow") && (
+      <Bio>{bio}</Bio>
+      {!Object.hasOwnProperty.call(userData, "isFollow") && (
         <Link href="/my/edit" passHref>
           <Button buttonType="large" colorType="skyblue" width="277">
             프로필 수정
           </Button>
         </Link>
       )}
-      {Object.prototype.hasOwnProperty.call(data, "isFollow") &&
-        (data.isFollow ? (
+      {Object.hasOwnProperty.call(userData, "isFollow") &&
+        (userData.isFollow ? (
           <Button
             buttonType="line"
             colorType="skyblue"
