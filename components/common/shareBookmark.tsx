@@ -23,6 +23,7 @@ const ShareBookmark = ({
   bookmarkId,
 }: ShareBookmarkProps) => {
   const [userList, setUserList] = useState<Profile[]>([]);
+  const [searchList, setSearchList] = useState<Profile[]>([]);
   const [selectUser, setSelectUser] = useState<number>();
   const { profileId } = useProfileState();
 
@@ -31,6 +32,7 @@ const ShareBookmark = ({
       try {
         const { data } = await profileAPI.getFollow(profileId, "follower", "");
         setUserList(data.profiles);
+        setSearchList(data.profiles);
       } catch (error) {
         console.error(error);
       }
@@ -51,6 +53,17 @@ const ShareBookmark = ({
     }
   };
 
+  const search = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
+      setSearchList(userList);
+    }
+    const searchRegExp = new RegExp(`.*${e.target.value}.*`, "ig");
+    const searchUsers = userList.filter(({ username }) =>
+      searchRegExp.test(username)
+    );
+    setSearchList(searchUsers);
+  };
+
   return (
     <Modal width={400} height={700} isShow={isShow} setIsShow={setIsShow}>
       <Wrapper>
@@ -59,10 +72,10 @@ const ShareBookmark = ({
             close
           </button>
           <h3>머구리에게 공유하기</h3>
-          <input type="text" />
+          <input onChange={search} type="text" />
         </SearchBox>
         <UserBox>
-          {userList?.map((user) => (
+          {searchList?.map((user) => (
             <UserList key={user.profileId}>
               <Label
                 style={{
