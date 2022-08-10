@@ -22,28 +22,23 @@ const FilterElement = ({
   checked,
   ...props
 }: FilterElementProps & WrapperProps) => {
-  return (
-    <label htmlFor={title}>
-      <Wrapper
-        count={count}
-        type={type}
-        title={title}
-        isSelected={isSelected}
-        disabled={disabled}
-        {...props}
-      >
-        {type === "tag" && count !== undefined
-          ? `# ${title} (${count})`
-          : `${title}`}
-        {type === "tag" ? (
+  if (type === "tag")
+    return (
+      <label htmlFor={title}>
+        <Wrapper title={title} isSelected={isSelected} {...props}>
+          # {title} ({count})
           <Checkbox id={title} disabled={disabled} checked={checked} />
-        ) : null}
-      </Wrapper>
-    </label>
+        </Wrapper>
+      </label>
+    );
+  return (
+    <Wrapper isSelected={isSelected} onClick={props.onClick}>
+      {title}
+    </Wrapper>
   );
 };
 
-const Wrapper = styled.div<WrapperProps & FilterElementProps>`
+const Wrapper = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -81,6 +81,7 @@ const MyFilterMenu = ({
         }
       });
     }
+
     setSelectedTag(checkedArr);
     getTagsData(checkedArr);
   };
@@ -143,7 +144,6 @@ const MyFilterMenu = ({
           getCategory={getCategory}
           categoryList={categoryList ? ["전체", ...categoryList] : ["전체"]}
           isOpen={isCategoryListOpen}
-          onClick={() => handleClick()}
         />
       </FilterBorder>
     </div>
