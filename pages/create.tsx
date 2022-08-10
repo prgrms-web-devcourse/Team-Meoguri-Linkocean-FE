@@ -15,6 +15,7 @@ import Tag from "@/components/create/tag";
 import { useRouter } from "next/router";
 import bookmarkAPI, { CreateBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
+import { useProfileDispatch } from "@/hooks/useProfile";
 
 const Create = () => {
   const [url, setUrl] = useState("");
@@ -31,6 +32,7 @@ const Create = () => {
   const urlRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const dispatch = useProfileDispatch();
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -86,8 +88,12 @@ const Create = () => {
 
   const create = async (payload: CreateBookmarkPayload) => {
     try {
-      console.log(payload);
       await bookmarkAPI.createBookmark(payload);
+      dispatch({
+        type: "CREATE_BOOKMARK",
+        tags: tag,
+        categories: payload.category,
+      });
       router.push("/my/favorite");
     } catch (error) {
       console.error(error);
