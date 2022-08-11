@@ -14,24 +14,33 @@ import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
 
 const PAGE_SIZE = 8;
 
-interface MyBookmarkProps {
+interface OtherBookmarkProps {
   PageTitle: string;
 }
 
-const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
+const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const router = useRouter();
+  const { profileId } = router.query;
   const searchInput = useRef<HTMLInputElement>(null);
   const [requestQuery, setRequestQuery] = useState("");
-  const [myBookmarks, setMyBookmarks] = useState<BookmarkList>({
+  const [oherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
     totalCount: 0,
     bookmarks: [],
   });
+  const [id, setId] = useState<number>(0);
+  const [inputText, setInputText] = useState("");
 
-  const getMyBookmarksApi = (query: string) => {
+  useEffect(() => {
+    if (profileId) {
+      setId(parseInt(profileId[0], 10));
+    }
+  }, []);
+
+  const getOtherBookmarksApi = (query: string) => {
     (async () => {
       try {
-        const res = await bookmarkAPI.getMyBookmarks(query);
-        setMyBookmarks(res.data as BookmarkList);
+        const res = await bookmarkAPI.getOtherBookmarks(id, query);
+        setOtherBookmarks(res.data);
       } catch (error) {
         console.error(error);
       }
@@ -91,10 +100,15 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
 
   useEffect(() => {
     // requestQuery가 변경될 때 api 호출
-    getMyBookmarksApi(requestQuery);
+    console.log(requestQuery);
+    getOtherBookmarksApi(requestQuery);
     // const temp = deleteDuplicateQuery(requestQuery, "favorite");
     // router.push(`${router.pathname}?&${temp}`);
   }, [requestQuery]);
+
+  const changePage = (pageNum: number) => {
+    console.log(pageNum);
+  };
 
   const onKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
@@ -102,10 +116,6 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       console.log("123");
     }
   };
-  const changePage = (pageNum: number) => {
-    console.log(pageNum);
-  };
-
   return (
     <Wrapper>
       <Title>{PageTitle}</Title>
@@ -131,7 +141,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
         </SelectDiv>
       </FilterDiv>
       <ContentDiv>
-        {myBookmarks.bookmarks.map((element) => (
+        {oherBookmarks.bookmarks.map((element) => (
           <BookmarkCard
             key={element.title}
             data={element}
@@ -141,7 +151,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       </ContentDiv>
       <PaginationDiv>
         <Pagination
-          count={Math.ceil(myBookmarks.totalCount / PAGE_SIZE)}
+          count={Math.ceil(oherBookmarks.totalCount / PAGE_SIZE)}
           onChange={(pageNum) => {
             changePage(pageNum);
           }}
@@ -187,4 +197,4 @@ const PaginationDiv = styled.div`
   margin-top: 26px;
 `;
 
-export default MyBookmark;
+export default OtherBookmark;

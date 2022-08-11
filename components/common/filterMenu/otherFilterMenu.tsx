@@ -8,7 +8,7 @@ import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
 
 export interface OtherFilterMenuProps {
-  tagList?: { name: string; count: number }[];
+  tagList?: { tag: string; count: number }[];
   categoryList?: string[];
   isFavorite?: boolean;
   getTagsData: (arr: string[]) => void;
@@ -35,7 +35,7 @@ const OtherFilterMenu = ({
     if (url.includes("favorite")) {
       setFavoriteSelected(true);
     }
-    if (url.includes("tag")) {
+    if (url.includes("tags")) {
       setIsTagListOpen(true);
     }
     if (url.includes("category")) {
@@ -136,7 +136,7 @@ const OtherFilterMenu = ({
         </FilterHeader>
         <FilterFolder
           getCategory={getCategory}
-          categoryList={categoryList}
+          categoryList={categoryList ? ["전체", ...categoryList] : ["전체"]}
           isOpen={isCategoryListOpen}
           onClick={() => handleClick()}
         />
