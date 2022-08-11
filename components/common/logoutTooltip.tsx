@@ -1,19 +1,15 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
-import Link from "next/link";
 import storage from "@/utils/localStorage";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const LogoutTooltip = ({ ...props }) => {
-  const router = useRouter();
-
   const handleLogout = () => {
     try {
       storage.removeItem("OAUTH_TYPE");
       storage.removeItem("LINKOCEAN_TOKEN");
-      signOut();
-      router.push("/");
+      signOut({ callbackUrl: "/" });
     } catch (error) {
       console.error(error);
     }
@@ -22,9 +18,7 @@ const LogoutTooltip = ({ ...props }) => {
   return (
     <Tooltip {...props}>
       <Arrow />
-      <Link href="/" passHref>
-        <Logout onClick={handleLogout}>logout</Logout>
-      </Link>
+      <Logout onClick={handleLogout}>logout</Logout>
     </Tooltip>
   );
 };
