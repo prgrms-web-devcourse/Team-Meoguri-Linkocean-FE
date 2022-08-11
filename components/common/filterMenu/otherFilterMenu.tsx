@@ -1,4 +1,5 @@
 import { color } from "@/styles/theme";
+import { TagType } from "@/types/type";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,7 +9,7 @@ import FilterFolder from "./filterFolder";
 import FilterHeader from "./filterHeader";
 
 export interface OtherFilterMenuProps {
-  tagList?: { tag: string; count: number }[];
+  tagList?: TagType[];
   categoryList?: string[];
   isFavorite?: boolean;
   getTagsData: (arr: string[]) => void;

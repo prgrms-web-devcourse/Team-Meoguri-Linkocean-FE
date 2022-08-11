@@ -15,24 +15,33 @@ const Category = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<string>();
   const [otherProfileInfo, setOtherProfileInfo] = useState<ProfileDetail>();
+  // const [id, setId] = useState<number>(0);
   const { profileId } = router.query;
 
-  const getOtherProfileApi = (id: number) => {
-    (async () => {
-      try {
-        const res = await profileAPI.getOtherProfile(id);
-        setOtherProfileInfo(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  };
+  // const getOtherProfileApi = (p_id: number) => {
+  //   (async () => {
+  //     try {
+  //       const res = await profileAPI.getOtherProfile(p_id);
+  //       setOtherProfileInfo(res.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })();
+  // };
+
+  const getOtherProfileApi = useCallback(async () => {
+    const id = parseInt(router.query.profileId as string, 10);
+    try {
+      const response = await profileAPI.getOtherProfile(id);
+      setOtherProfileInfo(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [router.query.profileId]);
 
   useEffect(() => {
-    if (profileId !== undefined) {
-      getOtherProfileApi(parseInt(profileId[0], 10));
-    }
-  }, []);
+    getOtherProfileApi();
+  }, [router.query.profileId]);
 
   useEffect(() => {
     const tagsString = tags === undefined ? "" : tags.join(",");
