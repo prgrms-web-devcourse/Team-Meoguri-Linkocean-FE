@@ -89,11 +89,18 @@ const Create = () => {
   const create = async (payload: CreateBookmarkPayload) => {
     try {
       await bookmarkAPI.createBookmark(payload);
-      dispatch({
-        type: "CREATE_BOOKMARK",
-        tags: tag,
-        categories: payload.category,
-      });
+      if (payload.category === "no-category") {
+        dispatch({
+          type: "CREATE_BOOKMARK",
+          tags: tag,
+        });
+      } else {
+        dispatch({
+          type: "CREATE_BOOKMARK",
+          tags: tag,
+          categories: payload.category,
+        });
+      }
       router.push("/my/favorite");
     } catch (error) {
       console.error(error);
