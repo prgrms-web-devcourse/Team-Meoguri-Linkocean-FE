@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
+import reactionAPI from "@/utils/apis/reactions";
+import { Reaction as ReactionType } from "@/types/type";
 
 export interface ReactionProps {
   like: number;
@@ -34,6 +36,7 @@ const Reaction = ({ like, hate, isLike, isHate, id }: ReactionProps) => {
       setLikeCount(likeCount - 1);
     } else {
       // Like 카운트 올라갈 때
+      createReaction("like");
       setSelectLike(true);
       setLikeCount(likeCount + 1);
     }
@@ -53,17 +56,25 @@ const Reaction = ({ like, hate, isLike, isHate, id }: ReactionProps) => {
       setHateCount(hateCount - 1);
     } else {
       // Hate 카운트 올라갈 때
+      createReaction("hate");
+
       setSelectHate(true);
       setHateCount(hateCount + 1);
     }
     if (selectLike) {
-      // Like 카운트 빼주고, Hate 올리기
       setSelectHate(true);
       setHateCount(hateCount + 1);
       setSelectLike(false);
       setLikeCount(likeCount - 1);
     }
   };
+
+  const createReaction = useCallback(
+    async (reactionType: ReactionType) => {
+      await reactionAPI.createReaction(id, reactionType);
+    },
+    [id]
+  );
 
   return (
     <Wrapper>
