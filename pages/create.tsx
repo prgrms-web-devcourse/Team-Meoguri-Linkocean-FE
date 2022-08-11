@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import bookmarkAPI, { CreateBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
 import { useProfileDispatch } from "@/hooks/useProfile";
-import BackButton from "@/components/common/backButton";
+import Link from "next/link";
 
 const Create = () => {
   const [url, setUrl] = useState("");
@@ -254,14 +254,16 @@ const Create = () => {
               >
                 작성 완료
               </Button>
-              <Button
-                buttonType="large"
-                colorType="gray"
-                width="194"
-                style={{ margin: "60px auto" }}
-              >
-                취소
-              </Button>
+              <Link href="/" passHref>
+                <Button
+                  buttonType="large"
+                  colorType="gray"
+                  width="194"
+                  style={{ margin: "60px auto" }}
+                >
+                  취소
+                </Button>
+              </Link>
             </ButtonWrapper>
           </DivWrapper>
         </Contents>
