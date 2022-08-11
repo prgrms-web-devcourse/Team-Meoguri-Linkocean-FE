@@ -102,6 +102,7 @@ const EditPage = () => {
       alert("내 프로필 수정이 완료되었습니다.");
       router.back();
     } catch (e) {
+      setUserNameErrorMsg("* 유저네임이 중복되었습니다.");
       console.error(e);
     }
   };

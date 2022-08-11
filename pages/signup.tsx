@@ -30,7 +30,7 @@ type UserCategory = {
 const SignUp = () => {
   const [userCategory, setUserCategory] = useState<UserCategory>({
     value: [],
-    errorText: "❗️ 1개 이상 선택해주세요.",
+    errorText: "* 1개 이상 선택해주세요.",
   });
   const [username, setUsername] = useState({ value: "", errorText: "" });
 
@@ -53,7 +53,7 @@ const SignUp = () => {
     const nextValue = getNextUserCategoryValue(selectedCategory);
     setUserCategory({
       value: nextValue,
-      errorText: nextValue.length > 0 ? "" : "❗️ 1개 이상 선택해주세요.",
+      errorText: nextValue.length > 0 ? "" : "* 1개 이상 선택해주세요.",
     });
   };
   const handleUsernameChange: ChangeInputHandler = (e) => {
@@ -62,7 +62,7 @@ const SignUp = () => {
       value: nextValue,
       errorText: usernameRegExp.test(nextValue)
         ? ""
-        : "❗️ 유저 네임은 2-6자의 한글, 영어, 숫자만 사용 가능합니다.",
+        : "* 유저 네임은 2-6자의 한글, 영어, 숫자만 사용 가능합니다.",
     });
   };
   const handleSubmit = (e: FormEvent) => {
@@ -82,7 +82,7 @@ const SignUp = () => {
         if (isDuplicatedUserName) {
           setUsername({
             ...username,
-            errorText: "❗️ 이미 사용중인 유저 네임입니다.",
+            errorText: "* 이미 사용중인 유저 네임입니다.",
           });
           usernameRef.current?.focus();
         }
