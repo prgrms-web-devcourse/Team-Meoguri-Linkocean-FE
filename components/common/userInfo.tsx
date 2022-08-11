@@ -13,13 +13,7 @@ export interface UserInfoProps {
   handleClick?: (profileId: number) => void;
 }
 
-const defaultUserData: ProfileDetail = {
-  profileId: 0,
-  favoriteCategories: [],
-  username: "",
-  followerCount: 0,
-  followeeCount: 0,
-};
+const defaultUserData: ProfileDetail = {} as ProfileDetail;
 
 const UserInfo = ({ data, handleClick }: UserInfoProps) => {
   const [userData, setUserData] = useState<ProfileDetail>(defaultUserData);
@@ -91,14 +85,14 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
         </GridWrapper>
       </Top>
       <Bio>{bio}</Bio>
-      {!Object.hasOwnProperty.call(userData, "isFollow") && (
+      {userData.profileId === loginUser.profileId && (
         <Link href="/my/edit" passHref>
           <Button buttonType="large" colorType="skyblue" width="277">
             프로필 수정
           </Button>
         </Link>
       )}
-      {Object.hasOwnProperty.call(userData, "isFollow") &&
+      {userData.profileId !== loginUser.profileId &&
         (userData.isFollow ? (
           <Button
             buttonType="line"
