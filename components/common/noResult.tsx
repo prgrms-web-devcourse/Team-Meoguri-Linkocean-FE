@@ -5,7 +5,7 @@ const NoResult = () => {
   return (
     <Container>
       <ImageContainer>
-        <img src="image/crush.png" alt="검색 결과가 없습니다!" aria-hidden />
+        <img src="/image/crush.png" alt="검색 결과가 없습니다!" aria-hidden />
       </ImageContainer>
       <Text>검색 결과가 없습니다!</Text>
     </Container>

@@ -3,7 +3,7 @@ import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import OtherBookmark from "@/components/common/otherBookmark/otherBookmarkTemplate";
+import OtherBookmark from "@/components/otherBookmark/otherBookmarkTemplate";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import profileAPI from "@/utils/apis/profile";
 import { ProfileDetail } from "@/types/model";
@@ -14,6 +14,7 @@ const Favorite = () => {
   const [category, setCategory] = useState<string>();
   const [tags, setTags] = useState<string[]>();
   const [otherProfileInfo, setOtherProfileInfo] = useState<ProfileDetail>();
+
   const getOtherProfileApi = (id: number) => {
     (async () => {
       try {
@@ -35,7 +36,7 @@ const Favorite = () => {
     const tagsString = tags === undefined ? "" : tags.join(",");
     const tagParamsObj = { tags: tagsString };
     const searchParams = new URLSearchParams(tagParamsObj).toString();
-    if (tags !== undefined && profileId) {
+    if (tags !== undefined && profileId !== undefined) {
       router.push(`/profile/${profileId[0]}/tag/?${searchParams}`);
     }
   }, [tags]);

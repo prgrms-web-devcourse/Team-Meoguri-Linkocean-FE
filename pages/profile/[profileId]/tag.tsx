@@ -3,14 +3,13 @@ import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import OtherBookmark from "@/components/common/otherBookmark/otherBookmarkTemplate";
+import OtherBookmark from "@/components/otherBookmark/otherBookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import profileAPI from "@/utils/apis/profile";
 import { ProfileDetail } from "@/types/model";
 
 const Tag = () => {
-  const profile = useProfileState();
   const router = useRouter();
   const { profileId } = router.query;
   const [tags, setTags] = useState<string[]>();

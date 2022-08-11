@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
 import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
+import NoResult from "@/components/common/noResult";
 
 const PAGE_SIZE = 8;
 
@@ -31,6 +32,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     (async () => {
       try {
         const res = await bookmarkAPI.getMyBookmarks(query);
+        console.log(query);
         setMyBookmarks(res.data as BookmarkList);
       } catch (error) {
         console.error(error);
@@ -47,8 +49,8 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   };
 
   const sorting = (element: string) => {
-    const query = deleteDuplicateQuery(requestQuery, "sort");
-    const queryWithSort = `${query}sort=${element}`;
+    const query = deleteDuplicateQuery(requestQuery, "order");
+    const queryWithSort = `${query}order=${element}`;
     setRequestQuery(queryWithSort);
   };
 
@@ -65,41 +67,25 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   };
 
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite) 새로고침할 때
-    let routerQuery = "";
-    const key = Object.keys(router.query)[0];
-    const value = router.query[key];
-    if (key === "category" || key === "tags") {
-      if (value === "전체") {
-        routerQuery = "";
-      } else if (typeof value === "string") {
-        routerQuery = `${key}=${value}`;
-      }
-    } else {
-      routerQuery = "favorite=true&";
-    }
-    setRequestQuery(routerQuery);
-  }, []);
-
-  useEffect(() => {
     // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
-    let routerQuery = "";
-    const key = Object.keys(router.query)[0];
-    const value = router.query[key];
-    if (key === "category" || key === "tags") {
-      if (value === "전체") {
-        routerQuery = "";
-      } else if (typeof value === "string") {
-        routerQuery = `${key}=${value}`;
-      }
-    } else {
-      routerQuery = "favorite=true&";
-    }
-    setRequestQuery(routerQuery);
+    if (!router.isReady) return;
     if (searchInput.current) {
       searchInput.current.value = "";
     }
-  }, [router.asPath, router.query]);
+    let routerQuery = "";
+    const key = Object.keys(router.query)[0];
+    const value = router.query[key];
+    if (key === "category" || key === "tags") {
+      if (value === "전체") {
+        routerQuery = "";
+      } else if (typeof value === "string") {
+        routerQuery = `${key}=${value}`;
+      }
+    } else {
+      routerQuery = "favorite=true&";
+    }
+    setRequestQuery(routerQuery);
+  }, [router.asPath]);
 
   useEffect(() => {
     // requestQuery가 변경될 때 api 호출
@@ -135,6 +121,10 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
         </SelectDiv>
       </FilterDiv>
       <ContentDiv>
+        {myBookmarks.totalCount === 0 &&
+        searchInput.current?.value.length !== 0 ? (
+          <NoResult />
+        ) : null}
         {myBookmarks.bookmarks.map((element) =>
           deleteId !== element.id ? (
             <BookmarkCard

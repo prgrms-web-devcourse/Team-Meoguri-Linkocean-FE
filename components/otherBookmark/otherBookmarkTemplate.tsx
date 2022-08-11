@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import Pagination from "@/components/common/pagination";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
 import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
+import NoResult from "../common/noResult";
 
 const PAGE_SIZE = 8;
 
@@ -22,7 +23,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
   const [requestQuery, setRequestQuery] = useState("");
-  const [oherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
+  const [otherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
     totalCount: 0,
     bookmarks: [],
   });
@@ -31,11 +32,12 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const getOtherBookmarksApi = (query: string) => {
     (async () => {
       try {
-        if (profileId) {
+        if (profileId !== undefined) {
           const res = await bookmarkAPI.getOtherBookmarks(
             parseInt(profileId[0], 10),
             query
           );
+          console.log(query);
           setOtherBookmarks(res.data);
         }
       } catch (error) {
@@ -43,7 +45,6 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
       }
     })();
   };
-
   const searching = () => {
     const keyword = searchInput.current?.value;
     if (keyword) {
@@ -53,8 +54,8 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   };
 
   const sorting = (element: string) => {
-    const query = deleteDuplicateQuery(requestQuery, "sort");
-    const queryWithSort = `${query}sort=${element}`;
+    const query = deleteDuplicateQuery(requestQuery, "order");
+    const queryWithSort = `${query}order=${element}`;
     setRequestQuery(queryWithSort);
   };
 
@@ -69,25 +70,13 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
       searching();
     }
   };
-  useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite) 새로고침할 때
-    let routerQuery = "";
-    const key = Object.keys(router.query)[0];
-    const value = router.query[key];
-    if (key === "category" || key === "tags") {
-      if (value === "전체") {
-        routerQuery = "";
-      } else if (typeof value === "string") {
-        routerQuery = `${key}=${value}`;
-      }
-    } else {
-      routerQuery = "favorite=true&";
-    }
-    setRequestQuery(routerQuery);
-  }, []);
 
   useEffect(() => {
     // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
+    if (!router.isReady) return;
+    if (searchInput.current) {
+      searchInput.current.value = "";
+    }
     let routerQuery = "";
     const key = Object.keys(router.query)[0];
     const value = router.query[key];
@@ -101,17 +90,12 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
       routerQuery = "favorite=true&";
     }
     setRequestQuery(routerQuery);
-    if (searchInput.current) {
-      searchInput.current.value = "";
-    }
-  }, [router.asPath, router.query]);
+  }, [router.isReady, router.asPath]);
 
   useEffect(() => {
     // requestQuery가 변경될 때 api 호출
     getOtherBookmarksApi(requestQuery);
   }, [requestQuery]);
-
-  useEffect(() => {}, [deleteId]);
 
   return (
     <Wrapper>
@@ -138,19 +122,21 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
         </SelectDiv>
       </FilterDiv>
       <ContentDiv>
-        {oherBookmarks.bookmarks.map((element) =>
-          deleteId !== element.id ? (
-            <BookmarkCard
-              key={element.title}
-              data={element}
-              deleteBookmark={setDeleteId}
-            />
-          ) : null
-        )}
+        {otherBookmarks.totalCount === 0 &&
+        searchInput.current?.value.length !== 0 ? (
+          <NoResult />
+        ) : null}
+        {otherBookmarks.bookmarks.map((element) => (
+          <BookmarkCard
+            key={element.title}
+            data={element}
+            deleteBookmark={setDeleteId}
+          />
+        ))}
       </ContentDiv>
       <PaginationDiv>
         <Pagination
-          count={Math.ceil(oherBookmarks.totalCount / PAGE_SIZE)}
+          count={Math.ceil(otherBookmarks.totalCount / PAGE_SIZE)}
           onChange={(pageNum) => {
             changePage(pageNum);
           }}

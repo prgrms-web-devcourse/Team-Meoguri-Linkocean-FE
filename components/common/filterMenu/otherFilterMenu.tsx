@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { color } from "@/styles/theme";
 import { TagType } from "@/types/type";
 import styled from "@emotion/styled";
@@ -95,12 +96,7 @@ const OtherFilterMenu = ({
   return (
     <div ref={filterMenuRef}>
       <FilterBorder>
-        <Link
-          href={{
-            pathname: "/profile/[id]/favorite",
-            query: { id: profileId },
-          }}
-        >
+        <Link href={`/profile/${profileId}/favorite`}>
           <FilterHeader
             src="/icon/full-star.svg"
             alt="star"
