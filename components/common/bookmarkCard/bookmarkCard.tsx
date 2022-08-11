@@ -201,6 +201,7 @@ const Category = styled.span`
 const CreateDate = styled.span`
   color: ${color.$gray400};
   margin-left: 5px;
+  transform: translateY(3px);
   ${text.$overline}
 `;
 
@@ -242,6 +243,7 @@ const Like = styled.div`
   align-items: center;
   color: ${color.$mainColor};
   font-weight: bold;
+  transform: translateY(1px);
   i {
     width: 15px;
     height: 15px;
