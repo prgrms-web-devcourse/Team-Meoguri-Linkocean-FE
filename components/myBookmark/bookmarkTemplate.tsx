@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import Pagination from "@/components/common/pagination";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -22,9 +22,9 @@ interface MyBookmarkProps {
 const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [requestQuery, setRequestQuery] = useState("");
+  const [requestQuery, setRequestQuery] = useState("favorite=true");
   const [myBookmarks, setMyBookmarks] = useState<BookmarkList>({
-    totalCount: 0,
+    totalCount: -1,
     bookmarks: [],
   });
   const [deleteId, setDeleteId] = useState<number>();
@@ -41,9 +41,11 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
 
   const searching = () => {
     const keyword = searchInput.current?.value;
+    const query = deleteDuplicateQuery(requestQuery, "searchTitle");
     if (keyword) {
-      const query = deleteDuplicateQuery(requestQuery, "searchTitle");
       setRequestQuery(`${query}searchTitle=${keyword}`);
+    } else {
+      setRequestQuery(`${query}`);
     }
   };
 
@@ -66,7 +68,6 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   };
 
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
     if (!router.isReady) return;
     if (searchInput.current) {
       searchInput.current.value = "";
@@ -84,13 +85,11 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       routerQuery = "favorite=true&";
     }
     setRequestQuery(routerQuery);
-  }, [router.asPath]);
+  }, [router.isReady, router.asPath]);
 
   useEffect(() => {
     // requestQuery가 변경될 때 api 호출
     getMyBookmarksApi(requestQuery);
-    // const temp = deleteDuplicateQuery(requestQuery, "favorite");
-    // router.push(`${router.pathname}?&${temp}`);
   }, [requestQuery]);
 
   useEffect(() => {}, [deleteId]);
@@ -119,21 +118,22 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           </Select>
         </SelectDiv>
       </FilterDiv>
-      <ContentDiv>
-        {myBookmarks.totalCount === 0 &&
-        searchInput.current?.value.length !== 0 ? (
-          <NoResult />
-        ) : null}
-        {myBookmarks.bookmarks.map((element) =>
-          deleteId !== element.id ? (
-            <BookmarkCard
-              key={element.title}
-              data={element}
-              deleteBookmark={setDeleteId}
-            />
-          ) : null
-        )}
-      </ContentDiv>
+      {myBookmarks.totalCount === 0 &&
+      searchInput.current?.value.length !== 0 ? (
+        <NoResult />
+      ) : (
+        <ContentDiv>
+          {myBookmarks.bookmarks.map((element) =>
+            deleteId !== element.id ? (
+              <BookmarkCard
+                key={element.title}
+                data={element}
+                deleteBookmark={setDeleteId}
+              />
+            ) : null
+          )}
+        </ContentDiv>
+      )}
       <PaginationDiv>
         <Pagination
           count={Math.ceil(myBookmarks.totalCount / PAGE_SIZE)}
@@ -155,7 +155,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  ${text.$headline4}
+  ${text.$headline5}
   color:${color.$gray800};
   margin: 9px 0 0 15px;
 `;

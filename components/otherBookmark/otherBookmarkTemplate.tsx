@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import Pagination from "@/components/common/pagination";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -22,9 +22,9 @@ interface OtherBookmarkProps {
 const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [requestQuery, setRequestQuery] = useState("");
+  const [requestQuery, setRequestQuery] = useState("favorite=true&");
   const [otherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
-    totalCount: 0,
+    totalCount: -1,
     bookmarks: [],
   });
   const { profileId } = router.query;
@@ -46,9 +46,11 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   };
   const searching = () => {
     const keyword = searchInput.current?.value;
+    const query = deleteDuplicateQuery(requestQuery, "searchTitle");
     if (keyword) {
-      const query = deleteDuplicateQuery(requestQuery, "searchTitle");
       setRequestQuery(`${query}searchTitle=${keyword}`);
+    } else {
+      setRequestQuery(`${query}`);
     }
   };
 
@@ -71,7 +73,6 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   };
 
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
     if (!router.isReady) return;
     if (searchInput.current) {
       searchInput.current.value = "";
@@ -86,13 +87,12 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
         routerQuery = `${key}=${value}`;
       }
     } else {
-      routerQuery = "favorite=true&";
+      routerQuery = "favorite=true";
     }
     setRequestQuery(routerQuery);
   }, [router.isReady, router.asPath]);
 
   useEffect(() => {
-    // requestQuery가 변경될 때 api 호출
     getOtherBookmarksApi(requestQuery);
   }, [requestQuery]);
 
@@ -154,7 +154,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  ${text.$headline4}
+  ${text.$headline5}
   color:${color.$gray800};
   margin: 9px 0 0 15px;
 `;
