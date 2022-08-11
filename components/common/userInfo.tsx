@@ -64,7 +64,7 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
               href={
                 userData.profileId === loginUser.profileId
                   ? "/my/follow"
-                  : `/profile/${profileId}`
+                  : `/profile/${profileId}/follow`
               }
               passHref
             >
