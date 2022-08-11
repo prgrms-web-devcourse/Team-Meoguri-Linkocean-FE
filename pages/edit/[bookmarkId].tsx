@@ -16,13 +16,11 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
-import { BookmarkDetail } from "@/types/model";
 
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
 
 const Edit = () => {
   const router = useRouter();
-  const [bookmark, setBookmark] = useState<BookmarkDetail>();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -38,6 +36,7 @@ const Edit = () => {
         setTag(tag as string[]);
         setCategory(category);
         setOpenType(openType);
+        setSelectedOption({ value: category, text: category });
       } catch (error) {
         console.log(error);
         router.push("/404");
@@ -57,11 +56,13 @@ const Edit = () => {
   const [openType, setOpenType] = useState<OpenType>();
   const [tags, setTags] = useState<string[]>();
   const [submit, setSubmit] = useState(false);
+  const [selectedOption, setSelectedOption] =
+    useState<{ value: string; text: string } | undefined>(undefined);
 
   const titleRef = useRef<HTMLInputElement>(null);
 
   const handleChangeCategory = (elements: string) => {
-    setCategory(elements as typeof CATEGORY[number]);
+    setCategory(elements as EditCategoryType);
   };
 
   const getCategory = (element: string) => {
@@ -170,33 +171,35 @@ const Edit = () => {
             )}
 
             <StyledLabel>카테고리</StyledLabel>
-            <StyledSelect>
-              <Select
-                selectedOption={
-                  category === "no-category"
-                    ? undefined
-                    : { value: category, text: category }
-                }
-                width="470px"
-                onChange={handleChangeCategory}
-              >
-                <Select.Trigger>선택</Select.Trigger>
-                <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                  <Select.Option value="자기계발">자기계발</Select.Option>
-                  <Select.Option value="인문">인문</Select.Option>
-                  <Select.Option value="정치">정치</Select.Option>
-                  <Select.Option value="사회">사회</Select.Option>
-                  <Select.Option value="예술">예술</Select.Option>
-                  <Select.Option value="과학">과학</Select.Option>
-                  <Select.Option value="기술">기술</Select.Option>
-                  <Select.Option value="it">IT</Select.Option>
-                  <Select.Option value="가정">가정</Select.Option>
-                  <Select.Option value="건강">건강</Select.Option>
-                  <Select.Option value="여행">여행</Select.Option>
-                  <Select.Option value="요리">요리</Select.Option>
-                </Select.OptionList>
-              </Select>
-            </StyledSelect>
+            {selectedOption && (
+              <StyledSelect>
+                <Select
+                  selectedOption={
+                    selectedOption.value === "no-category"
+                      ? undefined
+                      : selectedOption
+                  }
+                  width="470px"
+                  onChange={handleChangeCategory}
+                >
+                  <Select.Trigger>선택</Select.Trigger>
+                  <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
+                    <Select.Option value="자기계발">자기계발</Select.Option>
+                    <Select.Option value="인문">인문</Select.Option>
+                    <Select.Option value="정치">정치</Select.Option>
+                    <Select.Option value="사회">사회</Select.Option>
+                    <Select.Option value="예술">예술</Select.Option>
+                    <Select.Option value="과학">과학</Select.Option>
+                    <Select.Option value="기술">기술</Select.Option>
+                    <Select.Option value="it">IT</Select.Option>
+                    <Select.Option value="가정">가정</Select.Option>
+                    <Select.Option value="건강">건강</Select.Option>
+                    <Select.Option value="여행">여행</Select.Option>
+                    <Select.Option value="요리">요리</Select.Option>
+                  </Select.OptionList>
+                </Select>
+              </StyledSelect>
+            )}
 
             <StyledLabel>태그</StyledLabel>
             <Tag tag={tag} setTag={setTag} />
