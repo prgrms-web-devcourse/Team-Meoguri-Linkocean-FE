@@ -32,7 +32,6 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     (async () => {
       try {
         const res = await bookmarkAPI.getMyBookmarks(query);
-        console.log(query);
         setMyBookmarks(res.data as BookmarkList);
       } catch (error) {
         console.error(error);
