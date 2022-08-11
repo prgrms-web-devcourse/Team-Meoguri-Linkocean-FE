@@ -62,7 +62,7 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
           <FollowWrapper>
             <Link
               href={
-                !Object.hasOwnProperty.call(userData, "isFollow")
+                userData.profileId === loginUser.profileId
                   ? "/my/follow"
                   : `/profile/${profileId}`
               }
@@ -73,7 +73,7 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
             <StyledDiv />
             <Link
               href={
-                !Object.hasOwnProperty.call(userData, "isFollow")
+                userData.profileId === loginUser.profileId
                   ? "/my/follow"
                   : `/profile/${profileId}/follow`
               }
