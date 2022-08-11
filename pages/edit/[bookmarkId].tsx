@@ -13,23 +13,27 @@ import { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
+import { useProfileDispatch } from "@/hooks/useProfile";
 
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
 
 const Edit = () => {
   const router = useRouter();
+  const dispatch = useProfileDispatch();
 
   useEffect(() => {
     if (!router.isReady) return;
     const id = Number(router.query.bookmarkId);
+
     (async () => {
       try {
         const {
           data: { url, title, memo, tags: tag, category, openType },
         } = await bookmarkAPI.getBookmarkDetail(id);
+
         setUrl(url);
         setTitle(title);
         setMemo(memo as string);
@@ -37,12 +41,17 @@ const Edit = () => {
         setCategory(category);
         setOpenType(openType);
         setSelectedOption({ value: category, text: category });
+
+        dispatch({
+          type: "REMOVE_BOOKMARK",
+          tags: tag,
+        });
       } catch (error) {
         console.log(error);
         router.push("/404");
       }
     })();
-  }, [router.query, router.isReady, router]);
+  }, [router.query, router.isReady, router, dispatch]);
 
   const getTags = (elements: string[]) => {
     setTags(elements);
@@ -91,7 +100,21 @@ const Edit = () => {
   const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
     try {
       await bookmarkAPI.editBookmark(bookmarkId, payload);
-      Router.push(`/my/detail/${Number(router.query.bookmarkId)}`);
+
+      if (payload.category === "no-category") {
+        dispatch({
+          type: "CREATE_BOOKMARK",
+          tags: tag,
+        });
+      } else {
+        dispatch({
+          type: "CREATE_BOOKMARK",
+          tags: tag,
+          categories: payload.category,
+        });
+      }
+
+      router.push(`/my/detail/${Number(router.query.bookmarkId)}`);
     } catch (error) {
       console.error(error);
     }
