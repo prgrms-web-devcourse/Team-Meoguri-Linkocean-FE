@@ -1,4 +1,11 @@
-const color = {
+const size = {
+  desktop: "1440px",
+  laptop: "1024px",
+  tablet: "640px",
+  mobile: "320px",
+};
+
+export const color = {
   $mainColor: "#3e4ca2",
   $skyBlue: "#88Bedf",
   $aqua: "#94f1ea",
@@ -16,7 +23,7 @@ const color = {
   $gray900: "#333333",
 };
 
-const text = {
+export const text = {
   $headline2: `font-family: 'Pretendard'; 
     font-weight: 700; 
     font-size: 60px; 
@@ -68,11 +75,16 @@ const text = {
     line-height: 12px;`,
 };
 
-const shortenOneLine = `
+export const shortenOneLine = `
   display: inline-block;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `;
 
-export { color, text, shortenOneLine };
+export const media = {
+  desktop: `@media only screen and (max-width: ${size.desktop})`,
+  laptop: `@media only screen and (max-width: ${size.laptop})`,
+  tablet: `@media only screen and (max-width: ${size.tablet})`,
+  mobile: `@media only screen and (max-width: ${size.mobile})`,
+};
