@@ -11,7 +11,6 @@ const Select = ({
   children,
   onChange,
 }: Partial<SelectProviderProps>) => {
-  console.log(selectedOption);
   return (
     <SelectProvider
       width={width}
