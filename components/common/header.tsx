@@ -22,10 +22,10 @@ const Header: React.FC = () => {
         <Logo>
           <LinkOcean />
           <Image
-            src="/icon/logo.svg"
+            src="/image/logo.jpg"
             alt="Link Ocean"
             width={252}
-            height={48}
+            height={44}
           />
         </Logo>
       </Link>

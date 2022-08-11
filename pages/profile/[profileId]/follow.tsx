@@ -1,9 +1,6 @@
 import PageLayout from "@/components/common/pageLayout";
-import styled from "@emotion/styled";
 import Head from "next/head";
 import UserInfo from "@/components/common/userInfo";
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import { getProfile } from "@/types/dummyData";
 import FollowRadio from "@/components/follow/followRadio";
 import Following from "@/components/common/following";
 import { useRouter } from "next/router";
@@ -19,6 +16,7 @@ import profileAPI from "@/utils/apis/profile";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 
 const PAGE_SIZE = 8;
 
@@ -183,12 +181,18 @@ const Follow = () => {
   });
 
   useEffect(() => {
-    if (router.query.profileId === undefined) {
+    if (!router.isReady || myProfile.profileId === 0) {
       return;
     }
 
+    const queryProfileId = parseInt(router.query.profileId as string, 10);
+    if (queryProfileId === myProfile.profileId) {
+      router.push(`/my/follow`);
+    }
+
     getUserProfile();
-  }, [router.query.profileId, getUserProfile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, myProfile.profileId]);
 
   useEffect(() => {
     getFollowProfiles();
@@ -209,14 +213,19 @@ const Follow = () => {
           {userProfile ? (
             <>
               <UserInfo data={userProfile} handleClick={handleUserInfo} />
-              <MyFilterMenu
-                tagList={userProfile.tags?.map(({ tag, count }) => ({
-                  name: tag,
-                  count,
-                }))}
+              <OtherFilterMenu
+                tagList={userProfile.tags}
                 categoryList={userProfile.categories}
-                getCategoryData={() => {}}
-                getTagsData={() => {}}
+                getCategoryData={(category) => {
+                  router.push(
+                    `/profile/${userProfile.profileId}/category?category=${category}`
+                  );
+                }}
+                getTagsData={(tags) => {
+                  router.push(
+                    `/profile/${userProfile.profileId}/tag?tags=${tags[0]}`
+                  );
+                }}
               />
             </>
           ) : (
