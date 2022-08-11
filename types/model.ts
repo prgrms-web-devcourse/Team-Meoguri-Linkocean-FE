@@ -30,7 +30,7 @@ export interface Bookmark {
   id: number;
   title: string;
   tags?: string[];
-  category?: typeof CATEGORY[number];
+  category: typeof CATEGORY[number] | "no-category";
   url: string;
   updatedAt: string;
   openType: OpenType;
@@ -43,7 +43,7 @@ export interface BookmarkDetail {
   url: string;
   title: string;
   imageUrl?: string;
-  category?: typeof CATEGORY[number];
+  category: typeof CATEGORY[number] | "no-category";
   memo?: string;
   openType: OpenType;
   isFavorite: boolean;

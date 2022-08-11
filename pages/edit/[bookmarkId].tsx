@@ -9,32 +9,56 @@ import Select from "@/components/common/select";
 import Radio from "@/components/common/radio";
 import Button from "@/components/common/button";
 import ErrorText from "@/components/common/errorText";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
 import Link from "next/link";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
+import { BookmarkDetail } from "@/types/model";
+
+type EditCategoryType = typeof CATEGORY[number] | "no-category";
 
 const Edit = () => {
-  const INIT_OPTION = { value: bookmark.category, text: bookmark.category };
+  const router = useRouter();
+  const [bookmark, setBookmark] = useState<BookmarkDetail>();
 
-  const [title, setTitle] = useState<string>(bookmark.title);
-  const [memo, setMemo] = useState(bookmark.memo);
-  const [category, setCategory] = useState<typeof CATEGORY[number]>(
-    INIT_OPTION.value as typeof CATEGORY[number]
-  );
-  const [tag, setTag] = useState<string[]>(bookmark.tags);
+  useEffect(() => {
+    if (!router.isReady) return;
+    const id = Number(router.query.bookmarkId);
+    (async () => {
+      try {
+        const {
+          data: { url, title, memo, tags: tag, category, openType },
+        } = await bookmarkAPI.getBookmarkDetail(id);
+        setUrl(url);
+        setTitle(title);
+        setMemo(memo as string);
+        setTag(tag as string[]);
+        setCategory(category);
+        setOpenType(openType);
+      } catch (error) {
+        console.log(error);
+        router.push("/404");
+      }
+    })();
+  }, [router.query, router.isReady, router]);
+
+  const getTags = (elements: string[]) => {
+    setTags(elements);
+  };
+
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [memo, setMemo] = useState("");
+  const [category, setCategory] = useState<EditCategoryType>("no-category");
+  const [tag, setTag] = useState<string[]>([]);
   const [openType, setOpenType] = useState<OpenType>();
   const [tags, setTags] = useState<string[]>();
   const [submit, setSubmit] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
-
-  const getTags = (elements: string[]) => {
-    setTags(elements);
-  };
 
   const handleChangeCategory = (elements: string) => {
     setCategory(elements as typeof CATEGORY[number]);
@@ -45,7 +69,6 @@ const Edit = () => {
   };
 
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    bookmark.openType = event.target.value;
     setOpenType(event.target.value as OpenType);
   };
 
@@ -55,7 +78,7 @@ const Edit = () => {
       titleRef.current?.focus();
     }
 
-    edit(bookmark.id, {
+    edit(Number(router.query.bookmarkId), {
       title,
       memo,
       category,
@@ -63,10 +86,11 @@ const Edit = () => {
       openType: openType as OpenType,
     });
   };
+
   const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
     try {
       await bookmarkAPI.editBookmark(bookmarkId, payload);
-      Router.push("my/favorite");
+      Router.push(`/my/detail/${Number(router.query.bookmarkId)}`);
     } catch (error) {
       console.error(error);
     }
@@ -76,7 +100,7 @@ const Edit = () => {
     <PageLayout>
       {" "}
       <PageLayout.Aside>
-        <UserInfo data={data} />
+        <UserInfo />
         <MyFilterMenu
           getTagsData={getTags}
           getCategoryData={getCategory}
@@ -92,7 +116,7 @@ const Edit = () => {
             <StyledLabel>URL</StyledLabel>
             <StyledInput
               style={{ marginBottom: "40px" }}
-              value={bookmark.url}
+              value={url}
               disabled
             />
 
@@ -148,7 +172,11 @@ const Edit = () => {
             <StyledLabel>카테고리</StyledLabel>
             <StyledSelect>
               <Select
-                selectedOption={INIT_OPTION}
+                selectedOption={
+                  category === "no-category"
+                    ? undefined
+                    : { value: category, text: category }
+                }
                 width="470px"
                 onChange={handleChangeCategory}
               >
@@ -180,7 +208,7 @@ const Edit = () => {
                 <StyledRadio
                   name="openType"
                   value="all"
-                  checked={bookmark.openType === "all"}
+                  checked={openType === "all"}
                   onChange={radioHandler}
                 />
               </Contents>
@@ -189,7 +217,7 @@ const Edit = () => {
                 <StyledRadio
                   name="openType"
                   value="private"
-                  checked={bookmark.openType === "private"}
+                  checked={openType === "private"}
                   onChange={radioHandler}
                 />
               </Contents>
@@ -198,7 +226,7 @@ const Edit = () => {
                 <StyledRadio
                   name="openType"
                   value="partial"
-                  checked={bookmark.openType === "partial"}
+                  checked={openType === "partial"}
                   onChange={radioHandler}
                 />
               </Contents>
@@ -311,35 +339,35 @@ const data = {
 
 const tagList = [
   {
-    name: "JAVA",
+    tag: "JAVA",
     count: 5,
   },
   {
-    name: "JAVASCRIPT",
+    tag: "JAVASCRIPT",
     count: 5,
   },
   {
-    name: "PYTHON",
+    tag: "PYTHON",
     count: 5,
   },
   {
-    name: "C++",
+    tag: "C++",
     count: 5,
   },
   {
-    name: "C",
+    tag: "C",
     count: 5,
   },
   {
-    name: "C#",
+    tag: "C#",
     count: 5,
   },
   {
-    name: "RUBY",
+    tag: "RUBY",
     count: 5,
   },
   {
-    name: "GOLANG",
+    tag: "GOLANG",
     count: 5,
   },
 ];
@@ -359,33 +387,33 @@ const categoryList = [
   "cooking",
 ];
 
-const bookmark = {
-  id: 1,
-  title: "네이버 웹툰",
-  url: "https://comic.naver.com/index",
-  imageUrl: "imageUrl1",
-  category: "it",
-  memo: "memo",
-  openType: "partial",
-  isFavorite: false,
-  updatedAt: "2022-01-01",
+// const bookmark = {
+//   id: 1,
+//   title: "네이버 웹툰",
+//   url: "https://comic.naver.com/index",
+//   imageUrl: "imageUrl1",
+//   category: "it",
+//   memo: "memo",
+//   openType: "partial",
+//   isFavorite: false,
+//   updatedAt: "2022-01-01",
 
-  tags: ["Spring", "React"],
+//   tags: ["Spring", "React"],
 
-  reactionCount: {
-    like: 12,
-    hate: 10,
-  },
+//   reactionCount: {
+//     like: 12,
+//     hate: 10,
+//   },
 
-  reaction: {
-    like: true,
-    hate: false,
-  },
+//   reaction: {
+//     like: true,
+//     hate: false,
+//   },
 
-  profile: {
-    profileId: 1,
-    username: "crush",
-    imageUrl: "image_url",
-    isFollow: true,
-  },
-};
+//   profile: {
+//     profileId: 1,
+//     username: "crush",
+//     imageUrl: "image_url",
+//     isFollow: true,
+//   },
+// };
