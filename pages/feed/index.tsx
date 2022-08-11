@@ -23,6 +23,7 @@ import { CATEGORY } from "@/types/type";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { getQueryString } from "@/utils/queryString";
 import * as theme from "@/styles/theme";
+import NoResult from "@/components/common/noResult";
 
 const PAGE_SIZE = 8;
 
@@ -245,13 +246,17 @@ const Feed = () => {
             </Form>
 
             <BookmarkContainer>
-              {feedBookmarks.bookmarks.map((bookmark) => (
-                <BookmarkCard
-                  key={bookmark.id}
-                  data={bookmark}
-                  deleteBookmark={() => {}}
-                />
-              ))}
+              {state.searchTitle !== "" && feedBookmarks.totalCount === 0 ? (
+                <NoResult />
+              ) : (
+                feedBookmarks.bookmarks.map((bookmark) => (
+                  <BookmarkCard
+                    key={bookmark.id}
+                    data={bookmark}
+                    deleteBookmark={() => {}}
+                  />
+                ))
+              )}
             </BookmarkContainer>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
