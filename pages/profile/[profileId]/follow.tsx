@@ -1,9 +1,7 @@
 import PageLayout from "@/components/common/pageLayout";
-import styled from "@emotion/styled";
 import Head from "next/head";
 import UserInfo from "@/components/common/userInfo";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import { getProfile } from "@/types/dummyData";
 import FollowRadio from "@/components/follow/followRadio";
 import Following from "@/components/common/following";
 import { useRouter } from "next/router";
@@ -210,13 +208,18 @@ const Follow = () => {
             <>
               <UserInfo data={userProfile} handleClick={handleUserInfo} />
               <MyFilterMenu
-                tagList={userProfile.tags?.map(({ tag, count }) => ({
-                  name: tag,
-                  count,
-                }))}
+                tagList={userProfile.tags}
                 categoryList={userProfile.categories}
-                getCategoryData={() => {}}
-                getTagsData={() => {}}
+                getCategoryData={(category) => {
+                  router.push(
+                    `/profile/${userProfile.profileId}/category?category=${category}`
+                  );
+                }}
+                getTagsData={(tags) => {
+                  router.push(
+                    `/profile/${userProfile.profileId}/tag?tags=${tags[0]}`
+                  );
+                }}
               />
             </>
           ) : (
