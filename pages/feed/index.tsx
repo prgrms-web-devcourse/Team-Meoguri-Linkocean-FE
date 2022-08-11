@@ -27,7 +27,7 @@ import * as theme from "@/styles/theme";
 const PAGE_SIZE = 8;
 
 type CategoryType = "전체" | typeof CATEGORY[number];
-type OrderType = "update" | "like";
+type OrderType = "upload" | "like";
 
 type Filtering = {
   category: CategoryType;
@@ -42,7 +42,7 @@ const INITIAL_FILTERING: Filtering = {
   category: "전체",
   searchTitle: "",
   follow: false,
-  order: "update",
+  order: "upload",
   page: 1,
   size: PAGE_SIZE,
 };
@@ -60,12 +60,16 @@ const Feed = () => {
   const searchTitleRef = useRef<HTMLInputElement>(null);
 
   const getFeedBookmarks = useCallback(async () => {
-    const { searchTitle, ...query } = state;
-    const queryString =
-      searchTitle !== "" ? getQueryString(state) : getQueryString(query);
+    setSearchTitleInputValue(state.searchTitle);
 
-    setSearchTitleInputValue(searchTitle);
-
+    const query: Partial<Filtering> = { ...state };
+    if (query.category === "전체") {
+      delete query.category;
+    }
+    if (query.searchTitle === "") {
+      delete query.searchTitle;
+    }
+    const queryString = getQueryString(query);
     const response = await bookmarkAPI.getFeedBookmarks(queryString);
     setFeedBookmarks(response.data);
   }, [state]);
@@ -227,7 +231,7 @@ const Feed = () => {
                     onChange={handleChangeOrder}
                     selectedOption={{
                       value: state.order,
-                      text: state.order === "update" ? "최신 순" : "좋아요 순",
+                      text: state.order === "upload" ? "최신 순" : "좋아요 순",
                     }}
                   >
                     <Select.Trigger>정렬</Select.Trigger>
