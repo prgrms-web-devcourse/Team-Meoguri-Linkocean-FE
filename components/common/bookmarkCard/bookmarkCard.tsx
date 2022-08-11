@@ -19,7 +19,7 @@ const OPEN_TYPE = {
   private: "비공개",
 };
 
-const feedUrlRegExp = /feed.*/g;
+const feedUrlRegExp = /^feed.*/g;
 
 const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   const {
