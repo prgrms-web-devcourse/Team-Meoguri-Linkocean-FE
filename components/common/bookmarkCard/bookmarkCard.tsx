@@ -3,7 +3,7 @@ import { Bookmark } from "@/types/model";
 import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShareBookmark from "../shareBookmark";
 import Star from "../star";
 import DropBox from "./dropBox";
@@ -68,6 +68,16 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     (e.target as HTMLImageElement).src = "/image/default-card-meta-image.jpg";
   };
+
+  useEffect(() => {
+    if (typeof window !== "object") return;
+    const body = document.getElementsByTagName("body")[0];
+    if (isShowShareBookmark) {
+      body.classList.add("scrollLock");
+    } else {
+      body.classList.remove("scrollLock");
+    }
+  }, [isShowShareBookmark]);
 
   return (
     <Wrapper>
