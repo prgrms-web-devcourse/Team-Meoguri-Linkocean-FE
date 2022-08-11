@@ -306,7 +306,6 @@ const Follow = styled.div`
 `;
 
 const BookmarkContainer = styled.div`
-  height: 549px;
   margin-bottom: 90px;
 `;
 
