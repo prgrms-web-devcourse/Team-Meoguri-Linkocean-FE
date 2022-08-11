@@ -181,12 +181,18 @@ const Follow = () => {
   });
 
   useEffect(() => {
-    if (router.query.profileId === undefined) {
+    if (!router.isReady || myProfile.profileId === 0) {
       return;
     }
 
+    const queryProfileId = parseInt(router.query.profileId as string, 10);
+    if (queryProfileId === myProfile.profileId) {
+      router.push(`/my/follow`);
+    }
+
     getUserProfile();
-  }, [router.query.profileId, getUserProfile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, myProfile.profileId]);
 
   useEffect(() => {
     getFollowProfiles();
