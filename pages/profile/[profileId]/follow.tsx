@@ -99,18 +99,13 @@ const Follow = () => {
     const index = followProfiles.value.findIndex(
       (followProfile) => followProfile.profileId === profileId
     );
-    const isDeleteFollowAction = followProfiles.value[index].isFollow;
 
-    const nextFolloweeCount = isDeleteFollowAction
-      ? myProfile.followeeCount - 1
-      : myProfile.followeeCount + 1;
-    myProfileDispatcher({
-      type: "GET_PROFILES",
-      profile: {
-        ...myProfile,
-        followeeCount: nextFolloweeCount,
-      },
-    });
+    const isDeleteFollowAction = followProfiles.value[index].isFollow;
+    if (isDeleteFollowAction) {
+      myProfileDispatcher({ type: "UN_FOLLOW" });
+    } else {
+      myProfileDispatcher({ type: "FOLLOW" });
+    }
 
     const copiedValue = [...followProfiles.value];
     copiedValue[index].isFollow = !copiedValue[index].isFollow;
@@ -271,6 +266,7 @@ const Follow = () => {
                       userName={username}
                       following={isFollow}
                       handleClick={handleFollowing}
+                      isMine={profileId === myProfile.profileId}
                     />
                   </div>
                 )
