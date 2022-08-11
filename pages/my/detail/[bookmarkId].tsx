@@ -2,6 +2,7 @@ import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import DetailPage from "@/components/detail";
+import { useProfileState } from "@/hooks/useProfile";
 import { getProfile } from "@/types/dummyData";
 import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
@@ -10,16 +11,8 @@ import { useEffect, useState } from "react";
 
 const MyDetail = () => {
   const router = useRouter();
-  const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState<string>();
-  const getTags = (elements: string[]) => {
-    setTags(elements);
-  };
+  const userProfile = useProfileState();
   const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
-
-  const getCategory = (element: string) => {
-    setCategory(element);
-  };
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -40,10 +33,14 @@ const MyDetail = () => {
       <PageLayout.Aside>
         <UserInfo />
         <MyFilterMenu
-          tagList={getProfile.tags}
-          categoryList={getProfile.favoriteCategories}
-          getTagsData={getTags}
-          getCategoryData={getCategory}
+          tagList={userProfile.tags}
+          categoryList={userProfile.favoriteCategories}
+          getCategoryData={(category) => {
+            router.push(`/my/category?category=${category}`);
+          }}
+          getTagsData={(tags) => {
+            router.push(`/my/tag?tags=${tags[0]}`);
+          }}
         />
       </PageLayout.Aside>
       <PageLayout.Article>
