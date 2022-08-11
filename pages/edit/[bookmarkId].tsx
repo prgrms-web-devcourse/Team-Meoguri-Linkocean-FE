@@ -55,9 +55,14 @@ const Edit = () => {
       titleRef.current?.focus();
     }
 
-    edit(bookmark.id, { title, memo, category, tags: tag, openType });
+    edit(bookmark.id, {
+      title,
+      memo,
+      category,
+      tags: tag,
+      openType,
+    });
   };
-
   const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
     try {
       await bookmarkAPI.editBookmark(bookmarkId, payload);
