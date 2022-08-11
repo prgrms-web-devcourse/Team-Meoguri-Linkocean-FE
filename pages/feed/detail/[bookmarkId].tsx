@@ -8,10 +8,6 @@ import { useEffect, useState } from "react";
 
 const MyDetail = () => {
   const router = useRouter();
-  const [category, setCategory] = useState<string>();
-  const getCategory = (element: string) => {
-    setCategory(element);
-  };
   const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
 
   useEffect(() => {
@@ -31,7 +27,11 @@ const MyDetail = () => {
   return (
     <PageLayout>
       <PageLayout.Aside>
-        <FeedFilterMenu getCategoryData={getCategory} />
+        <FeedFilterMenu
+          getCategoryData={(category) => {
+            router.push(`/feed?category=${category}`);
+          }}
+        />
       </PageLayout.Aside>
       <PageLayout.Article>
         {bookmarkData ? (
