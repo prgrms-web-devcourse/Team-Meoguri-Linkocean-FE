@@ -60,7 +60,7 @@ const Edit = () => {
       memo,
       category,
       tags: tag,
-      openType,
+      openType: openType as OpenType,
     });
   };
   const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
