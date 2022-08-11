@@ -228,7 +228,6 @@ const Tags = styled.p`
 const Link = styled.a`
   ${text.$body1}
   color: ${color.$gray600};
-  width: 70%;
   cursor: pointer;
   text-decoration: none;
   &:hover {
