@@ -81,7 +81,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
       <Card onClick={clickCard}>
         <Top>
           <div>
-            <Category>{category}</Category>
+            <Category>{category === "no-category" ? null : category}</Category>
             <CreateDate>{dateFormat(updatedAt)}</CreateDate>
           </div>
           <div>
