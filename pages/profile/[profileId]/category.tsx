@@ -3,7 +3,7 @@ import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import OtherBookmark from "@/components/common/otherBookmark/otherBookmarkTemplate";
+import OtherBookmark from "@/components/otherBookmark/otherBookmarkTemplate";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import profileAPI from "@/utils/apis/profile";
 import { ProfileDetail } from "@/types/model";
