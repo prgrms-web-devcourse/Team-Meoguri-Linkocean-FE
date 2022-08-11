@@ -12,29 +12,42 @@ import ErrorText from "@/components/common/errorText";
 import { useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
+import { useRouter } from "next/router";
+import bookmarkAPI, { CreateBookmarkPayload } from "@/utils/apis/bookmark";
+import { CATEGORY, OpenType } from "@/types/type";
+import { useProfileDispatch } from "@/hooks/useProfile";
 
 const Create = () => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [tag, setTag] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState("");
-  const [openType, setOpenType] = useState<string>("all");
-  const [bio, setBio] = useState("");
+  const [category, setCategory] =
+    useState<typeof CATEGORY[number] | undefined>();
+  const [openType, setOpenType] = useState<OpenType>("all");
+  const [memo, setMemo] = useState("");
   const [submit, setSubmit] = useState(false);
+  const [result, setResult] = useState(false);
 
   const urlRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  const dispatch = useProfileDispatch();
 
   const getTags = (elements: string[]) => {
     setTags(elements);
   };
+
+  const handleChangeCategory = (elements: string) => {
+    setCategory(elements as typeof CATEGORY[number]);
+  };
+
   const getCategory = (element: string) => {
-    setCategory(element);
+    setCategory(element as typeof CATEGORY[number]);
   };
 
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOpenType(event.target.value);
+    setOpenType(event.target.value as OpenType);
   };
 
   const handleCreate = () => {
@@ -44,11 +57,48 @@ const Create = () => {
     } else if (title === "") {
       titleRef.current?.focus();
     }
+
+    if (!category) {
+      return;
+    }
+
+    create({ title, url, memo, category, tags: tag, openType });
   };
 
-  const item = [];
-  item.push(tag);
-  console.log(item);
+  const handleBlur = async () => {
+    const IsDuplicateUrl = await bookmarkAPI.getIsDuplicateUrl(url);
+    setResult(false);
+    if (IsDuplicateUrl.data.isDuplicateUrl === true) {
+      if (
+        window.confirm(
+          "이미 등록된 url입니다. \n해당 url로 작성된 북마크로 이동하시겠습니까?"
+        )
+      ) {
+        const location = IsDuplicateUrl.headers.location.split("/");
+        router.push(`/my/detail/${location[3]}`);
+      } else {
+        setResult(true);
+        return;
+      }
+    }
+
+    const response = await bookmarkAPI.getLinkMetadata(url);
+    setTitle(response.data.title);
+  };
+
+  const create = async (payload: CreateBookmarkPayload) => {
+    try {
+      await bookmarkAPI.createBookmark(payload);
+      dispatch({
+        type: "CREATE_BOOKMARK",
+        tags: tag,
+        categories: payload.category,
+      });
+      router.push("/my/favorite");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <PageLayout>
@@ -68,18 +118,20 @@ const Create = () => {
             <PageName>북마크 추가</PageName>
 
             <StyledLabel>URL</StyledLabel>
-            {/* URL 중복 확인 요청, 링크메타데이터 요청 */}
             <StyledInput
               ref={urlRef}
               placeholder="URL을 입력하세요."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
+              onBlur={handleBlur}
             />
-            {submit && url === "" ? (
-              <StyledErrorText>* url은 필수 입력값입니다.</StyledErrorText>
-            ) : (
-              <StyledErrorText> </StyledErrorText>
+            {submit && url === "" && (
+              <ErrorText>* url은 필수 입력값입니다.</ErrorText>
             )}
+            {result && (
+              <ErrorText>* 중복된 url은 등록할 수 없습니다.</ErrorText>
+            )}
+            <div style={{ marginBottom: "40px" }} />
 
             <StyledLabel>제목</StyledLabel>
             <StyledInput
@@ -96,13 +148,13 @@ const Create = () => {
 
             <StyledLabel>
               메모
-              <OverLine>{bio.length}/200</OverLine>
+              <OverLine>{memo.length}/200</OverLine>
             </StyledLabel>
-            {bio.length > 199 ? (
+            {memo.length > 199 ? (
               <>
                 <Textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value.substring(0, 200))}
+                  value={memo}
+                  onChange={(e) => setMemo(e.target.value.substring(0, 200))}
                   placeholder="텍스트를 입력하세요."
                   style={{
                     width: "470px",
@@ -115,8 +167,8 @@ const Create = () => {
               </>
             ) : (
               <Textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
                 placeholder="텍스트를 입력하세요."
                 style={{
                   width: "470px",
@@ -130,27 +182,25 @@ const Create = () => {
 
             <StyledLabel>카테고리</StyledLabel>
             <div>
-              <Select width="470px" onChange={setCategory}>
+              <Select width="470px" onChange={handleChangeCategory}>
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                  <Select.Option value="self-development">
-                    자기계발
-                  </Select.Option>
-                  <Select.Option value="humanities">인문</Select.Option>
-                  <Select.Option value="politics">정치</Select.Option>
-                  <Select.Option value="social">사회</Select.Option>
-                  <Select.Option value="art">예술</Select.Option>
-                  <Select.Option value="science">과학</Select.Option>
-                  <Select.Option value="technology">기술</Select.Option>
-                  <Select.Option value="it">IT</Select.Option>
-                  <Select.Option value="home">가정</Select.Option>
-                  <Select.Option value="health">건강</Select.Option>
-                  <Select.Option value="travel">여행</Select.Option>
-                  <Select.Option value="cooking">요리</Select.Option>
+                  <Select.Option value="자기계발">자기계발</Select.Option>
+                  <Select.Option value="인문">인문</Select.Option>
+                  <Select.Option value="정치">정치</Select.Option>
+                  <Select.Option value="사회">사회</Select.Option>
+                  <Select.Option value="예술">예술</Select.Option>
+                  <Select.Option value="과학">과학</Select.Option>
+                  <Select.Option value="기술">기술</Select.Option>
+                  <Select.Option value="IT">IT</Select.Option>
+                  <Select.Option value="가정">가정</Select.Option>
+                  <Select.Option value="건강">건강</Select.Option>
+                  <Select.Option value="여행">여행</Select.Option>
+                  <Select.Option value="요리">요리</Select.Option>
                 </Select.OptionList>
               </Select>
             </div>
-            {submit && category === "" ? (
+            {submit && category === undefined ? (
               <StyledErrorText>* 카테고리는 필수 선택값입니다.</StyledErrorText>
             ) : (
               <StyledErrorText> </StyledErrorText>
@@ -196,7 +246,6 @@ const Create = () => {
             )}
 
             <ButtonWrapper>
-              {/* 북마크 등록 */}
               <Button
                 buttonType="large"
                 colorType="main-color"

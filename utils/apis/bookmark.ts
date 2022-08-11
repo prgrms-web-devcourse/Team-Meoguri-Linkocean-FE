@@ -34,7 +34,7 @@ const bookmarkAPI = {
   getLinkMetadata: (link: string) =>
     authInstance.post<{ title: string }>(`/linkmetadatas/obtain?link=${link}`),
   getIsDuplicateUrl: (url: string) =>
-    authInstance.get<{ isDuplicateUrl: boolean }>(`/bookmarks?${url}`),
+    authInstance.get<{ isDuplicateUrl: boolean }>(`/bookmarks?url=${url}`),
   createFavorite: (bookmarkId: string) =>
     authInstance.post(`/bookmarks/${bookmarkId}/favorite`),
   deleteFavorite: (bookmarkId: string) =>
