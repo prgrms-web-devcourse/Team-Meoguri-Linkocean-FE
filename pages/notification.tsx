@@ -10,7 +10,8 @@ import { Notification } from "@/types/model";
 import notificationAPI from "@/utils/apis/notification";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import bookmarkCardStories from "stories/components/bookmarkCard.stories";
+import { useProfileState } from "@/hooks/useProfile";
+import { useRouter } from "next/router";
 
 const PAGE_SIZE = 8;
 const isLastCard = (index: number, length: number) =>
@@ -27,21 +28,14 @@ const INITIAL_PAGE: Page = {
 };
 
 const Notifications = () => {
-  const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState<string>();
   const [state, setState] = useState<Page>(INITIAL_PAGE);
   const [notification, setNotification] = useState<{
     value: Notification[];
     isLoading: boolean;
   }>({ value: [], isLoading: false });
   const [isEndPage, setIsEndPage] = useState(false);
-
-  const getTags = (elements: string[]) => {
-    setTags(elements);
-  };
-  const getCategory = (element: string) => {
-    setCategory(element);
-  };
+  const userProfile = useProfileState();
+  const router = useRouter();
 
   const getNotification = useCallback(async () => {
     const { ...query } = state;
@@ -96,12 +90,16 @@ const Notifications = () => {
   return (
     <PageLayout>
       <PageLayout.Aside>
-        <UserInfo data={data} />
+        <UserInfo data={userProfile} />
         <MyFilterMenu
-          getTagsData={getTags}
-          getCategoryData={getCategory}
-          tagList={tagList}
-          categoryList={categoryList}
+          tagList={userProfile.tags}
+          categoryList={userProfile.categories}
+          getCategoryData={(category) => {
+            router.push(`/my/category?category=${category}`);
+          }}
+          getTagsData={(tags) => {
+            router.push(`/my/tag?tags=${tags[0]}`);
+          }}
         />
       </PageLayout.Aside>
       <PageLayout.Article>
@@ -161,53 +159,3 @@ const data = {
   followerCount: 12,
   followeeCount: 10,
 };
-
-const tagList = [
-  {
-    name: "JAVA",
-    count: 5,
-  },
-  {
-    name: "JAVASCRIPT",
-    count: 5,
-  },
-  {
-    name: "PYTHON",
-    count: 5,
-  },
-  {
-    name: "C++",
-    count: 5,
-  },
-  {
-    name: "C",
-    count: 5,
-  },
-  {
-    name: "C#",
-    count: 5,
-  },
-  {
-    name: "RUBY",
-    count: 5,
-  },
-  {
-    name: "GOLANG",
-    count: 5,
-  },
-];
-
-const categoryList = [
-  "self_development",
-  "humanities",
-  "politics",
-  "social",
-  "art",
-  "science",
-  "technology",
-  "it",
-  "home",
-  "health",
-  "travel",
-  "cooking",
-];
