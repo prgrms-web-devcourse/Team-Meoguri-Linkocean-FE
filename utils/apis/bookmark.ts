@@ -3,11 +3,11 @@ import { BookmarkDetail, BookmarkList } from "@/types/model";
 import { authInstance } from "./instance";
 
 export type CreateBookmarkPayload = {
-  title: string;
+  url: string;
 } & EditBookmarkPayload;
 
 export type EditBookmarkPayload = {
-  url: string;
+  title: string;
   memo: string;
   category: typeof CATEGORY[number];
   tags: string[];
