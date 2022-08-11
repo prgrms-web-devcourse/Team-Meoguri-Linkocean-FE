@@ -26,7 +26,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     totalCount: 0,
     bookmarks: [],
   });
-
+  const [deleteId, setDeleteId] = useState<number>();
   const getMyBookmarksApi = (query: string) => {
     (async () => {
       try {
@@ -50,6 +50,18 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     const query = deleteDuplicateQuery(requestQuery, "sort");
     const queryWithSort = `${query}sort=${element}`;
     setRequestQuery(queryWithSort);
+  };
+
+  const changePage = (pageNum: number) => {
+    const query = deleteDuplicateQuery(requestQuery, "page");
+    const queryWithSort = `${query}page=${pageNum}`;
+    setRequestQuery(queryWithSort);
+  };
+
+  const onKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      searching();
+    }
   };
 
   useEffect(() => {
@@ -96,15 +108,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     // router.push(`${router.pathname}?&${temp}`);
   }, [requestQuery]);
 
-  const onKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter") {
-      searching();
-      console.log("123");
-    }
-  };
-  const changePage = (pageNum: number) => {
-    console.log(pageNum);
-  };
+  useEffect(() => {}, [deleteId]);
 
   return (
     <Wrapper>
@@ -131,13 +135,15 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
         </SelectDiv>
       </FilterDiv>
       <ContentDiv>
-        {myBookmarks.bookmarks.map((element) => (
-          <BookmarkCard
-            key={element.title}
-            data={element}
-            deleteBookmark={() => console.log("hello")}
-          />
-        ))}
+        {myBookmarks.bookmarks.map((element) =>
+          deleteId !== element.id ? (
+            <BookmarkCard
+              key={element.title}
+              data={element}
+              deleteBookmark={setDeleteId}
+            />
+          ) : null
+        )}
       </ContentDiv>
       <PaginationDiv>
         <Pagination

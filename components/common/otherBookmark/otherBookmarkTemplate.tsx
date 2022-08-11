@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import Pagination from "@/components/common/pagination";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -20,27 +20,24 @@ interface OtherBookmarkProps {
 
 const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const router = useRouter();
-  const { profileId } = router.query;
   const searchInput = useRef<HTMLInputElement>(null);
   const [requestQuery, setRequestQuery] = useState("");
   const [oherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
     totalCount: 0,
     bookmarks: [],
   });
-  const [id, setId] = useState<number>(0);
-  const [inputText, setInputText] = useState("");
-
-  useEffect(() => {
-    if (profileId) {
-      setId(parseInt(profileId[0], 10));
-    }
-  }, []);
-
+  const { profileId } = router.query;
+  const [deleteId, setDeleteId] = useState<number>();
   const getOtherBookmarksApi = (query: string) => {
     (async () => {
       try {
-        const res = await bookmarkAPI.getOtherBookmarks(id, query);
-        setOtherBookmarks(res.data);
+        if (profileId) {
+          const res = await bookmarkAPI.getOtherBookmarks(
+            parseInt(profileId[0], 10),
+            query
+          );
+          setOtherBookmarks(res.data);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -61,6 +58,17 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
     setRequestQuery(queryWithSort);
   };
 
+  const changePage = (pageNum: number) => {
+    const query = deleteDuplicateQuery(requestQuery, "page");
+    const queryWithSort = `${query}page=${pageNum}`;
+    setRequestQuery(queryWithSort);
+  };
+
+  const onKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      searching();
+    }
+  };
   useEffect(() => {
     // router에 따른 filtering(category|tag|favorite) 새로고침할 때
     let routerQuery = "";
@@ -100,22 +108,11 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
 
   useEffect(() => {
     // requestQuery가 변경될 때 api 호출
-    console.log(requestQuery);
     getOtherBookmarksApi(requestQuery);
-    // const temp = deleteDuplicateQuery(requestQuery, "favorite");
-    // router.push(`${router.pathname}?&${temp}`);
   }, [requestQuery]);
 
-  const changePage = (pageNum: number) => {
-    console.log(pageNum);
-  };
+  useEffect(() => {}, [deleteId]);
 
-  const onKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter") {
-      searching();
-      console.log("123");
-    }
-  };
   return (
     <Wrapper>
       <Title>{PageTitle}</Title>
@@ -141,13 +138,15 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
         </SelectDiv>
       </FilterDiv>
       <ContentDiv>
-        {oherBookmarks.bookmarks.map((element) => (
-          <BookmarkCard
-            key={element.title}
-            data={element}
-            deleteBookmark={() => console.log("hello")}
-          />
-        ))}
+        {oherBookmarks.bookmarks.map((element) =>
+          deleteId !== element.id ? (
+            <BookmarkCard
+              key={element.title}
+              data={element}
+              deleteBookmark={setDeleteId}
+            />
+          ) : null
+        )}
       </ContentDiv>
       <PaginationDiv>
         <Pagination
