@@ -1,12 +1,12 @@
-import { color, text } from "@/styles/theme";
+import { color, shortenOneLine, text } from "@/styles/theme";
 import styled from "@emotion/styled";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { BookmarkDetail } from "@/types/model";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import followAPI from "@/utils/apis/follow";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import dateFormat from "@/utils/dateFormat";
 import BackButton from "../common/backButton";
 import Star from "../common/star";
 import Button from "../common/button";
@@ -67,6 +67,10 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     }
   };
 
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    (e.target as HTMLImageElement).src = "/image/default-card-meta-image.jpg";
+  };
+
   return (
     <Page>
       <FlexBetween>
@@ -118,10 +122,12 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
       </FlexBetween>
       <Content>
         <BookMarkInfo>
-          <Image
+          <MetaImage
             src={imageUrl || "/image/default-card-meta-image.jpg"}
             width={325}
             height={176}
+            onError={handleImgError}
+            style={{ flexGrow: 1 }}
           />
           <Info>
             <div>
@@ -131,15 +137,15 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
               </Title>
               <Tags>{tags?.map((tag) => `#${tag} `)}</Tags>
             </div>
-            <FlexBetween>
-              <Flex>
+            <LinkDataBox>
+              <LinkBox>
                 <Link href={url} target="_blank">
                   {url}
                 </Link>
                 <CopyLink copyUrl={url} />
-              </Flex>
-              <Date>{updatedAt}</Date>
-            </FlexBetween>
+              </LinkBox>
+              <Date>{dateFormat(updatedAt)}</Date>
+            </LinkDataBox>
           </Info>
         </BookMarkInfo>
         <Description>{memo}</Description>
@@ -165,8 +171,14 @@ const FlexBetween = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const Flex = styled.div`
+const LinkDataBox = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const LinkBox = styled.div`
+  display: inline-flex;
+  width: 400px;
   align-items: center;
 `;
 const UserFollow = styled.div`
@@ -181,8 +193,8 @@ const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex-grow: 1;
 `;
+
 const Content = styled.div`
   margin-top: 35px;
 `;
@@ -190,17 +202,22 @@ const BookMarkInfo = styled.div`
   display: flex;
   gap: 35px;
   margin-bottom: 60px;
-  img {
-    border-radius: 8px;
-  }
 `;
+
+const MetaImage = styled.img`
+  border-radius: 8px;
+`;
+
 const Title = styled.div`
   display: flex;
-  align-items: center;
   ${text.$headline4}
   margin-bottom: 12px;
   h3 {
     margin-right: 10px;
+    word-break: break-all;
+  }
+  button {
+    margin-top: 8px;
   }
 `;
 const Tags = styled.p`
@@ -211,16 +228,19 @@ const Tags = styled.p`
 const Link = styled.a`
   ${text.$body1}
   color: ${color.$gray600};
+  width: 70%;
   cursor: pointer;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
   }
+  ${shortenOneLine}
 `;
 
 const Date = styled.span`
   ${text.$caption}
   color: ${color.$gray400};
+  width: 70px;
 `;
 const Description = styled.p`
   ${text.$body1}

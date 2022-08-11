@@ -47,8 +47,6 @@ const INITIAL_FILTERING: Filtering = {
   size: PAGE_SIZE,
 };
 
-// TODO: 새로고침 시 query와 필터링 상태와 동기화 및 올바르지 않은 query일 경우 404 페이지 보내기, 로딩
-
 const Feed = () => {
   const router = useRouter();
 
@@ -57,19 +55,29 @@ const Feed = () => {
     totalCount: 0,
     bookmarks: [],
   });
+  const [searchTitleInputValue, setSearchTitleInputValue] = useState("");
 
   const searchTitleRef = useRef<HTMLInputElement>(null);
 
   const getFeedBookmarks = useCallback(async () => {
-    const queryString = getQueryString(state);
+    const { searchTitle, ...query } = state;
+    const queryString =
+      searchTitle !== "" ? getQueryString(state) : getQueryString(query);
+
+    setSearchTitleInputValue(searchTitle);
+
     const response = await bookmarkAPI.getFeedBookmarks(queryString);
     setFeedBookmarks(response.data);
   }, [state]);
 
   const changeRoutePath = useCallback(
     (nextState: Filtering) => {
-      const { size, ...query } = nextState;
-      router.push(`/feed?${getQueryString(query)}`);
+      const { category, searchTitle } = nextState;
+      const queryString =
+        searchTitle === ""
+          ? `category=${category}`
+          : getQueryString({ category, searchTitle });
+      router.push(`/feed?${queryString}`);
     },
     [router]
   );
@@ -127,11 +135,42 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    const $searchTitle = searchTitleRef.current as HTMLInputElement;
-    $searchTitle.value = state.searchTitle;
+    if (!router.isReady) {
+      return;
+    }
 
+    const { query } = router;
+    const queryKeys = Object.keys(query);
+    if (queryKeys.length === 0) {
+      return;
+    }
+
+    const VALID_KEYS = ["category", "searchTitle"];
+    const isValidQuery =
+      queryKeys.every((key) => VALID_KEYS.includes(key)) &&
+      ["전체", ...CATEGORY].includes(query.category as string);
+
+    if (!isValidQuery) {
+      router.push("/404");
+    }
+
+    const searchTitle = query.searchTitle as string;
+    if (searchTitle === "") {
+      setState({
+        ...INITIAL_FILTERING,
+        category: query.category as CategoryType,
+      });
+    } else {
+      setState({ ...INITIAL_FILTERING, ...query });
+    }
+    setSearchTitleInputValue(searchTitle);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  useEffect(() => {
     getFeedBookmarks();
-  }, [getFeedBookmarks, state.searchTitle]);
+  }, [getFeedBookmarks]);
 
   return (
     <>
@@ -150,7 +189,13 @@ const Feed = () => {
 
             <Form action="submit" onSubmit={handleChangeSearchTitle}>
               <SearchTitle>
-                <Input searchIcon name="searchTitle" ref={searchTitleRef} />
+                <Input
+                  searchIcon
+                  name="searchTitle"
+                  ref={searchTitleRef}
+                  value={searchTitleInputValue}
+                  onChange={(e) => setSearchTitleInputValue(e.target.value)}
+                />
                 <Button
                   colorType="main-color"
                   buttonType="small"
@@ -197,14 +242,18 @@ const Feed = () => {
 
             <BookmarkContainer>
               {feedBookmarks.bookmarks.map((bookmark) => (
-                <BookmarkCard key={bookmark.id} data={bookmark} />
+                <BookmarkCard
+                  key={bookmark.id}
+                  data={bookmark}
+                  deleteBookmark={() => {}}
+                />
               ))}
             </BookmarkContainer>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Pagination
                 defaultPage={state.page}
-                count={Math.ceil(feedBookmarks.totalCount / state.size)}
+                count={Math.ceil(feedBookmarks.bookmarks.length / state.size)}
                 onChange={handleChangePages}
               />
             </div>

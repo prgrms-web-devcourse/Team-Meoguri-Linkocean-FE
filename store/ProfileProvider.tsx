@@ -1,6 +1,7 @@
 import { ProfileDetail } from "@/types/model";
 import { CATEGORY, TagType } from "@/types/type";
 import profileAPI from "@/utils/apis/profile";
+import storage from "@/utils/localStorage";
 import {
   createContext,
   useReducer,
@@ -149,17 +150,22 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
 
 const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(ProfileReducer, initialUser);
+  const token = storage.getItem("LINKOCEAN_TOKEN", false);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await profileAPI.getMyProfile();
-        dispatch({ type: "GET_PROFILES", profile: data });
+        if (token) {
+          const { data } = await profileAPI.getMyProfile();
+          dispatch({ type: "GET_PROFILES", profile: data });
+        } else {
+          dispatch({ type: "GET_PROFILES", profile: initialUser });
+        }
       } catch (error) {
         console.error(error);
       }
     })();
-  }, []);
+  }, [token]);
 
   return (
     <ProfileContext.Provider value={state}>

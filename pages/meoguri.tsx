@@ -14,15 +14,12 @@ import profileAPI from "@/utils/apis/profile";
 import { Profile } from "@/types/model";
 import { getQueryString } from "@/utils/queryString";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import NoResult from "@/components/common/noResult";
+import Top from "@/components/common/top";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import {
-  DUMMY_USER_INFO,
-  FollowCardContainer,
-  isLastCard,
-  Layout,
-} from "./my/follow";
+import { FollowCardContainer, isLastCard, Layout } from "./my/follow";
 
-// TODO: 본인 제외하기, 무한 스크롤, 유저 컨텍스트 연결
+// TODO: 유저 컨텍스트 연결
 
 const PAGE_SIZE = 8;
 
@@ -157,13 +154,14 @@ const Meoguri = () => {
         <PageLayout.Aside>
           <UserInfo data={userProfile} />
           <MyFilterMenu
-            tagList={userProfile.tags?.map(({ tag, count }) => ({
-              name: tag,
-              count,
-            }))}
+            tagList={userProfile.tags}
             categoryList={userProfile.categories}
-            getCategoryData={() => {}}
-            getTagsData={() => {}}
+            getCategoryData={(category) => {
+              router.push(`/my/category?category=${category}`);
+            }}
+            getTagsData={(tags) => {
+              router.push(`/my/tag?tags=${tags[0]}`);
+            }}
           />
         </PageLayout.Aside>
         <PageLayout.Article>
@@ -191,28 +189,31 @@ const Meoguri = () => {
             <MeoguriCardContainer>
               {!isLoading &&
               router.query.name !== undefined &&
-              profiles.length === 0
-                ? "검색 결과가 없습니다."
-                : profiles.map(
-                    ({ profileId, imageUrl, isFollow, username }, index) => (
-                      <div
-                        ref={
-                          isLastCard(index, profiles.length) ? setTarget : null
-                        }
-                      >
-                        <Following
-                          profileId={profileId}
-                          profileImg={imageUrl}
-                          userName={username}
-                          following={isFollow}
-                          key={profileId}
-                          handleClick={handleFollow}
-                        />
-                      </div>
-                    )
-                  )}
+              profiles.length === 0 ? (
+                <NoResult />
+              ) : (
+                profiles.map(
+                  ({ profileId, imageUrl, isFollow, username }, index) => (
+                    <div
+                      ref={
+                        isLastCard(index, profiles.length) ? setTarget : null
+                      }
+                    >
+                      <Following
+                        profileId={profileId}
+                        profileImg={imageUrl}
+                        userName={username}
+                        following={isFollow}
+                        key={profileId}
+                        handleClick={handleFollow}
+                        isMine={profileId === userProfile.profileId}
+                      />
+                    </div>
+                  )
+                )
+              )}
             </MeoguriCardContainer>
-            {isLoading ? "로딩 중..." : null}
+            <Top />
           </Layout>
         </PageLayout.Article>
       </PageLayout>

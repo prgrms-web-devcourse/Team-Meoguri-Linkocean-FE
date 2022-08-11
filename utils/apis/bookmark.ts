@@ -2,11 +2,11 @@ import { CATEGORY, OpenType } from "@/types/type";
 import { BookmarkDetail, BookmarkList } from "@/types/model";
 import { authInstance } from "./instance";
 
-type CreateBookmarkPayload = {
+export type CreateBookmarkPayload = {
   title: string;
 } & EditBookmarkPayload;
 
-type EditBookmarkPayload = {
+export type EditBookmarkPayload = {
   url: string;
   memo: string;
   category: typeof CATEGORY[number];
@@ -34,7 +34,7 @@ const bookmarkAPI = {
   getLinkMetadata: (link: string) =>
     authInstance.post<{ title: string }>(`/linkmetadatas/obtain?link=${link}`),
   getIsDuplicateUrl: (url: string) =>
-    authInstance.get<{ isDuplicateUrl: boolean }>(`/bookmarks?${url}`),
+    authInstance.get<{ isDuplicateUrl: boolean }>(`/bookmarks?url=${url}`),
   createFavorite: (bookmarkId: string) =>
     authInstance.post(`/bookmarks/${bookmarkId}/favorite`),
   deleteFavorite: (bookmarkId: string) =>
