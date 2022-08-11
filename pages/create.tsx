@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import bookmarkAPI, { CreateBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
 import { useProfileDispatch } from "@/hooks/useProfile";
+import BackButton from "@/components/common/backButton";
 
 const Create = () => {
   const [url, setUrl] = useState("");
@@ -111,7 +112,7 @@ const Create = () => {
     <PageLayout>
       {" "}
       <PageLayout.Aside>
-        <UserInfo data={data} />
+        <UserInfo />
         <MyFilterMenu
           getTagsData={getTags}
           getCategoryData={getCategory}
@@ -192,18 +193,9 @@ const Create = () => {
               <Select width="470px" onChange={handleChangeCategory}>
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                  <Select.Option value="자기계발">자기계발</Select.Option>
-                  <Select.Option value="인문">인문</Select.Option>
-                  <Select.Option value="정치">정치</Select.Option>
-                  <Select.Option value="사회">사회</Select.Option>
-                  <Select.Option value="예술">예술</Select.Option>
-                  <Select.Option value="과학">과학</Select.Option>
-                  <Select.Option value="기술">기술</Select.Option>
-                  <Select.Option value="IT">IT</Select.Option>
-                  <Select.Option value="가정">가정</Select.Option>
-                  <Select.Option value="건강">건강</Select.Option>
-                  <Select.Option value="여행">여행</Select.Option>
-                  <Select.Option value="요리">요리</Select.Option>
+                  {categoryList.map((index) => (
+                    <Select.Option value={index}>{index}</Select.Option>
+                  ))}
                 </Select.OptionList>
               </Select>
             </div>
@@ -342,63 +334,52 @@ const StyledErrorText = styled(ErrorText)`
   margin-bottom: 40px;
 `;
 
-const data = {
-  profileId: 1,
-  imageUrl: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
-  favoriteCategories: ["it"],
-  categories: ["it", "technology"],
-  username: "joy",
-  bio: "안녕하세요! 행복한 조이입니당.",
-  followerCount: 12,
-  followeeCount: 10,
-};
-
 const tagList = [
   {
-    name: "JAVA",
+    tag: "JAVA",
     count: 5,
   },
   {
-    name: "JAVASCRIPT",
+    tag: "JAVASCRIPT",
     count: 5,
   },
   {
-    name: "PYTHON",
+    tag: "PYTHON",
     count: 5,
   },
   {
-    name: "C++",
+    tag: "C++",
     count: 5,
   },
   {
-    name: "C",
+    tag: "C",
     count: 5,
   },
   {
-    name: "C#",
+    tag: "C#",
     count: 5,
   },
   {
-    name: "RUBY",
+    tag: "RUBY",
     count: 5,
   },
   {
-    name: "GOLANG",
+    tag: "GOLANG",
     count: 5,
   },
 ];
 
 const categoryList = [
-  "self_development",
-  "humanities",
-  "politics",
-  "social",
-  "art",
-  "science",
-  "technology",
-  "it",
-  "home",
-  "health",
-  "travel",
-  "cooking",
+  "자기계발",
+  "인문",
+  "정치",
+  "사회",
+  "예술",
+  "과학",
+  "기술",
+  "IT",
+  "가정",
+  "건강",
+  "여행",
+  "요리",
 ];
