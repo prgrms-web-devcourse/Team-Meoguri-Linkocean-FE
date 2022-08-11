@@ -37,7 +37,6 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
             parseInt(profileId[0], 10),
             query
           );
-          console.log(query);
           setOtherBookmarks(res.data);
         }
       } catch (error) {
