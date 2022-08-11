@@ -47,7 +47,7 @@ const Edit = () => {
           tags: tag,
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         router.push("/404");
       }
     })();
@@ -207,18 +207,9 @@ const Edit = () => {
                 >
                   <Select.Trigger>선택</Select.Trigger>
                   <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                    <Select.Option value="자기계발">자기계발</Select.Option>
-                    <Select.Option value="인문">인문</Select.Option>
-                    <Select.Option value="정치">정치</Select.Option>
-                    <Select.Option value="사회">사회</Select.Option>
-                    <Select.Option value="예술">예술</Select.Option>
-                    <Select.Option value="과학">과학</Select.Option>
-                    <Select.Option value="기술">기술</Select.Option>
-                    <Select.Option value="it">IT</Select.Option>
-                    <Select.Option value="가정">가정</Select.Option>
-                    <Select.Option value="건강">건강</Select.Option>
-                    <Select.Option value="여행">여행</Select.Option>
-                    <Select.Option value="요리">요리</Select.Option>
+                    {categoryList.map((index) => (
+                      <Select.Option value={index}>{index}</Select.Option>
+                    ))}
                   </Select.OptionList>
                 </Select>
               </StyledSelect>
@@ -352,17 +343,6 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-const data = {
-  profileId: 1,
-  imageUrl: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
-  favoriteCategories: ["it"],
-  categories: ["it", "technology"],
-  username: "joy",
-  bio: "안녕하세요! 행복한 조이입니당.",
-  followerCount: 12,
-  followeeCount: 10,
-};
-
 const tagList = [
   {
     tag: "JAVA",
@@ -399,47 +379,16 @@ const tagList = [
 ];
 
 const categoryList = [
-  "self_development",
-  "humanities",
-  "politics",
-  "social",
-  "art",
-  "science",
-  "technology",
-  "it",
-  "home",
-  "health",
-  "travel",
-  "cooking",
+  "자기계발",
+  "인문",
+  "정치",
+  "사회",
+  "예술",
+  "과학",
+  "기술",
+  "IT",
+  "가정",
+  "건강",
+  "여행",
+  "요리",
 ];
-
-// const bookmark = {
-//   id: 1,
-//   title: "네이버 웹툰",
-//   url: "https://comic.naver.com/index",
-//   imageUrl: "imageUrl1",
-//   category: "it",
-//   memo: "memo",
-//   openType: "partial",
-//   isFavorite: false,
-//   updatedAt: "2022-01-01",
-
-//   tags: ["Spring", "React"],
-
-//   reactionCount: {
-//     like: 12,
-//     hate: 10,
-//   },
-
-//   reaction: {
-//     like: true,
-//     hate: false,
-//   },
-
-//   profile: {
-//     profileId: 1,
-//     username: "crush",
-//     imageUrl: "image_url",
-//     isFollow: true,
-//   },
-// };
