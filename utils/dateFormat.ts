@@ -1,7 +1,7 @@
 const dateFormat = (getDate: string) => {
   const date = new Date(getDate);
   const y = date.getFullYear();
-  let m = date.getMonth().toString();
+  let m = (date.getMonth() + 1).toString();
   let d = date.getDate().toString();
 
   if (Number(m) < 10) {
