@@ -10,13 +10,13 @@ const Aside = ({ children }: PageLayoutProps) => {
 };
 
 const AsideBox = styled.aside`
-  min-width: 350px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 80px;
   align-items: center;
   border-right: 1px solid ${color.$gray400};
-  padding-top: 100px;
+  padding-top: 80px;
   background-color: #f4f9fc;
   padding-bottom: 50px;
   box-sizing: border-box;
