@@ -4,30 +4,17 @@ import UserInfo from "@/components/common/userInfo";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import OtherBookmark from "@/components/common/otherBookmark/otherBookmarkTemplate";
-import { useProfileState } from "@/hooks/useProfile";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import profileAPI from "@/utils/apis/profile";
 import { ProfileDetail } from "@/types/model";
 
 const Category = () => {
-  const profile = useProfileState();
   const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<string>();
   const [otherProfileInfo, setOtherProfileInfo] = useState<ProfileDetail>();
-  // const [id, setId] = useState<number>(0);
-  const { profileId } = router.query;
 
-  // const getOtherProfileApi = (p_id: number) => {
-  //   (async () => {
-  //     try {
-  //       const res = await profileAPI.getOtherProfile(p_id);
-  //       setOtherProfileInfo(res.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   })();
-  // };
+  const { profileId } = router.query;
 
   const getOtherProfileApi = useCallback(async () => {
     const id = parseInt(router.query.profileId as string, 10);
