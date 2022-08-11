@@ -17,7 +17,7 @@ import Label from "@/components/common/label";
 import Checkbox from "@/components/common/checkbox";
 import Select from "@/components/common/select";
 import Pagination from "@/components/common/pagination";
-import { Bookmark, BookmarkList } from "@/types/model";
+import { BookmarkList } from "@/types/model";
 import BookmarkCard from "@/components/common/bookmarkCard";
 import { CATEGORY } from "@/types/type";
 import bookmarkAPI from "@/utils/apis/bookmark";
@@ -57,6 +57,7 @@ const Feed = () => {
     bookmarks: [],
   });
   const [searchTitleInputValue, setSearchTitleInputValue] = useState("");
+  const [routerIsReady, setRouterIsReady] = useState(false);
 
   const searchTitleRef = useRef<HTMLInputElement>(null);
 
@@ -169,12 +170,18 @@ const Feed = () => {
       setState({ ...INITIAL_FILTERING, ...query });
     }
     setSearchTitleInputValue(searchTitle);
+    setRouterIsReady(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   useEffect(() => {
+    if (!routerIsReady) {
+      return;
+    }
+
     getFeedBookmarks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getFeedBookmarks]);
 
   return (
@@ -185,7 +192,12 @@ const Feed = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          <FeedFilterMenu getCategoryData={handleChangeCategory} />
+          {routerIsReady ? (
+            <FeedFilterMenu
+              getCategoryData={handleChangeCategory}
+              category={state.category}
+            />
+          ) : null}
         </PageLayout.Aside>
 
         <PageLayout.Article>
@@ -237,7 +249,7 @@ const Feed = () => {
                   >
                     <Select.Trigger>정렬</Select.Trigger>
                     <Select.OptionList>
-                      <Select.Option value="update">최신 순</Select.Option>
+                      <Select.Option value="upload">최신 순</Select.Option>
                       <Select.Option value="like">좋아요 순</Select.Option>
                     </Select.OptionList>
                   </Select>

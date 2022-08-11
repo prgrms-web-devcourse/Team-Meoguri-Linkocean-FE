@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterBorder from "./filterBorder";
 import FilterHeader from "./filterHeader";
 import FilterElement from "./filterElement";
 
 interface FeedFilterMenuProps {
+  category?: string;
   getCategoryData: (arr: string) => void;
 }
 
-const FeedFilterMenu = ({ getCategoryData }: FeedFilterMenuProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+const FeedFilterMenu = ({
+  category = "",
+  getCategoryData,
+}: FeedFilterMenuProps) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>(category);
   const categoryList = [
     "전체",
     "자기계발",
@@ -28,6 +32,10 @@ const FeedFilterMenu = ({ getCategoryData }: FeedFilterMenuProps) => {
     setSelectedCategory(element);
     getCategoryData(element);
   };
+
+  useEffect(() => {
+    setSelectedCategory(category);
+  }, [category]);
 
   return (
     <FilterBorder>
