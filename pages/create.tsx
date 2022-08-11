@@ -18,13 +18,14 @@ import { CATEGORY, OpenType } from "@/types/type";
 import { useProfileDispatch } from "@/hooks/useProfile";
 import Link from "next/link";
 
+type EditCategoryType = typeof CATEGORY[number] | "no-category";
+
 const Create = () => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [tag, setTag] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] =
-    useState<typeof CATEGORY[number] | undefined>();
+  const [category, setCategory] = useState<EditCategoryType>();
   const [openType, setOpenType] = useState<OpenType>("all");
   const [memo, setMemo] = useState("");
   const [submit, setSubmit] = useState(false);
@@ -40,7 +41,7 @@ const Create = () => {
   };
 
   const handleChangeCategory = (elements: string) => {
-    setCategory(elements as typeof CATEGORY[number]);
+    setCategory(elements as EditCategoryType);
   };
 
   const getCategory = (element: string) => {
@@ -59,11 +60,14 @@ const Create = () => {
       titleRef.current?.focus();
     }
 
-    if (!category) {
-      return;
-    }
-
-    create({ title, url, memo, category, tags: tag, openType });
+    create({
+      title,
+      url,
+      memo,
+      category: category as EditCategoryType,
+      tags: tag,
+      openType,
+    });
   };
 
   const handleBlur = async () => {
@@ -189,7 +193,7 @@ const Create = () => {
             )}
 
             <StyledLabel>카테고리</StyledLabel>
-            <div>
+            <div style={{ marginBottom: "40px" }}>
               <Select width="470px" onChange={handleChangeCategory}>
                 <Select.Trigger>선택</Select.Trigger>
                 <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
@@ -199,11 +203,6 @@ const Create = () => {
                 </Select.OptionList>
               </Select>
             </div>
-            {submit && category === undefined ? (
-              <StyledErrorText>* 카테고리는 필수 선택값입니다.</StyledErrorText>
-            ) : (
-              <StyledErrorText> </StyledErrorText>
-            )}
 
             <StyledLabel>태그</StyledLabel>
             <Tag tag={tag} setTag={setTag} />
