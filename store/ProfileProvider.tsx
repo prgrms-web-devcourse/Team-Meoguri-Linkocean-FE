@@ -10,14 +10,7 @@ import {
   useEffect,
 } from "react";
 
-const initialUser: ProfileDetail = {
-  profileId: 1,
-  favoriteCategories: [],
-  username: "",
-  followerCount: 0,
-  followeeCount: 0,
-  categories: [],
-};
+const initialUser: ProfileDetail = {} as ProfileDetail;
 type SampleDispatch = Dispatch<Action>;
 type Action =
   | { type: "GET_PROFILES"; profile: ProfileDetail }
