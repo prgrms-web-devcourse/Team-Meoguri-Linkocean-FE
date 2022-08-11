@@ -1,7 +1,6 @@
 import PageLayout from "@/components/common/pageLayout";
 import Head from "next/head";
 import UserInfo from "@/components/common/userInfo";
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import FollowRadio from "@/components/follow/followRadio";
 import Following from "@/components/common/following";
 import { useRouter } from "next/router";
@@ -17,6 +16,7 @@ import profileAPI from "@/utils/apis/profile";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 
 const PAGE_SIZE = 8;
 
@@ -213,7 +213,7 @@ const Follow = () => {
           {userProfile ? (
             <>
               <UserInfo data={userProfile} handleClick={handleUserInfo} />
-              <MyFilterMenu
+              <OtherFilterMenu
                 tagList={userProfile.tags}
                 categoryList={userProfile.categories}
                 getCategoryData={(category) => {
