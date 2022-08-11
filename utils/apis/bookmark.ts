@@ -9,7 +9,7 @@ export type CreateBookmarkPayload = {
 export type EditBookmarkPayload = {
   title: string;
   memo: string;
-  category: typeof CATEGORY[number];
+  category: typeof CATEGORY[number] | "no-category";
   tags: string[];
   openType: OpenType;
 };
