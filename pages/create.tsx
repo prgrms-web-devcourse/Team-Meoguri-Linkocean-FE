@@ -15,7 +15,7 @@ import Tag from "@/components/create/tag";
 import { useRouter } from "next/router";
 import bookmarkAPI, { CreateBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
-import { useProfileDispatch } from "@/hooks/useProfile";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import Link from "next/link";
 
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
@@ -24,8 +24,7 @@ const Create = () => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [tag, setTag] = useState<string[]>([]);
-  const [tags, setTags] = useState<string[]>();
-  const [category, setCategory] = useState<EditCategoryType>();
+  const [categoryType, setCategoryType] = useState<EditCategoryType>();
   const [openType, setOpenType] = useState<OpenType>("all");
   const [memo, setMemo] = useState("");
   const [submit, setSubmit] = useState(false);
@@ -33,19 +32,12 @@ const Create = () => {
 
   const urlRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
+  const userProfile = useProfileState();
   const router = useRouter();
   const dispatch = useProfileDispatch();
 
-  const getTags = (elements: string[]) => {
-    setTags(elements);
-  };
-
   const handleChangeCategory = (elements: string) => {
-    setCategory(elements as EditCategoryType);
-  };
-
-  const getCategory = (element: string) => {
-    setCategory(element as typeof CATEGORY[number]);
+    setCategoryType(elements as EditCategoryType);
   };
 
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +56,7 @@ const Create = () => {
       title,
       url,
       memo,
-      category: category as EditCategoryType,
+      category: categoryType as EditCategoryType,
       tags: tag,
       openType,
     });
@@ -116,12 +108,16 @@ const Create = () => {
     <PageLayout>
       {" "}
       <PageLayout.Aside>
-        <UserInfo />
+        <UserInfo data={userProfile} />
         <MyFilterMenu
-          getTagsData={getTags}
-          getCategoryData={getCategory}
-          tagList={tagList}
-          categoryList={categoryList}
+          tagList={userProfile.tags}
+          categoryList={userProfile.categories}
+          getCategoryData={(category) => {
+            router.push(`/my/category?category=${category}`);
+          }}
+          getTagsData={(tags) => {
+            router.push(`/my/tag?tags=${tags[0]}`);
+          }}
         />
       </PageLayout.Aside>
       <PageLayout.Article>
@@ -334,41 +330,6 @@ const StyledErrorText = styled(ErrorText)`
   margin-top: 2px;
   margin-bottom: 40px;
 `;
-
-const tagList = [
-  {
-    tag: "JAVA",
-    count: 5,
-  },
-  {
-    tag: "JAVASCRIPT",
-    count: 5,
-  },
-  {
-    tag: "PYTHON",
-    count: 5,
-  },
-  {
-    tag: "C++",
-    count: 5,
-  },
-  {
-    tag: "C",
-    count: 5,
-  },
-  {
-    tag: "C#",
-    count: 5,
-  },
-  {
-    tag: "RUBY",
-    count: 5,
-  },
-  {
-    tag: "GOLANG",
-    count: 5,
-  },
-];
 
 const categoryList = [
   "자기계발",
