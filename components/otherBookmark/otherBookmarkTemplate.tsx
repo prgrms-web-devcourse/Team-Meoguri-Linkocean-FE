@@ -45,10 +45,11 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
     })();
   };
   const searching = () => {
-    const keyword = searchInput.current?.value;
-    const query = deleteDuplicateQuery(requestQuery, "searchTitle");
+    const keyword = searchInput.current?.value.trim();
+    let query = deleteDuplicateQuery(requestQuery, "searchTitle");
+    query = deleteDuplicateQuery(query, "page");
     if (keyword) {
-      setRequestQuery(`${query}searchTitle=${keyword}`);
+      setRequestQuery(`${query}searchTitle=${keyword}&page=1`);
     } else {
       setRequestQuery(`${query}`);
     }
