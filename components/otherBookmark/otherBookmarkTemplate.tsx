@@ -22,7 +22,7 @@ interface OtherBookmarkProps {
 const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [requestQuery, setRequestQuery] = useState("favorite=true&");
+  const [requestQuery, setRequestQuery] = useState("init");
   const [otherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
     totalCount: -1,
     bookmarks: [],
@@ -96,8 +96,10 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   }, [router.isReady, router.asPath]);
 
   useEffect(() => {
-    getOtherBookmarksApi(requestQuery);
-  }, [requestQuery]);
+    if (router.isReady && requestQuery !== "init") {
+      getOtherBookmarksApi(requestQuery);
+    }
+  }, [requestQuery, router.isReady]);
 
   return (
     <Wrapper>
