@@ -3,14 +3,16 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import styled from "@emotion/styled";
 import * as theme from "@/styles/theme";
-import LoginButton from "@/components/main/loginButton";
 import { useEffect, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/router";
 import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
-import GoogleLoginButton from "../components/main/googleLoginButton";
-import NaverLoginButton from "../components/main/naverLoginButton";
-import KakaoLoginButton from "../components/main/kakaoLoginButton";
+import {
+  GoogleLoginButton,
+  NaverLoginButton,
+  KakaoLoginButton,
+  LoginButton,
+} from "@/components/main";
 
 const OAUTH_TYPE = "OAUTH_TYPE";
 const TOKEN_KEY = "LINKOCEAN_TOKEN";

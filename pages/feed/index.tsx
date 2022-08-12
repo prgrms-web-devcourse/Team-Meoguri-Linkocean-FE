@@ -25,8 +25,8 @@ import { BookmarkList } from "@/types/model";
 import { CATEGORY } from "@/types/type";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { getQueryString } from "@/utils/queryString";
-import * as theme from "@/styles/theme";
 import { useProfileState } from "@/hooks/useProfile";
+import * as theme from "@/styles/theme";
 
 const PAGE_SIZE = 8;
 
