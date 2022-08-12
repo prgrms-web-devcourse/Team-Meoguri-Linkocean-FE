@@ -33,6 +33,12 @@ type Action =
   | {
       type: "REMOVE_BOOKMARK";
       tags?: string[];
+    }
+  | {
+      type: "EDIT_BOOKMARK";
+      newTags?: string[];
+      tags?: string[];
+      categories?: typeof CATEGORY[number];
     };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
@@ -111,29 +117,73 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
     }
     case "REMOVE_BOOKMARK": {
       const { tags } = action;
-      let setTags: TagType[] = [];
-
+      const setTags = state.tags ? [...state.tags] : [];
       if (tags) {
-        tags?.forEach((removeTag) => {
-          state.tags?.forEach((tag, i) => {
-            if (tag.tag === removeTag) {
-              if (tag.count <= 1) {
-                setTags.splice(i, 1);
-              } else {
-                setTags = [
-                  ...setTags,
-                  { tag: removeTag, count: tag.count - 1 },
-                ];
-              }
-            } else {
-              setTags = [...setTags, { tag: tag.tag, count: tag.count }];
+        state.tags?.forEach(({ tag, count }, i) => {
+          tags.forEach((removeTag) => {
+            if (removeTag === tag) {
+              setTags[i] = { tag, count: count - 1 };
             }
           });
         });
       }
+
       return {
         ...state,
-        tags: setTags,
+        tags: setTags.filter(({ count }) => count > 0),
+      };
+    }
+    case "EDIT_BOOKMARK": {
+      const { newTags, tags, categories } = action;
+      let setCategories = state.categories ? [...state.categories] : [];
+      let setTags = state.tags ? [...state.tags] : [];
+
+      if (tags) {
+        state.tags?.forEach(({ tag, count }, i) => {
+          tags.forEach((removeTag) => {
+            if (removeTag === tag) {
+              setTags[i] = { tag, count: count - 1 };
+            }
+          });
+        });
+      }
+
+      // tags => 새로운태그
+      // state.tags -> 기존태그
+      if (newTags) {
+        newTags.forEach((newTag) => {
+          const isExistTag = setTags?.some((tag) => tag.tag === newTag);
+          if (isExistTag) {
+            setTags = setTags?.map((tag) => {
+              if (tag.tag === newTag) {
+                return {
+                  ...tag,
+                  count: tag.count + 1,
+                };
+              }
+              return tag;
+            });
+          } else {
+            setTags = [...setTags, { tag: newTag, count: 1 }];
+          }
+        });
+      }
+
+      if (categories) {
+        if (state.categories?.includes(categories)) {
+          setCategories = [...state.categories];
+        } else {
+          setCategories = [
+            ...(state.categories as typeof CATEGORY[number][]),
+            categories,
+          ];
+        }
+      }
+
+      return {
+        ...state,
+        tags: setTags.filter(({ count }) => count > 0),
+        categories: setCategories,
       };
     }
     default:
