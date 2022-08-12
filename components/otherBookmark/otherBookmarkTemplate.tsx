@@ -46,6 +46,8 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   };
   const searching = () => {
     const keyword = searchInput.current?.value.trim();
+    const current = searchInput.current as HTMLInputElement;
+    current.value = keyword as string;
     let query = deleteDuplicateQuery(requestQuery, "searchTitle");
     query = deleteDuplicateQuery(query, "page");
     if (keyword) {
@@ -166,6 +168,7 @@ const FilterDiv = styled.div`
 `;
 const ContentDiv = styled.div`
   padding-top: 2px;
+  min-height: 288px;
 `;
 
 const SelectDiv = styled.div`
