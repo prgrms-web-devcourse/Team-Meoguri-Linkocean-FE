@@ -52,7 +52,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
       const otherId = router.asPath.split("/")[2];
       router.push(`/profile/${otherId}/detail/${id}`);
     } else {
-      router.push(`/feed/detail/${id}`);
+      router.push(`/my/detail/${id}`);
     }
   };
 
@@ -104,6 +104,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
               setIsShowShareBookmark={setIsShowShareBookmark}
               deleteBookmark={deleteBookmark}
               isWriter={isMine ?? isWriter}
+              tags={tags}
               id={id}
             >
               <More />
