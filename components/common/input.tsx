@@ -48,7 +48,7 @@ const DefaultInput = styled.input`
   border: 1px solid ${theme.color.$gray600};
   border-radius: 8px;
   padding-left: 17px;
-  font-size: 16px;
+  ${theme.text.$body1}
   background-color: #fff;
   outline: 0;
   box-sizing: border-box;

@@ -49,19 +49,13 @@ const Follow = () => {
       (followProfile) => followProfile.profileId === profileId
     );
     const isDeleteFollowAction = followProfiles.value[index].isFollow;
+    if (isDeleteFollowAction) {
+      userProfileDispatcher({ type: "UN_FOLLOW" });
+    } else {
+      userProfileDispatcher({ type: "FOLLOW" });
+    }
+
     const isFolloweeTab = state.tab === "followee";
-
-    const nextFolloweeCount = isDeleteFollowAction
-      ? userProfile.followeeCount - 1
-      : userProfile.followeeCount + 1;
-    userProfileDispatcher({
-      type: "GET_PROFILES",
-      profile: {
-        ...userProfile,
-        followeeCount: nextFolloweeCount,
-      },
-    });
-
     const copiedValue = [...followProfiles.value];
     if (isFolloweeTab) {
       copiedValue.splice(index, 1);
@@ -137,7 +131,7 @@ const Follow = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          <UserInfo data={userProfile} />
+          <UserInfo />
           <MyFilterMenu
             tagList={userProfile.tags}
             categoryList={userProfile.categories}

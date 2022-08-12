@@ -16,11 +16,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
-import { useProfileDispatch } from "@/hooks/useProfile";
+import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
 
 const Edit = () => {
+  const userProfile = useProfileState();
   const router = useRouter();
   const dispatch = useProfileDispatch();
 
@@ -53,17 +54,12 @@ const Edit = () => {
     })();
   }, [router.query, router.isReady, router, dispatch]);
 
-  const getTags = (elements: string[]) => {
-    setTags(elements);
-  };
-
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [memo, setMemo] = useState("");
-  const [category, setCategory] = useState<EditCategoryType>("no-category");
+  const [categoryType, setCategory] = useState<EditCategoryType>("no-category");
   const [tag, setTag] = useState<string[]>([]);
   const [openType, setOpenType] = useState<OpenType>();
-  const [tags, setTags] = useState<string[]>();
   const [submit, setSubmit] = useState(false);
   const [selectedOption, setSelectedOption] =
     useState<{ value: string; text: string } | undefined>(undefined);
@@ -72,10 +68,6 @@ const Edit = () => {
 
   const handleChangeCategory = (elements: string) => {
     setCategory(elements as EditCategoryType);
-  };
-
-  const getCategory = (element: string) => {
-    setCategory(element as typeof CATEGORY[number]);
   };
 
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +83,7 @@ const Edit = () => {
     edit(Number(router.query.bookmarkId), {
       title,
       memo,
-      category,
+      category: categoryType,
       tags: tag,
       openType: openType as OpenType,
     });
@@ -124,12 +116,16 @@ const Edit = () => {
     <PageLayout>
       {" "}
       <PageLayout.Aside>
-        <UserInfo />
+        <UserInfo data={userProfile} />
         <MyFilterMenu
-          getTagsData={getTags}
-          getCategoryData={getCategory}
-          tagList={tagList}
-          categoryList={categoryList}
+          tagList={userProfile.tags}
+          categoryList={userProfile.categories}
+          getCategoryData={(category) => {
+            router.push(`/my/category?category=${category}`);
+          }}
+          getTagsData={(tags) => {
+            router.push(`/my/tag?tags=${tags[0]}`);
+          }}
         />
       </PageLayout.Aside>
       <PageLayout.Article>
@@ -342,41 +338,6 @@ const OptionLabel = styled(Label)`
 const ButtonWrapper = styled.div`
   display: flex;
 `;
-
-const tagList = [
-  {
-    tag: "JAVA",
-    count: 5,
-  },
-  {
-    tag: "JAVASCRIPT",
-    count: 5,
-  },
-  {
-    tag: "PYTHON",
-    count: 5,
-  },
-  {
-    tag: "C++",
-    count: 5,
-  },
-  {
-    tag: "C",
-    count: 5,
-  },
-  {
-    tag: "C#",
-    count: 5,
-  },
-  {
-    tag: "RUBY",
-    count: 5,
-  },
-  {
-    tag: "GOLANG",
-    count: 5,
-  },
-];
 
 const categoryList = [
   "자기계발",
