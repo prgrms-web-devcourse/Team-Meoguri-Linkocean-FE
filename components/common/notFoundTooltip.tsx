@@ -14,7 +14,7 @@ export interface TooltipProps {
   index: Member;
 }
 
-const LogoutTooltip = ({ index, ...props }: TooltipProps) => {
+const NotFoundTooltip = ({ index, ...props }: TooltipProps) => {
   const { name, color } = TooltipMap[index];
   return (
     <Tooltip>
@@ -26,7 +26,7 @@ const LogoutTooltip = ({ index, ...props }: TooltipProps) => {
   );
 };
 
-export default LogoutTooltip;
+export default NotFoundTooltip;
 
 const TooltipMap = {
   joy: { name: "조이", color: "#DDC3EF" },
