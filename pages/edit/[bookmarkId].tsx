@@ -92,8 +92,16 @@ const Edit = () => {
   };
 
   const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
+    const copiedPayload: Partial<EditBookmarkPayload> = { ...payload };
+
+    if (copiedPayload.category === "no-category") {
+      delete copiedPayload.category;
+    }
     try {
-      await bookmarkAPI.editBookmark(bookmarkId, payload);
+      await bookmarkAPI.editBookmark(
+        bookmarkId,
+        copiedPayload as EditBookmarkPayload
+      );
 
       if (payload.category === "no-category") {
         dispatch({
@@ -205,9 +213,15 @@ const Edit = () => {
                 >
                   <Select.Trigger>선택</Select.Trigger>
                   <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                    {categoryList.map((index) => (
-                      <Select.Option value={index}>{index}</Select.Option>
-                    ))}
+                    {categoryList.map((index) =>
+                      index === "no-category" ? (
+                        <Select.Option value={index}>
+                          -- 카테고리 없음 --
+                        </Select.Option>
+                      ) : (
+                        <Select.Option value={index}>{index}</Select.Option>
+                      )
+                    )}
                   </Select.OptionList>
                 </Select>
               </StyledSelect>
@@ -342,6 +356,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const categoryList = [
+  "no-category",
   "자기계발",
   "인문",
   "정치",
