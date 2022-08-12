@@ -1,7 +1,7 @@
 import useToggle from "@/hooks/useToggle";
 import { color, text } from "@/styles/theme";
 import styled from "@emotion/styled";
-import ProfileImage from "../common/profileImage";
+import { ProfileImage } from "../common";
 
 interface ImageUploaderProps {
   file: File | string;

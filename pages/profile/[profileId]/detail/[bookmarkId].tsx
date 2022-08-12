@@ -1,6 +1,4 @@
-import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
-import PageLayout from "@/components/common/pageLayout";
-import UserInfo from "@/components/common/userInfo";
+import { OtherFilterMenu, PageLayout, UserInfo } from "@/components/common";
 import DetailPage from "@/components/detail";
 import { useProfileDispatch } from "@/hooks/useProfile";
 import { BookmarkDetail, ProfileDetail } from "@/types/model";

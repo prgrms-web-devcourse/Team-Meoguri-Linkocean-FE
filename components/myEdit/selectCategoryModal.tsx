@@ -2,10 +2,7 @@ import { color, text } from "@/styles/theme";
 import { CATEGORY } from "@/types/type";
 import styled from "@emotion/styled";
 import React, { ChangeEventHandler, useEffect, useState } from "react";
-import Button from "../common/button";
-import CategoryItem from "../common/categoryItem";
-import ErrorText from "../common/errorText";
-import Modal from "../common/modal";
+import { Button, CategoryItem, ErrorText, Modal } from "../common";
 
 type ChangeInputHandler = ChangeEventHandler<HTMLInputElement>;
 
