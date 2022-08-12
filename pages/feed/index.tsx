@@ -275,7 +275,7 @@ const Feed = () => {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Pagination
                 defaultPage={state.page}
-                count={Math.ceil(feedBookmarks.bookmarks.length / state.size)}
+                count={Math.ceil(feedBookmarks.totalCount / state.size)}
                 onChange={handleChangePages}
               />
             </div>
