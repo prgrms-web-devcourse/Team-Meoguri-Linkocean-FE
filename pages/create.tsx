@@ -1,22 +1,24 @@
 import styled from "@emotion/styled";
-import UserInfo from "@/components/common/userInfo";
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import PageLayout from "@/components/common/pageLayout/index";
-import Input from "@/components/common/input";
-import Label from "@/components/common/label";
-import Textarea from "@/components/common/textarea";
-import Select from "@/components/common/select";
-import Radio from "@/components/common/radio";
-import Button from "@/components/common/button";
-import ErrorText from "@/components/common/errorText";
 import { useRef, useState } from "react";
-import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
 import { useRouter } from "next/router";
+import { color, text } from "@/styles/theme";
 import bookmarkAPI, { CreateBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import Link from "next/link";
+import {
+  UserInfo,
+  MyFilterMenu,
+  PageLayout,
+  Input,
+  Label,
+  Textarea,
+  Select,
+  Radio,
+  Button,
+  ErrorText,
+} from "@/components/common";
 
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
 
@@ -80,12 +82,13 @@ const Create = () => {
     }
 
     const response = await bookmarkAPI.getLinkMetadata(url);
+
     setTitle(response.data.title);
   };
 
   const create = async (payload: CreateBookmarkPayload) => {
     try {
-      await bookmarkAPI.createBookmark(payload);
+      const response = await bookmarkAPI.createBookmark(payload);
       if (payload.category === "no-category") {
         dispatch({
           type: "CREATE_BOOKMARK",
@@ -98,7 +101,7 @@ const Create = () => {
           categories: payload.category,
         });
       }
-      router.push("/my/favorite");
+      router.push(`/feed/detail/${response.data.id}`);
     } catch (error) {
       console.error(error);
     }

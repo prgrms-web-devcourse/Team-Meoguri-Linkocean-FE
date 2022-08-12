@@ -15,12 +15,14 @@ const NotFound = () => {
         <Back>
           <Title>404</Title>
           <Subtitle>Not Found</Subtitle>
+          <ButtonWrapper>
+            <Link href="/my/favorite" passHref>
+              <Button buttonType="large" colorType="main-color">
+                마이 페이지로...
+              </Button>
+            </Link>
+          </ButtonWrapper>
         </Back>
-        <Link href="/my/favorite" passHref>
-          <StyledButton buttonType="large" colorType="main-color">
-            마이 페이지로...
-          </StyledButton>
-        </Link>
       </Main>
     </Layout>
   );
@@ -56,7 +58,7 @@ const Title = styled.div`
   display: flex;
   justify-content: center;
   color: ${color.$skyBlue};
-  font-size: 200px;
+  font-size: 100px;
   font-weight: 700;
   margin-top: 5%;
 `;
@@ -65,12 +67,12 @@ const Subtitle = styled.div`
   display: flex;
   justify-content: center;
   color: ${color.$skyBlue};
-  font-size: 74px;
+  font-size: 50px;
   font-weight: 700;
 `;
 
-const StyledButton = styled(Button)`
-  position: absolute;
-  bottom: 18%;
-  right: 12%;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 `;

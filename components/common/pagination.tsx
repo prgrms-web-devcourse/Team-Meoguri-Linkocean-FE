@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as theme from "@/styles/theme";
 import Image from "next/image";
 
@@ -13,6 +13,11 @@ export interface PaginationProps {
 
 const Pagination = ({ defaultPage, count, onChange }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(defaultPage ?? 1);
+
+  useEffect(() => {
+    setCurrentPage(defaultPage || 1);
+  }, [defaultPage]);
+
   const startPage = (() => {
     if (count < MAX_LENGTH) {
       return 1;
