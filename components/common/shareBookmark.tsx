@@ -41,10 +41,7 @@ const ShareBookmark = ({
   const clickShare = async () => {
     try {
       if (!selectUser) return;
-      await notificationAPI.shareNotification({
-        targetId: selectUser,
-        bookmarkId,
-      });
+      await notificationAPI.shareNotification(selectUser, bookmarkId);
       setIsShow(false);
       alert("북마크가 공유 되었습니다.");
     } catch (error) {
