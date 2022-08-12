@@ -80,12 +80,13 @@ const Create = () => {
     }
 
     const response = await bookmarkAPI.getLinkMetadata(url);
+
     setTitle(response.data.title);
   };
 
   const create = async (payload: CreateBookmarkPayload) => {
     try {
-      await bookmarkAPI.createBookmark(payload);
+      const response = await bookmarkAPI.createBookmark(payload);
       if (payload.category === "no-category") {
         dispatch({
           type: "CREATE_BOOKMARK",
@@ -98,7 +99,7 @@ const Create = () => {
           categories: payload.category,
         });
       }
-      router.push("/my/favorite");
+      router.push(`/feed/detail/${response.data.id}`);
     } catch (error) {
       console.error(error);
     }
