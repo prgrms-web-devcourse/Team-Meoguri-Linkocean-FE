@@ -1,17 +1,15 @@
-import PageLayout from "@/components/common/pageLayout";
-import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import Head from "next/head";
-import UserInfo from "@/components/common/userInfo";
+import { useCallback, useEffect, useState } from "react";
+import styled from "@emotion/styled";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import FollowRadio from "@/components/follow/followRadio";
-import Following from "@/components/common/following";
-import { useCallback, useEffect, useState } from "react";
+import { Following, UserInfo, PageLayout } from "@/components/common";
 import { Profile } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { getQueryString } from "@/utils/queryString";
 import { useProfileState, useProfileDispatch } from "@/hooks/useProfile";
-import { useRouter } from "next/router";
 
 const PAGE_SIZE = 8;
 export const isLastCard = (index: number, length: number) =>

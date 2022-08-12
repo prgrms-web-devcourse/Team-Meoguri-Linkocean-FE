@@ -1,22 +1,23 @@
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import Following from "@/components/common/following";
-import PageLayout from "@/components/common/pageLayout";
-import UserInfo from "@/components/common/userInfo";
-import { getProfile } from "@/types/dummyData";
 import styled from "@emotion/styled";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import * as theme from "@/styles/theme";
-import Input from "@/components/common/input";
-import Button from "@/components/common/button";
 import { FormEvent, useState, useEffect, useCallback } from "react";
+import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
+import {
+  Following,
+  PageLayout,
+  UserInfo,
+  Input,
+  Button,
+  NoResult,
+  Top,
+} from "@/components/common";
 import profileAPI from "@/utils/apis/profile";
 import { Profile } from "@/types/model";
 import { getQueryString } from "@/utils/queryString";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
-import NoResult from "@/components/common/noResult";
-import Top from "@/components/common/top";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { FollowCardContainer, isLastCard, Layout } from "./my/follow";
 
 const PAGE_SIZE = 8;

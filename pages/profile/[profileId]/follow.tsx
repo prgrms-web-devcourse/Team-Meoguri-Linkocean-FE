@@ -1,22 +1,20 @@
-import PageLayout from "@/components/common/pageLayout";
 import Head from "next/head";
-import UserInfo from "@/components/common/userInfo";
-import FollowRadio from "@/components/follow/followRadio";
-import Following from "@/components/common/following";
 import { useRouter } from "next/router";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { PageLayout, UserInfo, Following } from "@/components/common";
+import FollowRadio from "@/components/follow/followRadio";
+import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import {
   FollowCardContainer,
   Form,
   isLastCard,
   Layout,
 } from "@/pages/my/follow";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Profile, ProfileDetail } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
-import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 
 const PAGE_SIZE = 8;
 
@@ -31,8 +29,6 @@ const INITIAL_FILTERING: Filtering = {
   page: 1,
   size: PAGE_SIZE,
 };
-
-// TODO: 자신의 profileID라면 my/follow로 보내기, 유저 정보가 없는 profileID값이 오면 404페이지로 보내기
 
 const Follow = () => {
   const router = useRouter();
