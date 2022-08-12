@@ -8,9 +8,4 @@ module.exports = {
     KAKAO_SECRET: process.env.KAKAO_SECRET,
     END_POINT: process.env.END_POINT,
   },
-  experimental: {
-    images: {
-      unoptimized: true,
-    },
-  },
 };
