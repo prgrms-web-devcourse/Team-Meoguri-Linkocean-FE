@@ -1,4 +1,6 @@
 import Head from "next/head";
+import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import {
   ChangeEvent,
   FormEvent,
@@ -7,23 +9,23 @@ import {
   useCallback,
   useRef,
 } from "react";
-import { useRouter } from "next/router";
+import {
+  Input,
+  PageLayout,
+  Button,
+  Label,
+  Checkbox,
+  Select,
+  Pagination,
+  BookmarkCard,
+  NoResult,
+} from "@/components/common";
 import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
-import Input from "@/components/common/input";
-import PageLayout from "@/components/common/pageLayout";
-import styled from "@emotion/styled";
-import Button from "@/components/common/button";
-import Label from "@/components/common/label";
-import Checkbox from "@/components/common/checkbox";
-import Select from "@/components/common/select";
-import Pagination from "@/components/common/pagination";
 import { BookmarkList } from "@/types/model";
-import BookmarkCard from "@/components/common/bookmarkCard";
 import { CATEGORY } from "@/types/type";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { getQueryString } from "@/utils/queryString";
 import * as theme from "@/styles/theme";
-import NoResult from "@/components/common/noResult";
 
 const PAGE_SIZE = 8;
 
