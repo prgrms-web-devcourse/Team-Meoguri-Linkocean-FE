@@ -16,18 +16,6 @@ export const Default = () => (
 
 const cardData: Bookmark[] = [
   {
-    id: 1,
-    title: "네이버 웹툰",
-    url: "https://comic.naver.com/index",
-    openType: "all",
-    updatedAt: "2022-01-01",
-    imageUrl: "https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_g",
-    likeCount: 122,
-    isFavorite: false,
-    isWriter: true,
-    tags: ["Spring", "네이버", "자주사용하는"],
-  },
-  {
     id: 2,
     title: "emotion",
     url: "https://emotion.sh/docs/best-practices",

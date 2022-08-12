@@ -3,8 +3,7 @@ import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import DetailPage from "@/components/detail";
 import { useProfileDispatch } from "@/hooks/useProfile";
-import { getBookMarkDetail } from "@/types/dummyData";
-import { ProfileDetail } from "@/types/model";
+import { BookmarkDetail, ProfileDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import profileAPI from "@/utils/apis/profile";
 import { useRouter } from "next/router";
@@ -15,7 +14,7 @@ const MyDetail = () => {
   const dispatch = useProfileDispatch();
   const [userProfile, setUserProfile] = useState<ProfileDetail>();
 
-  const [bookmarkData, setBookmarkData] = useState(getBookMarkDetail);
+  const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
 
   useEffect(() => {
     if (!router.isReady) return;
