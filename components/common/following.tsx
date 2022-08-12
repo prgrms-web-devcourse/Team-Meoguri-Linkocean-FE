@@ -109,8 +109,13 @@ const Card = styled.div`
   height: 121px;
   width: 400px;
   border-radius: 8px;
-  box-shadow: 0px 0px 6px ${color.$gray400};
   display: flex;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.5s;
+  &:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const ProfileImg = styled(ProfileImage)`
