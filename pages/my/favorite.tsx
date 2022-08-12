@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import PageLayout from "@/components/common/pageLayout";
-import UserInfo from "@/components/common/userInfo";
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { PageLayout, UserInfo, MyFilterMenu } from "@/components/common";
 import BookmarkTemplate from "@/components/myBookmark/bookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
 

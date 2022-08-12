@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef, useState } from "react";
+import {
+  Pagination,
+  Input,
+  Button,
+  Select,
+  BookmarkCard,
+  NoResult,
+} from "@/components/common";
 import styled from "@emotion/styled";
-import Pagination from "@/components/common/pagination";
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
-import Input from "@/components/common/input";
-import Button from "@/components/common/button";
-import Select from "@/components/common/select";
-import BookmarkCard from "@/components/common/bookmarkCard";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
 import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
-import NoResult from "@/components/common/noResult";
 
 const PAGE_SIZE = 8;
 
@@ -98,7 +100,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     if (router.isReady && requestQuery !== "init") {
       getMyBookmarksApi(requestQuery);
     }
-  }, [requestQuery]);
+  }, [requestQuery, router.isReady]);
 
   useEffect(() => {
     if (myBookmarks.totalCount % PAGE_SIZE === 1 && deleteId !== -1) {
