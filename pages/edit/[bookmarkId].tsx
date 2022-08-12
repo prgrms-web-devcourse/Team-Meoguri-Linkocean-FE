@@ -103,18 +103,18 @@ const Edit = () => {
         copiedPayload as EditBookmarkPayload
       );
 
-      if (payload.category === "no-category") {
-        dispatch({
-          type: "CREATE_BOOKMARK",
-          tags: tag,
-        });
-      } else {
-        dispatch({
-          type: "CREATE_BOOKMARK",
-          tags: tag,
-          categories: payload.category,
-        });
-      }
+      // if (payload.category === "no-category") {
+      //   dispatch({
+      //     type: "CREATE_BOOKMARK",
+      //     tags: tag,
+      //   });
+      // } else {
+      //   dispatch({
+      //     type: "CREATE_BOOKMARK",
+      //     tags: tag,
+      //     categories: payload.category,
+      //   });
+      // }
 
       router.push(`/my/detail/${Number(router.query.bookmarkId)}`);
     } catch (error) {
