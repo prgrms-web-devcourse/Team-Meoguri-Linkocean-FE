@@ -1,5 +1,5 @@
 import { color, text } from "@/styles/theme";
-import { Bookmark } from "@/types/model";
+import { Bookmark, Profile } from "@/types/model";
 import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
@@ -11,6 +11,7 @@ import DropBox from "./dropBox";
 export interface BookmarkProps {
   data: Bookmark;
   deleteBookmark: (id: number) => void;
+  isMine?: boolean;
 }
 
 const OPEN_TYPE = {
@@ -21,7 +22,7 @@ const OPEN_TYPE = {
 
 const feedUrlRegExp = /^feed.*/g;
 
-const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
+const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
   const {
     category,
     url,
@@ -102,7 +103,7 @@ const BookmarkCard = ({ data, deleteBookmark }: BookmarkProps) => {
             <DropBox
               setIsShowShareBookmark={setIsShowShareBookmark}
               deleteBookmark={deleteBookmark}
-              isWriter={isWriter}
+              isWriter={isMine ?? isWriter}
               id={id}
             >
               <More />

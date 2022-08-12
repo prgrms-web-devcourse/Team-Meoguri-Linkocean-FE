@@ -1,4 +1,6 @@
 import Head from "next/head";
+import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 import {
   ChangeEvent,
   FormEvent,
@@ -7,23 +9,24 @@ import {
   useCallback,
   useRef,
 } from "react";
-import { useRouter } from "next/router";
+import {
+  Input,
+  PageLayout,
+  Button,
+  Label,
+  Checkbox,
+  Select,
+  Pagination,
+  BookmarkCard,
+  NoResult,
+} from "@/components/common";
 import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
-import Input from "@/components/common/input";
-import PageLayout from "@/components/common/pageLayout";
-import styled from "@emotion/styled";
-import Button from "@/components/common/button";
-import Label from "@/components/common/label";
-import Checkbox from "@/components/common/checkbox";
-import Select from "@/components/common/select";
-import Pagination from "@/components/common/pagination";
 import { BookmarkList } from "@/types/model";
-import BookmarkCard from "@/components/common/bookmarkCard";
 import { CATEGORY } from "@/types/type";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { getQueryString } from "@/utils/queryString";
 import * as theme from "@/styles/theme";
-import NoResult from "@/components/common/noResult";
+import { useProfileState } from "@/hooks/useProfile";
 
 const PAGE_SIZE = 8;
 
@@ -51,6 +54,7 @@ const INITIAL_FILTERING: Filtering = {
 const Feed = () => {
   const router = useRouter();
 
+  const { profileId } = useProfileState();
   const [state, setState] = useState<Filtering>(INITIAL_FILTERING);
   const [feedBookmarks, setFeedBookmarks] = useState<BookmarkList>({
     totalCount: 0,
@@ -141,6 +145,25 @@ const Feed = () => {
       page: INITIAL_FILTERING.page,
       searchTitle: trimmedSearchTitle,
     });
+  };
+
+  const handleBookmarkDelete = (id: number) => {
+    const { totalCount, bookmarks } = feedBookmarks;
+    const nextBookmarks = bookmarks.filter((bookmark) => bookmark.id !== id);
+    const nextBookmarksLength = nextBookmarks.length;
+
+    if (nextBookmarksLength !== 0) {
+      setFeedBookmarks({
+        totalCount,
+        bookmarks: nextBookmarks,
+      });
+    } else {
+      const needPrevPage =
+        state.page === Math.ceil(feedBookmarks.totalCount / state.size) &&
+        state.page !== 1;
+      const nextPage = needPrevPage ? state.page - 1 : state.page;
+      setState({ ...state, page: nextPage });
+    }
   };
 
   useEffect(() => {
@@ -264,7 +287,8 @@ const Feed = () => {
                   <BookmarkCard
                     key={bookmark.id}
                     data={bookmark}
-                    deleteBookmark={() => {}}
+                    deleteBookmark={handleBookmarkDelete}
+                    isMine={profileId === bookmark.profile?.profileId}
                   />
                 ))
               )}
@@ -273,7 +297,7 @@ const Feed = () => {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Pagination
                 defaultPage={state.page}
-                count={Math.ceil(feedBookmarks.bookmarks.length / state.size)}
+                count={Math.ceil(feedBookmarks.totalCount / state.size)}
                 onChange={handleChangePages}
               />
             </div>
@@ -323,6 +347,7 @@ const Follow = styled.div`
 
 const BookmarkContainer = styled.div`
   margin-bottom: 90px;
+  min-height: 288px;
 `;
 
 export default Feed;

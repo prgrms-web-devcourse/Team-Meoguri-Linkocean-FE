@@ -84,12 +84,13 @@ const EditPage = () => {
         editData.append("image", file);
       }
       await profileAPI.editProfile(editData);
+
       dispatch({
         type: "EDIT_PROFILES",
         profile: {
           bio: input.bio,
           username: input.userName,
-          imageUrl: URL.createObjectURL(file as File),
+          imageUrl: typeof file === "string" ? file : URL.createObjectURL(file),
           favoriteCategories: categories,
         },
       });
