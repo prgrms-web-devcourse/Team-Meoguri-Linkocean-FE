@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "@emotion/styled";
 import Pagination from "@/components/common/pagination";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -42,6 +42,8 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
 
   const searching = () => {
     const keyword = searchInput.current?.value.trim();
+    const current = searchInput.current as HTMLInputElement;
+    current.value = keyword as string;
     let query = deleteDuplicateQuery(requestQuery, "searchTitle");
     query = deleteDuplicateQuery(query, "page");
     if (keyword) {
@@ -95,7 +97,8 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     getMyBookmarksApi(requestQuery);
   }, [requestQuery]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  useCallback(() => {
     if (myBookmarks.totalCount % PAGE_SIZE === 1) {
       const query = deleteDuplicateQuery(requestQuery, "page");
       setRequestQuery(`${query}page=${page - 1}`);
@@ -177,6 +180,7 @@ const FilterDiv = styled.div`
 `;
 const ContentDiv = styled.div`
   padding-top: 2px;
+  min-height: 288px;
 `;
 
 const SelectDiv = styled.div`
