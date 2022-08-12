@@ -57,11 +57,14 @@ const Feed = () => {
     bookmarks: [],
   });
   const [searchTitleInputValue, setSearchTitleInputValue] = useState("");
-  const [routerIsReady, setRouterIsReady] = useState(false);
+  const [isRouterReady, setIsRouterReady] = useState(false);
 
   const searchTitleRef = useRef<HTMLInputElement>(null);
 
   const getFeedBookmarks = useCallback(async () => {
+    if (!isRouterReady) {
+      return;
+    }
     setSearchTitleInputValue(state.searchTitle);
 
     const query: Partial<Filtering> = { ...state };
@@ -74,7 +77,7 @@ const Feed = () => {
     const queryString = getQueryString(query);
     const response = await bookmarkAPI.getFeedBookmarks(queryString);
     setFeedBookmarks(response.data);
-  }, [state]);
+  }, [state, isRouterReady]);
 
   const changeRoutePath = useCallback(
     (nextState: Filtering) => {
@@ -92,7 +95,6 @@ const Feed = () => {
     setState(nextState);
     changeRoutePath(nextState);
   };
-
   const handleChangeFollow = ({
     target: { checked },
   }: ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +104,7 @@ const Feed = () => {
       follow: checked,
     });
   };
+
   const handleChangeCategory = (selectedCategory: string) => {
     handleChangeState({
       ...state,
@@ -148,6 +151,7 @@ const Feed = () => {
     const { query } = router;
     const queryKeys = Object.keys(query);
     if (queryKeys.length === 0) {
+      setIsRouterReady(true);
       return;
     }
 
@@ -161,6 +165,7 @@ const Feed = () => {
     }
 
     const searchTitle = query.searchTitle as string;
+    setIsRouterReady(true);
     if (searchTitle === "") {
       setState({
         ...INITIAL_FILTERING,
@@ -170,18 +175,12 @@ const Feed = () => {
       setState({ ...INITIAL_FILTERING, ...query });
     }
     setSearchTitleInputValue(searchTitle);
-    setRouterIsReady(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   useEffect(() => {
-    if (!routerIsReady) {
-      return;
-    }
-
     getFeedBookmarks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getFeedBookmarks]);
 
   return (
@@ -192,7 +191,7 @@ const Feed = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          {routerIsReady ? (
+          {isRouterReady ? (
             <FeedFilterMenu
               getCategoryData={handleChangeCategory}
               category={state.category}
