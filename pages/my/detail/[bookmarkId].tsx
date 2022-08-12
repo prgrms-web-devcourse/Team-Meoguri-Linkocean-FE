@@ -3,7 +3,6 @@ import PageLayout from "@/components/common/pageLayout";
 import UserInfo from "@/components/common/userInfo";
 import DetailPage from "@/components/detail";
 import { useProfileState } from "@/hooks/useProfile";
-import { getProfile } from "@/types/dummyData";
 import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { useRouter } from "next/router";
