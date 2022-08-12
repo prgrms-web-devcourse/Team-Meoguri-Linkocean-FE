@@ -19,8 +19,6 @@ import Top from "@/components/common/top";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import { FollowCardContainer, isLastCard, Layout } from "./my/follow";
 
-// TODO: 유저 컨텍스트 연결
-
 const PAGE_SIZE = 8;
 
 type Filtering = {
@@ -113,16 +111,11 @@ const Meoguri = () => {
     );
     const isDeleteFollowAction = profiles[index].isFollow;
 
-    const nextFolloweeCount = isDeleteFollowAction
-      ? userProfile.followeeCount - 1
-      : userProfile.followeeCount + 1;
-    userProfileDispatcher({
-      type: "GET_PROFILES",
-      profile: {
-        ...userProfile,
-        followeeCount: nextFolloweeCount,
-      },
-    });
+    if (isDeleteFollowAction) {
+      userProfileDispatcher({ type: "UN_FOLLOW" });
+    } else {
+      userProfileDispatcher({ type: "FOLLOW" });
+    }
 
     const copiedValue = [...profiles];
     copiedValue[index].isFollow = !copiedValue[index].isFollow;
@@ -152,7 +145,7 @@ const Meoguri = () => {
 
       <PageLayout>
         <PageLayout.Aside>
-          <UserInfo data={userProfile} />
+          <UserInfo />
           <MyFilterMenu
             tagList={userProfile.tags}
             categoryList={userProfile.categories}
@@ -198,13 +191,13 @@ const Meoguri = () => {
                       ref={
                         isLastCard(index, profiles.length) ? setTarget : null
                       }
+                      key={profileId}
                     >
                       <Following
                         profileId={profileId}
                         profileImg={imageUrl}
                         userName={username}
                         following={isFollow}
-                        key={profileId}
                         handleClick={handleFollow}
                         isMine={profileId === userProfile.profileId}
                       />
