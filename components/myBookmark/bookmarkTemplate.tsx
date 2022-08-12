@@ -22,12 +22,12 @@ interface MyBookmarkProps {
 const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [requestQuery, setRequestQuery] = useState("favorite=true");
+  const [requestQuery, setRequestQuery] = useState("init");
   const [myBookmarks, setMyBookmarks] = useState<BookmarkList>({
     totalCount: -1,
     bookmarks: [],
   });
-  const [deleteId, setDeleteId] = useState<number>();
+  const [deleteId, setDeleteId] = useState<number>(-1);
   const getMyBookmarksApi = (query: string) => {
     (async () => {
       try {
@@ -77,7 +77,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     if (searchInput.current) {
       searchInput.current.value = "";
     }
-    let routerQuery = "";
+    let routerQuery = "no";
     const key = Object.keys(router.query)[0];
     const value = router.query[key];
     if (key === "category" || key === "tags") {
@@ -89,23 +89,25 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     } else {
       routerQuery = "favorite=true&";
     }
-    setRequestQuery(routerQuery);
+    if (router.isReady) {
+      setRequestQuery(routerQuery);
+    }
   }, [router.isReady, router.asPath]);
 
   useEffect(() => {
-    // requestQuery가 변경될 때 api 호출
-    getMyBookmarksApi(requestQuery);
-  }, [requestQuery]);
-
-  // useEffect(() => {
-  useCallback(() => {
-    if (myBookmarks.totalCount % PAGE_SIZE === 1) {
-      const query = deleteDuplicateQuery(requestQuery, "page");
-      setRequestQuery(`${query}page=${page - 1}`);
-    } else {
+    if (router.isReady && requestQuery !== "init") {
       getMyBookmarksApi(requestQuery);
     }
-  }, [deleteId]);
+  }, [requestQuery]);
+
+  useEffect(() => {
+    if (myBookmarks.totalCount % PAGE_SIZE === 1 && deleteId !== -1) {
+      const query = deleteDuplicateQuery(requestQuery, "page");
+      setRequestQuery(`${query}page=${page - 1}`);
+    } else if (deleteId !== -1) {
+      getMyBookmarksApi(requestQuery);
+    }
+  }, [deleteId, router.isReady]);
 
   return (
     <Wrapper>
