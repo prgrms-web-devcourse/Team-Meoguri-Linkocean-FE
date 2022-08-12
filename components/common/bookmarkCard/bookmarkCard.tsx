@@ -46,7 +46,6 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
 
   const clickCard = () => {
     const link = router.asPath.split("/")[1];
-    console.log(link);
     if (feedUrlRegExp.test(link)) {
       router.push(`/feed/detail/${id}`);
     } else if (link === "profile") {

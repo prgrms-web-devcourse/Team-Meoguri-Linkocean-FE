@@ -27,7 +27,7 @@ const MyDetail = () => {
         setBookmarkData(data);
         setUserProfile(otherData.data);
       } catch (e) {
-        console.log(e);
+        console.error(e);
         router.push("/404");
       }
     })();
