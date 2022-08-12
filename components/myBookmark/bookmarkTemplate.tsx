@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef, useState } from "react";
+import {
+  Pagination,
+  Input,
+  Button,
+  Select,
+  BookmarkCard,
+  NoResult,
+} from "@/components/common";
 import styled from "@emotion/styled";
-import Pagination from "@/components/common/pagination";
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
-import Input from "@/components/common/input";
-import Button from "@/components/common/button";
-import Select from "@/components/common/select";
-import BookmarkCard from "@/components/common/bookmarkCard";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
 import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
-import NoResult from "@/components/common/noResult";
 
 const PAGE_SIZE = 8;
 
@@ -22,12 +24,12 @@ interface MyBookmarkProps {
 const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [requestQuery, setRequestQuery] = useState("");
+  const [requestQuery, setRequestQuery] = useState("init");
   const [myBookmarks, setMyBookmarks] = useState<BookmarkList>({
-    totalCount: 0,
+    totalCount: -1,
     bookmarks: [],
   });
-  const [deleteId, setDeleteId] = useState<number>();
+  const [deleteId, setDeleteId] = useState<number>(-1);
   const getMyBookmarksApi = (query: string) => {
     (async () => {
       try {
@@ -38,12 +40,18 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       }
     })();
   };
+  const [page, setPage] = useState(1);
 
   const searching = () => {
-    const keyword = searchInput.current?.value;
+    const keyword = searchInput.current?.value.trim();
+    const current = searchInput.current as HTMLInputElement;
+    current.value = keyword as string;
+    let query = deleteDuplicateQuery(requestQuery, "searchTitle");
+    query = deleteDuplicateQuery(query, "page");
     if (keyword) {
-      const query = deleteDuplicateQuery(requestQuery, "searchTitle");
-      setRequestQuery(`${query}searchTitle=${keyword}`);
+      setRequestQuery(`${query}searchTitle=${keyword}&page=1`);
+    } else {
+      setRequestQuery(`${query}`);
     }
   };
 
@@ -54,6 +62,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   };
 
   const changePage = (pageNum: number) => {
+    setPage(pageNum);
     const query = deleteDuplicateQuery(requestQuery, "page");
     const queryWithSort = `${query}page=${pageNum}`;
     setRequestQuery(queryWithSort);
@@ -66,12 +75,11 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   };
 
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
     if (!router.isReady) return;
     if (searchInput.current) {
       searchInput.current.value = "";
     }
-    let routerQuery = "";
+    let routerQuery = "no";
     const key = Object.keys(router.query)[0];
     const value = router.query[key];
     if (key === "category" || key === "tags") {
@@ -83,17 +91,25 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     } else {
       routerQuery = "favorite=true&";
     }
-    setRequestQuery(routerQuery);
-  }, [router.asPath]);
+    if (router.isReady) {
+      setRequestQuery(routerQuery);
+    }
+  }, [router.isReady, router.asPath]);
 
   useEffect(() => {
-    // requestQuery가 변경될 때 api 호출
-    getMyBookmarksApi(requestQuery);
-    // const temp = deleteDuplicateQuery(requestQuery, "favorite");
-    // router.push(`${router.pathname}?&${temp}`);
-  }, [requestQuery]);
+    if (router.isReady && requestQuery !== "init") {
+      getMyBookmarksApi(requestQuery);
+    }
+  }, [requestQuery, router.isReady]);
 
-  useEffect(() => {}, [deleteId]);
+  useEffect(() => {
+    if (myBookmarks.totalCount % PAGE_SIZE === 1 && deleteId !== -1) {
+      const query = deleteDuplicateQuery(requestQuery, "page");
+      setRequestQuery(`${query}page=${page - 1}`);
+    } else if (deleteId !== -1) {
+      getMyBookmarksApi(requestQuery);
+    }
+  }, [deleteId, router.isReady]);
 
   return (
     <Wrapper>
@@ -119,27 +135,29 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           </Select>
         </SelectDiv>
       </FilterDiv>
-      <ContentDiv>
-        {myBookmarks.totalCount === 0 &&
-        searchInput.current?.value.length !== 0 ? (
-          <NoResult />
-        ) : null}
-        {myBookmarks.bookmarks.map((element) =>
-          deleteId !== element.id ? (
-            <BookmarkCard
-              key={element.title}
-              data={element}
-              deleteBookmark={setDeleteId}
-            />
-          ) : null
-        )}
-      </ContentDiv>
+      {myBookmarks.totalCount === 0 &&
+      searchInput.current?.value.length !== 0 ? (
+        <NoResult />
+      ) : (
+        <ContentDiv>
+          {myBookmarks.bookmarks.map((element) =>
+            deleteId !== element.id ? (
+              <BookmarkCard
+                key={element.title}
+                data={element}
+                deleteBookmark={setDeleteId}
+              />
+            ) : null
+          )}
+        </ContentDiv>
+      )}
       <PaginationDiv>
         <Pagination
           count={Math.ceil(myBookmarks.totalCount / PAGE_SIZE)}
           onChange={(pageNum) => {
             changePage(pageNum);
           }}
+          defaultPage={1}
         />
       </PaginationDiv>
     </Wrapper>
@@ -155,7 +173,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  ${text.$headline4}
+  ${text.$headline5}
   color:${color.$gray800};
   margin: 9px 0 0 15px;
 `;
@@ -166,6 +184,7 @@ const FilterDiv = styled.div`
 `;
 const ContentDiv = styled.div`
   padding-top: 2px;
+  min-height: 288px;
 `;
 
 const SelectDiv = styled.div`

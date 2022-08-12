@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef, useState } from "react";
+import {
+  Pagination,
+  Input,
+  Button,
+  Select,
+  BookmarkCard,
+  NoResult,
+} from "@/components/common";
 import styled from "@emotion/styled";
-import Pagination from "@/components/common/pagination";
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
-import Input from "@/components/common/input";
-import Button from "@/components/common/button";
-import Select from "@/components/common/select";
-import BookmarkCard from "@/components/common/bookmarkCard";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList } from "@/types/model";
 import { deleteDuplicateQuery } from "@/utils/deleteDuplicateQuery";
-import NoResult from "../common/noResult";
 
 const PAGE_SIZE = 8;
 
@@ -22,9 +24,9 @@ interface OtherBookmarkProps {
 const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
-  const [requestQuery, setRequestQuery] = useState("");
+  const [requestQuery, setRequestQuery] = useState("init");
   const [otherBookmarks, setOtherBookmarks] = useState<BookmarkList>({
-    totalCount: 0,
+    totalCount: -1,
     bookmarks: [],
   });
   const { profileId } = router.query;
@@ -45,10 +47,15 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
     })();
   };
   const searching = () => {
-    const keyword = searchInput.current?.value;
+    const keyword = searchInput.current?.value.trim();
+    const current = searchInput.current as HTMLInputElement;
+    current.value = keyword as string;
+    let query = deleteDuplicateQuery(requestQuery, "searchTitle");
+    query = deleteDuplicateQuery(query, "page");
     if (keyword) {
-      const query = deleteDuplicateQuery(requestQuery, "searchTitle");
-      setRequestQuery(`${query}searchTitle=${keyword}`);
+      setRequestQuery(`${query}searchTitle=${keyword}&page=1`);
+    } else {
+      setRequestQuery(`${query}`);
     }
   };
 
@@ -71,7 +78,6 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   };
 
   useEffect(() => {
-    // router에 따른 filtering(category|tag|favorite) => 같은 페이지에서 쿼리 변경될 때
     if (!router.isReady) return;
     if (searchInput.current) {
       searchInput.current.value = "";
@@ -86,15 +92,16 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
         routerQuery = `${key}=${value}`;
       }
     } else {
-      routerQuery = "favorite=true&";
+      routerQuery = "favorite=true";
     }
     setRequestQuery(routerQuery);
   }, [router.isReady, router.asPath]);
 
   useEffect(() => {
-    // requestQuery가 변경될 때 api 호출
-    getOtherBookmarksApi(requestQuery);
-  }, [requestQuery]);
+    if (router.isReady && requestQuery !== "init") {
+      getOtherBookmarksApi(requestQuery);
+    }
+  }, [requestQuery, router.isReady]);
 
   return (
     <Wrapper>
@@ -154,7 +161,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  ${text.$headline4}
+  ${text.$headline5}
   color:${color.$gray800};
   margin: 9px 0 0 15px;
 `;
@@ -165,6 +172,7 @@ const FilterDiv = styled.div`
 `;
 const ContentDiv = styled.div`
   padding-top: 2px;
+  min-height: 288px;
 `;
 
 const SelectDiv = styled.div`
