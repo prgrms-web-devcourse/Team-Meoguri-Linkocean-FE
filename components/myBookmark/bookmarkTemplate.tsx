@@ -38,6 +38,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       }
     })();
   };
+  const [page, setPage] = useState(1);
 
   const searching = () => {
     const keyword = searchInput.current?.value.trim();
@@ -57,6 +58,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
   };
 
   const changePage = (pageNum: number) => {
+    setPage(pageNum);
     const query = deleteDuplicateQuery(requestQuery, "page");
     const queryWithSort = `${query}page=${pageNum}`;
     setRequestQuery(queryWithSort);
@@ -93,21 +95,15 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     getMyBookmarksApi(requestQuery);
   }, [requestQuery]);
 
-  useEffect(() => {}, [deleteId]);
+  useEffect(() => {
+    if (myBookmarks.totalCount % PAGE_SIZE === 1) {
+      const query = deleteDuplicateQuery(requestQuery, "page");
+      setRequestQuery(`${query}page=${page - 1}`);
+    } else {
+      getMyBookmarksApi(requestQuery);
+    }
+  }, [deleteId]);
 
-  const page = React.useMemo(
-    () => (
-      <Pagination
-        defaultPage={1}
-        count={Math.ceil(myBookmarks.totalCount / PAGE_SIZE)}
-        onChange={(pageNum) => {
-          changePage(pageNum);
-          console.log(pageNum);
-        }}
-      />
-    ),
-    [myBookmarks, router.query, router.asPath, router]
-  );
   return (
     <Wrapper>
       <Title>{PageTitle}</Title>
@@ -149,14 +145,13 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
         </ContentDiv>
       )}
       <PaginationDiv>
-        {/* <Pagination
+        <Pagination
           count={Math.ceil(myBookmarks.totalCount / PAGE_SIZE)}
           onChange={(pageNum) => {
             changePage(pageNum);
           }}
           defaultPage={1}
-        /> */}
-        {page}
+        />
       </PaginationDiv>
     </Wrapper>
   );
