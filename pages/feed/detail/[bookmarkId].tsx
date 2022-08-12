@@ -1,5 +1,4 @@
-import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
-import PageLayout from "@/components/common/pageLayout";
+import { FeedFilterMenu, PageLayout } from "@/components/common";
 import DetailPage from "@/components/detail";
 import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";

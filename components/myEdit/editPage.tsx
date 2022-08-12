@@ -6,14 +6,9 @@ import { usernameRegExp } from "@/utils/validation";
 import profileAPI from "@/utils/apis/profile";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import { CATEGORY } from "@/types/type";
-import Button from "../common/button";
-import ErrorText from "../common/errorText";
-import Input from "../common/input";
-import Label from "../common/label";
-import Select from "../common/select";
-import Textarea from "../common/textarea";
-import SelectCategoryModal from "./selectCategoryModal";
 import ImageUploader from "./imageUploader";
+import { Button, ErrorText, Input, Label, Select, Textarea } from "../common";
+import SelectCategoryModal from "./selectCategoryModal";
 
 const EditPage = () => {
   const [userNameErrorMsg, setUserNameErrorMsg] = useState("");

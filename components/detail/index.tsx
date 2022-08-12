@@ -7,12 +7,8 @@ import bookmarkAPI from "@/utils/apis/bookmark";
 import followAPI from "@/utils/apis/follow";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import dateFormat from "@/utils/dateFormat";
-import BackButton from "../common/backButton";
-import Star from "../common/star";
-import Button from "../common/button";
-import ProfileImage from "../common/profileImage";
-import Reaction from "../common/reaction";
 import CopyLink from "./copyLink";
+import { BackButton, Button, ProfileImage, Reaction, Star } from "../common";
 
 const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
   const router = useRouter();
