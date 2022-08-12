@@ -62,7 +62,7 @@ export interface BookmarkDetail {
 
 export interface BookmarkList {
   totalCount: number;
-  bookmarks: Bookmark[];
+  bookmarks: (Bookmark & { profile?: Profile })[];
 }
 
 export interface Notification {
