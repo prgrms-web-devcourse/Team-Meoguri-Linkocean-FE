@@ -135,6 +135,14 @@ const Meoguri = () => {
   }, [router.isReady]);
 
   useEffect(() => {
+    if (Object.keys(router.query).length === 0) {
+      setUsernameInputValue("");
+      setState(INITIAL_FILTERING);
+      setProfiles([]);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
     getProfiles();
   }, [getProfiles]);
 

@@ -203,6 +203,13 @@ const Feed = () => {
   }, [router.isReady]);
 
   useEffect(() => {
+    if (Object.keys(router.query).length === 0) {
+      setSearchTitleInputValue("");
+      setState(INITIAL_FILTERING);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
     getFeedBookmarks();
   }, [getFeedBookmarks]);
 
