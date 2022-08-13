@@ -31,7 +31,7 @@ const Header: React.FC = () => {
       </Link>
       <NavigatorWrapper>
         <Link href="/feed" passHref>
-          <Navigator>피드</Navigator>
+          <Navigator>전체 피드</Navigator>
         </Link>
         <Link href="/meoguri" passHref>
           <Navigator>머구리 찾기</Navigator>
