@@ -54,7 +54,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
         await bookmarkAPI.deleteBookmark(id);
         dispatch({
           type: "REMOVE_BOOKMARK",
-          tags,
+          tags: tags || [],
         });
         router.back();
       } catch (error) {
