@@ -75,18 +75,18 @@ const Follow = () => {
       setFollowProfiles(({ value }) => ({ value, isLoading: true }));
 
       const {
-        data: { profiles },
+        data: { profiles: responseProfiles, hasNext },
       } = await profileAPI.getFollow(userProfile.profileId, tab, queryString);
 
-      if (profiles.length === 0 || profiles.length < query.size) {
+      if (!hasNext) {
         setIsEndPage(true);
       }
 
       setFollowProfiles(({ value }) => {
         const nextValue =
           query.page === INITIAL_FILTERING.page
-            ? profiles
-            : [...value, ...profiles];
+            ? responseProfiles
+            : [...value, ...responseProfiles];
 
         return {
           value: nextValue,
