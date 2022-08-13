@@ -8,7 +8,7 @@ interface ImageUploaderProps {
   setFile: (file: File | string) => void;
 }
 
-const RegExp = /^image\/(gif|jpe?g|png)/i;
+const RegExp = /^image\/(jpe?g|png)/i;
 
 const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
   const [checked, toggle] = useToggle(false);
@@ -16,7 +16,7 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     if (!RegExp.test(e.target.files[0].type)) {
-      alert("확장자가 .png, .jpg, .jpeg, .gif 인지 확인해 주세요");
+      alert("확장자가 .png, .jpg, .jpeg 인지 확인해 주세요");
       return;
     }
     setFile(e.target.files[0]);
@@ -53,7 +53,7 @@ const ImageUploader = ({ file, setFile }: ImageUploaderProps) => {
               사진 등록
               <input
                 type="file"
-                accept=".gif, .jpg, .png, .jpeg"
+                accept=".jpg, .png, .jpeg"
                 onChange={handleChange}
                 id="profileImage"
               />

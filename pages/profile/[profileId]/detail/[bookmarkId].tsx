@@ -60,7 +60,7 @@ const MyDetail = () => {
         <UserInfo data={userProfile} handleClick={handleUserInfo} />
         <OtherFilterMenu
           tagList={userProfile?.tags}
-          categoryList={userProfile?.favoriteCategories}
+          categoryList={userProfile?.categories}
           getCategoryData={(category) => {
             router.push(
               `/profile/${Number(

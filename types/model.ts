@@ -9,13 +9,14 @@ export interface Profile {
 
 export interface ProfileList {
   profiles: Profile[];
+  hasNext: boolean;
 }
 
 export interface ProfileDetail {
   profileId: number;
   imageUrl?: string;
   favoriteCategories: typeof CATEGORY[number][];
-  categories?: typeof CATEGORY[number][];
+  categories: typeof CATEGORY[number][];
   username: string;
   bio?: string;
   followerCount: number;

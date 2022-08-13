@@ -1,21 +1,18 @@
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import styled from "@emotion/styled";
 import * as theme from "@/styles/theme";
 import { useEffect, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/router";
-import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
-import storage from "@/utils/localStorage";
 import {
   GoogleLoginButton,
   NaverLoginButton,
   KakaoLoginButton,
-  LoginButton,
 } from "@/components/main";
-
-const OAUTH_TYPE = "OAUTH_TYPE";
-const TOKEN_KEY = "LINKOCEAN_TOKEN";
+import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
+import storage from "@/utils/localStorage";
+import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -25,7 +22,7 @@ export default function Home() {
   const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
     const oauthType = e.currentTarget.name as OauthType;
     const upperOAuthType = oauthType.toUpperCase();
-    storage.setItem(OAUTH_TYPE, upperOAuthType);
+    storage.setItem(STORAGE_KEY.oauthType, upperOAuthType);
 
     (async () => {
       try {
@@ -35,17 +32,11 @@ export default function Home() {
       }
     })();
   };
-  const handleSignOut = () => {
-    signOut();
-
-    storage.removeItem(OAUTH_TYPE);
-    storage.removeItem(TOKEN_KEY);
-  };
 
   const login = useCallback(async (payload: LoginPayload) => {
     try {
       const response = await profileAPI.login(payload);
-      storage.setItem(TOKEN_KEY, response.data.token);
+      storage.setItem(STORAGE_KEY.token, response.data.token);
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +44,9 @@ export default function Home() {
   const loginSuccess = useCallback(async () => {
     try {
       const response = await profileAPI.loginSuccess();
-      const nextPage = response.data.hasProfile ? "/my/favorite" : "/signup";
+      const nextPage = response.data.hasProfile
+        ? LINKOCEAN_PATH.myFavorite
+        : LINKOCEAN_PATH.signup;
       router.push(nextPage);
     } catch (error) {
       console.error(error);
@@ -61,18 +54,22 @@ export default function Home() {
   }, [router]);
 
   useEffect(() => {
-    if (session) {
-      (async () => {
-        const oauthType = storage.getItem(OAUTH_TYPE, "");
-        if (oauthType === "") {
-          return;
-        }
-
-        await login({ email: session?.user?.email as string, oauthType });
-        await loginSuccess();
-      })();
+    if (!session) {
+      return;
     }
-  }, [login, loginSuccess, session, session?.user?.email]);
+
+    (async () => {
+      const oauthType = storage.getItem(STORAGE_KEY.oauthType, "");
+      if (oauthType === "") {
+        return;
+      }
+
+      await login({ email: session?.user?.email as string, oauthType });
+      await loginSuccess();
+    })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   return (
     <>
@@ -119,13 +116,6 @@ export default function Home() {
                 onClick={handleLogin}
                 disabled={!!session}
               />
-              <LogoutButton
-                type="button"
-                onClick={handleSignOut}
-                disabled={!session}
-              >
-                임시 로그아웃
-              </LogoutButton>
             </ButtonContainer>
           </LoginContainer>
 
@@ -177,7 +167,7 @@ const LoginContainer = styled.div`
   height: 530px;
   border: 3px solid ${theme.color.$skyBlue};
   border-radius: 8px;
-  padding: 53px 63px 62px;
+  padding: 68px 62px;
   text-align: center;
   box-sizing: border-box;
 `;
@@ -185,7 +175,7 @@ const LoginContainer = styled.div`
 const Logo = styled.h1`
   display: flex;
   flex-direction: column;
-  margin-bottom: 33px;
+  margin-bottom: 42px;
 `;
 
 const LinkOcean = styled.div`
@@ -196,11 +186,6 @@ const ButtonContainer = styled.div`
   display: inline-flex;
   flex-direction: column;
   gap: 8px;
-`;
-
-const LogoutButton = styled(LoginButton)`
-  color: #fff;
-  background-color: ${theme.color.$mainColor};
 `;
 
 const AboutContainer = styled.div`

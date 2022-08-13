@@ -7,7 +7,7 @@ import profileAPI from "@/utils/apis/profile";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import { CATEGORY } from "@/types/type";
 import ImageUploader from "./imageUploader";
-import { Button, ErrorText, Input, Label, Select, Textarea } from "../common";
+import { Button, ErrorText, Input, Label, Textarea } from "../common";
 import SelectCategoryModal from "./selectCategoryModal";
 
 const EditPage = () => {
@@ -33,7 +33,11 @@ const EditPage = () => {
     if (imageUrl) {
       setFile(imageUrl);
     }
-  }, [favoriteCategories, imageUrl]);
+    setInput({
+      userName: username,
+      bio: bio || "",
+    });
+  }, [favoriteCategories, imageUrl, bio, username]);
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -145,15 +149,6 @@ const EditPage = () => {
         ) : (
           <div style={{ height: "16px" }} />
         )}
-      </InputBox>
-      <InputBox>
-        <Label>오래된 북마크 기간</Label>
-        <Select width="470px">
-          <Select.Trigger>선택</Select.Trigger>
-          <Select.OptionList>
-            <Select.Option value="1">1개월</Select.Option>
-          </Select.OptionList>
-        </Select>
       </InputBox>
       <ButtonBox>
         <Button

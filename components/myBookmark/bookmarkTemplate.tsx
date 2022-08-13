@@ -76,6 +76,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
 
   useEffect(() => {
     if (!router.isReady) return;
+    setPage(1);
     if (searchInput.current) {
       searchInput.current.value = "";
     }
@@ -143,7 +144,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           {myBookmarks.bookmarks.map((element) =>
             deleteId !== element.id ? (
               <BookmarkCard
-                key={element.title}
+                key={element.id}
                 data={element}
                 deleteBookmark={setDeleteId}
               />
@@ -157,7 +158,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           onChange={(pageNum) => {
             changePage(pageNum);
           }}
-          defaultPage={1}
+          defaultPage={page}
         />
       </PaginationDiv>
     </Wrapper>

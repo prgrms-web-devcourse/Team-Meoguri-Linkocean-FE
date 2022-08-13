@@ -31,6 +31,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   });
   const { profileId } = router.query;
   const [deleteId, setDeleteId] = useState<number>();
+  const [page, setPage] = useState(1);
   const getOtherBookmarksApi = (query: string) => {
     (async () => {
       try {
@@ -66,6 +67,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   };
 
   const changePage = (pageNum: number) => {
+    setPage(pageNum);
     const query = deleteDuplicateQuery(requestQuery, "page");
     const queryWithSort = `${query}page=${pageNum}`;
     setRequestQuery(queryWithSort);
@@ -79,6 +81,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
 
   useEffect(() => {
     if (!router.isReady) return;
+    setPage(1);
     if (searchInput.current) {
       searchInput.current.value = "";
     }
@@ -134,7 +137,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
         ) : null}
         {otherBookmarks.bookmarks.map((element) => (
           <BookmarkCard
-            key={element.title}
+            key={element.id}
             data={element}
             deleteBookmark={setDeleteId}
           />
@@ -146,6 +149,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
           onChange={(pageNum) => {
             changePage(pageNum);
           }}
+          defaultPage={page}
         />
       </PaginationDiv>
     </Wrapper>

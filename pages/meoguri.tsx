@@ -1,7 +1,6 @@
-import styled from "@emotion/styled";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import * as theme from "@/styles/theme";
+import styled from "@emotion/styled";
 import { FormEvent, useState, useEffect, useCallback } from "react";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import {
@@ -13,11 +12,13 @@ import {
   NoResult,
   Top,
 } from "@/components/common";
-import profileAPI from "@/utils/apis/profile";
 import { Profile } from "@/types/model";
-import { getQueryString } from "@/utils/queryString";
+import profileAPI from "@/utils/apis/profile";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import { getQueryString } from "@/utils/queryString";
+import * as theme from "@/styles/theme";
+import { LINKOCEAN_PATH } from "@/utils/constants";
 import { FollowCardContainer, isLastCard, Layout } from "./my/follow";
 
 const PAGE_SIZE = 8;
@@ -70,13 +71,11 @@ const Meoguri = () => {
     const queryString = getQueryString(state);
 
     try {
-      const response = await profileAPI.getProfilesByUsername(queryString);
-      const responseProfiles = response.data.profiles;
+      const {
+        data: { profiles: responseProfiles, hasNext },
+      } = await profileAPI.getProfilesByUsername(queryString);
 
-      if (
-        responseProfiles.length === 0 ||
-        responseProfiles.length < state.size
-      ) {
+      if (!hasNext) {
         setIsEndPage(true);
       }
 
@@ -104,7 +103,7 @@ const Meoguri = () => {
     setIsEndPage(false);
     setUsernameInputValue(trimmedUsername);
     setState({ ...INITIAL_FILTERING, username: trimmedUsername });
-    router.push(`/meoguri?name=${trimmedUsername}`);
+    router.push(`${LINKOCEAN_PATH.meoguri}?name=${trimmedUsername}`);
   };
   const handleFollow = (profileId: number) => {
     const index = profiles.findIndex(
@@ -112,11 +111,9 @@ const Meoguri = () => {
     );
     const isDeleteFollowAction = profiles[index].isFollow;
 
-    if (isDeleteFollowAction) {
-      userProfileDispatcher({ type: "UN_FOLLOW" });
-    } else {
-      userProfileDispatcher({ type: "FOLLOW" });
-    }
+    userProfileDispatcher({
+      type: isDeleteFollowAction ? "UN_FOLLOW" : "FOLLOW",
+    });
 
     const copiedValue = [...profiles];
     copiedValue[index].isFollow = !copiedValue[index].isFollow;
@@ -135,6 +132,14 @@ const Meoguri = () => {
   }, [router.isReady]);
 
   useEffect(() => {
+    if (Object.keys(router.query).length === 0) {
+      setUsernameInputValue("");
+      setState(INITIAL_FILTERING);
+      setProfiles([]);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
     getProfiles();
   }, [getProfiles]);
 
@@ -151,10 +156,10 @@ const Meoguri = () => {
             tagList={userProfile.tags}
             categoryList={userProfile.categories}
             getCategoryData={(category) => {
-              router.push(`/my/category?category=${category}`);
+              router.push(`${LINKOCEAN_PATH.myCategory}?category=${category}`);
             }}
             getTagsData={(tags) => {
-              router.push(`/my/tag?tags=${tags[0]}`);
+              router.push(`${LINKOCEAN_PATH.myTag}?tags=${tags[0]}`);
             }}
           />
         </PageLayout.Aside>
@@ -218,7 +223,7 @@ const Meoguri = () => {
 const Title = styled.h2`
   margin: 10px 0 29px 4px;
   color: ${theme.color.$gray800};
-  ${theme.text.$headline5};
+  ${theme.text.$headline5}
 `;
 
 const Form = styled.form`

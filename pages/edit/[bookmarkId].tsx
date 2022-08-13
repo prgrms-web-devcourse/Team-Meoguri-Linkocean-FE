@@ -5,7 +5,7 @@ import Tag from "@/components/create/tag";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
-import { CATEGORY, OpenType } from "@/types/type";
+import { CATEGORY, OpenType, TagType } from "@/types/type";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import {
   UserInfo,
@@ -26,6 +26,7 @@ const Edit = () => {
   const userProfile = useProfileState();
   const router = useRouter();
   const dispatch = useProfileDispatch();
+  const [priorTag, setPriorTag] = useState<string[]>();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -41,14 +42,10 @@ const Edit = () => {
         setTitle(title);
         setMemo(memo as string);
         setTag(tag as string[]);
+        setPriorTag(tag);
         setCategory(category);
         setOpenType(openType);
         setSelectedOption({ value: category, text: category });
-
-        dispatch({
-          type: "REMOVE_BOOKMARK",
-          tags: tag,
-        });
       } catch (error) {
         console.error(error);
         router.push("/404");
@@ -103,18 +100,12 @@ const Edit = () => {
         copiedPayload as EditBookmarkPayload
       );
 
-      // if (payload.category === "no-category") {
-      //   dispatch({
-      //     type: "CREATE_BOOKMARK",
-      //     tags: tag,
-      //   });
-      // } else {
-      //   dispatch({
-      //     type: "CREATE_BOOKMARK",
-      //     tags: tag,
-      //     categories: payload.category,
-      //   });
-      // }
+      dispatch({
+        type: "EDIT_BOOKMARK",
+        newTags: tag,
+        tags: priorTag || [],
+        categories: payload.category,
+      });
 
       router.push(`/my/detail/${Number(router.query.bookmarkId)}`);
     } catch (error) {

@@ -1,5 +1,4 @@
 import Head from "next/head";
-import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import {
   ChangeEvent,
@@ -9,6 +8,7 @@ import {
   useCallback,
   useRef,
 } from "react";
+import styled from "@emotion/styled";
 import {
   Input,
   PageLayout,
@@ -23,9 +23,10 @@ import {
 import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
 import { BookmarkList } from "@/types/model";
 import { CATEGORY } from "@/types/type";
+import { useProfileState } from "@/hooks/useProfile";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { getQueryString } from "@/utils/queryString";
-import { useProfileState } from "@/hooks/useProfile";
+import { LINKOCEAN_PATH } from "@/utils/constants";
 import * as theme from "@/styles/theme";
 
 const PAGE_SIZE = 8;
@@ -90,7 +91,7 @@ const Feed = () => {
         searchTitle === ""
           ? `category=${category}`
           : getQueryString({ category, searchTitle });
-      router.push(`/feed?${queryString}`);
+      router.push(`${LINKOCEAN_PATH.feed}?${queryString}`);
     },
     [router]
   );
@@ -184,7 +185,7 @@ const Feed = () => {
       ["전체", ...CATEGORY].includes(query.category as string);
 
     if (!isValidQuery) {
-      router.push("/404");
+      router.push(LINKOCEAN_PATH.notFound);
     }
 
     const searchTitle = query.searchTitle as string;
@@ -201,6 +202,13 @@ const Feed = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (Object.keys(router.query).length === 0) {
+      setSearchTitleInputValue("");
+      setState(INITIAL_FILTERING);
+    }
+  }, [router.query]);
 
   useEffect(() => {
     getFeedBookmarks();
