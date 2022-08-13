@@ -41,11 +41,10 @@ type Action =
       categories: typeof CATEGORY[number] | "no-category";
     };
 
-export const ProfileContext = createContext<ProfileDetail | null>(null);
-export const ProfileDispatchContext =
-  createContext<SampleDispatch | null>(null);
+const ProfileContext = createContext<ProfileDetail | null>(null);
+const ProfileDispatchContext = createContext<SampleDispatch | null>(null);
 
-export const useProfile = () => useContext(ProfileContext);
+const useProfile = () => useContext(ProfileContext);
 
 const ProfileReducer = (state: ProfileDetail, action: Action) => {
   switch (action.type) {
@@ -136,8 +135,6 @@ const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default ProfileProvider;
-
 const setRemoveTags = (currentTags: TagType[], removeTags: string[]) => {
   const setTags = currentTags ? [...currentTags] : [];
   currentTags?.forEach(({ tag, count }, i) => {
@@ -186,3 +183,6 @@ const setCategory = (
 
   return setCategories;
 };
+
+export { ProfileContext, ProfileDispatchContext, useProfile };
+export default ProfileProvider;
