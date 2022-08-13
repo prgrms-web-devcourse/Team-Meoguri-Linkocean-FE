@@ -1,7 +1,6 @@
 import {
   ChangeEventHandler,
   FormEvent,
-  MouseEvent,
   useCallback,
   useEffect,
   useRef,
@@ -11,7 +10,6 @@ import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
 import {
   Button,
   CategoryItem,
@@ -20,14 +18,14 @@ import {
   Label,
 } from "@/components/common";
 import { useProfileDispatch } from "@/hooks/useProfile";
-import storage from "@/utils/localStorage";
 import { CATEGORY } from "@/types/type";
 import { ProfileDetail } from "@/types/model";
 import { usernameRegExp } from "@/utils/validation";
 import profileAPI, { ProfilesPayload } from "@/utils/apis/profile";
 import * as theme from "@/styles/theme";
 import styled from "@emotion/styled";
-import { TOKEN_KEY, OAUTH_TYPE } from "./index";
+import { handleLogout } from "@/utils/logout";
+import { LINKOCEAN_PATH } from "@/utils/constants";
 
 const INITIAL_PROFILE = {
   favoriteCategories: ["인문", "사회", "정치"],
@@ -89,13 +87,6 @@ const SignUp = () => {
 
     signup({ username: username.value, categories: userCategory.value });
   };
-  const handleCancel = (e?: MouseEvent<HTMLAnchorElement>) => {
-    e?.preventDefault();
-    storage.removeItem(OAUTH_TYPE);
-    storage.removeItem(TOKEN_KEY);
-
-    signOut({ callbackUrl: "/" });
-  };
 
   const signup = async (payload: ProfilesPayload) => {
     try {
@@ -113,7 +104,7 @@ const SignUp = () => {
         } as ProfileDetail,
       });
 
-      router.push("/my/favorite");
+      router.push(LINKOCEAN_PATH.myCategory);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response !== undefined) {
         const isDuplicatedUserName = error.response.status === 400;
@@ -129,12 +120,6 @@ const SignUp = () => {
       }
     }
   };
-
-  useEffect(() => {
-    router.events.on("beforeHistoryChange", handleCancel);
-    return () => router.events.off("beforeHistoryChange", handleCancel);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
@@ -193,7 +178,7 @@ const SignUp = () => {
           </StyledButton>
 
           <Link href="/" passHref>
-            <LinkText onClick={handleCancel}>
+            <LinkText onClick={handleLogout}>
               이미 다른 계정이 있나요? 로그인하러 가기
             </LinkText>
           </Link>
