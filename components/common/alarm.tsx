@@ -79,18 +79,17 @@ const alarmIcon = (type: NotificationType) => {
       return `
         background-image: url("/icon/label.svg");
         width: 40px;
-        height: 24px;
-      `;
+        height: 24px;`;
     case "SHARE":
+      return `
+        background-image: url("/icon/link.svg");
+        width: 28px;
+        height: 30px;`;
+    case "OLD":
       return `
         background-image: url("/icon/hide.svg");
         width: 28px;
         height: 13px;`;
-    case "OLD":
-      return `
-        background-image: url("/icon/link.svg");
-        width: 26px;
-        height: 26px;`;
     default:
       return null;
   }
@@ -115,7 +114,7 @@ const AlarmBox = styled.div`
     transform: translateY(-50%);
     ${(props: { type: NotificationType }) => alarmIcon(props.type)};
     background-position: center;
-    background-size: cover;
+    background-size: over;
     background-repeat: no-repeat;
     content: "";
   }
