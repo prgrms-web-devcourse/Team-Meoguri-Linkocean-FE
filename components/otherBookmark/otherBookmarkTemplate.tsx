@@ -134,7 +134,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
         ) : null}
         {otherBookmarks.bookmarks.map((element) => (
           <BookmarkCard
-            key={element.title}
+            key={element.id}
             data={element}
             deleteBookmark={setDeleteId}
           />
