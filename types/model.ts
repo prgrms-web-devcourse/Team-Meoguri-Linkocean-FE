@@ -15,7 +15,7 @@ export interface ProfileDetail {
   profileId: number;
   imageUrl?: string;
   favoriteCategories: typeof CATEGORY[number][];
-  categories?: typeof CATEGORY[number][];
+  categories: typeof CATEGORY[number][];
   username: string;
   bio?: string;
   followerCount: number;
@@ -30,7 +30,7 @@ export interface Bookmark {
   id: number;
   title: string;
   tags?: string[];
-  category: typeof CATEGORY[number] | "no-category";
+  category: typeof CATEGORY[number];
   url: string;
   updatedAt: string;
   openType: OpenType;
@@ -43,7 +43,7 @@ export interface BookmarkDetail {
   url: string;
   title: string;
   imageUrl?: string;
-  category: typeof CATEGORY[number] | "no-category";
+  category: typeof CATEGORY[number];
   memo?: string;
   openType: OpenType;
   isFavorite: boolean;
