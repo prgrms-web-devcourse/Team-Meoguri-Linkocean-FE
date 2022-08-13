@@ -33,7 +33,11 @@ const EditPage = () => {
     if (imageUrl) {
       setFile(imageUrl);
     }
-  }, [favoriteCategories, imageUrl]);
+    setInput({
+      userName: username,
+      bio: bio || "",
+    });
+  }, [favoriteCategories, imageUrl, bio, username]);
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
