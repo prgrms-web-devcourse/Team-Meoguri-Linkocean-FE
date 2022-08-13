@@ -48,7 +48,7 @@ const DropBox = ({
         await bookmarkAPI.deleteBookmark(id);
         dispatch({
           type: "REMOVE_BOOKMARK",
-          tags,
+          tags: tags || [],
         });
         alert("북마크가 제거되었습니다.");
         callback(id);
