@@ -1,20 +1,8 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
-import storage from "@/utils/localStorage";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/router";
+import { handleLogout } from "@/utils/logout";
 
 const LogoutTooltip = ({ ...props }) => {
-  const handleLogout = () => {
-    try {
-      storage.removeItem("OAUTH_TYPE");
-      storage.removeItem("LINKOCEAN_TOKEN");
-      signOut({ callbackUrl: "/" });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <Tooltip {...props}>
       <Arrow />
