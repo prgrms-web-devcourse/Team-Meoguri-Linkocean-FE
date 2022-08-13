@@ -27,18 +27,18 @@ type Action =
   | { type: "UN_FOLLOW" }
   | {
       type: "CREATE_BOOKMARK";
-      tags?: string[];
-      categories?: typeof CATEGORY[number];
+      tags: string[];
+      categories: typeof CATEGORY[number];
     }
   | {
       type: "REMOVE_BOOKMARK";
-      tags?: string[];
+      tags: string[];
     }
   | {
       type: "EDIT_BOOKMARK";
-      newTags?: string[];
-      tags?: string[];
-      categories?: typeof CATEGORY[number];
+      newTags: string[];
+      tags: string[];
+      categories: typeof CATEGORY[number];
     };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
@@ -77,113 +77,30 @@ const ProfileReducer = (state: ProfileDetail, action: Action) => {
     }
     case "CREATE_BOOKMARK": {
       const { tags, categories } = action;
-      let setCategories = state.categories;
-      let setTags = state.tags;
-
-      if (categories) {
-        if (state.categories?.includes(categories)) {
-          setCategories = [...state.categories];
-        } else {
-          setCategories = [
-            ...(state.categories as typeof CATEGORY[number][]),
-            categories,
-          ];
-        }
-      }
-
-      if (tags) {
-        tags.forEach((newTag) => {
-          const isExistTag = state.tags?.some((tag) => tag.tag === newTag);
-          if (isExistTag) {
-            setTags = setTags?.map((tag) => {
-              if (tag.tag === newTag) {
-                return {
-                  ...tag,
-                  count: tag.count + 1,
-                };
-              }
-              return tag;
-            });
-          } else {
-            setTags = [...(setTags as TagType[]), { tag: newTag, count: 1 }];
-          }
-        });
-      }
       return {
         ...state,
-        categories: setCategories,
-        tags: setTags,
+        categories: setCategory(state.categories, categories),
+        tags: setCreateTags(state.tags ? state.tags : [], tags),
       };
     }
+
     case "REMOVE_BOOKMARK": {
       const { tags } = action;
-      const setTags = state.tags ? [...state.tags] : [];
-      if (tags) {
-        state.tags?.forEach(({ tag, count }, i) => {
-          tags.forEach((removeTag) => {
-            if (removeTag === tag) {
-              setTags[i] = { tag, count: count - 1 };
-            }
-          });
-        });
-      }
-
       return {
         ...state,
-        tags: setTags.filter(({ count }) => count > 0),
+        tags: setRemoveTags(state.tags ? state.tags : [], tags),
       };
     }
+
     case "EDIT_BOOKMARK": {
       const { newTags, tags, categories } = action;
-      let setCategories = state.categories ? [...state.categories] : [];
-      let setTags = state.tags ? [...state.tags] : [];
-
-      if (tags) {
-        state.tags?.forEach(({ tag, count }, i) => {
-          tags.forEach((removeTag) => {
-            if (removeTag === tag) {
-              setTags[i] = { tag, count: count - 1 };
-            }
-          });
-        });
-      }
-
-      // tags => 새로운태그
-      // state.tags -> 기존태그
-      if (newTags) {
-        newTags.forEach((newTag) => {
-          const isExistTag = setTags?.some((tag) => tag.tag === newTag);
-          if (isExistTag) {
-            setTags = setTags?.map((tag) => {
-              if (tag.tag === newTag) {
-                return {
-                  ...tag,
-                  count: tag.count + 1,
-                };
-              }
-              return tag;
-            });
-          } else {
-            setTags = [...setTags, { tag: newTag, count: 1 }];
-          }
-        });
-      }
-
-      if (categories) {
-        if (state.categories?.includes(categories)) {
-          setCategories = [...state.categories];
-        } else {
-          setCategories = [
-            ...(state.categories as typeof CATEGORY[number][]),
-            categories,
-          ];
-        }
-      }
-
       return {
         ...state,
-        tags: setTags.filter(({ count }) => count > 0),
-        categories: setCategories,
+        tags: setCreateTags(
+          setRemoveTags(state.tags ? state.tags : [], tags),
+          newTags
+        ),
+        categories: setCategory(state.categories, categories),
       };
     }
     default:
@@ -220,3 +137,52 @@ const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default ProfileProvider;
+
+const setRemoveTags = (currentTags: TagType[], removeTags: string[]) => {
+  const setTags = currentTags ? [...currentTags] : [];
+  currentTags?.forEach(({ tag, count }, i) => {
+    removeTags.forEach((removeTag) => {
+      if (removeTag === tag) {
+        setTags[i] = { tag, count: count - 1 };
+      }
+    });
+  });
+  return setTags.filter(({ count }) => count > 0);
+};
+
+const setCreateTags = (currentTags: TagType[], newTags: string[]) => {
+  let setTags = [...currentTags];
+
+  newTags.forEach((newTag) => {
+    const isExistTag = currentTags?.some((tag) => tag.tag === newTag);
+    if (isExistTag) {
+      setTags = setTags?.map((tag) => {
+        if (tag.tag === newTag) {
+          return {
+            ...tag,
+            count: tag.count + 1,
+          };
+        }
+        return tag;
+      });
+    } else {
+      setTags = [...setTags, { tag: newTag, count: 1 }];
+    }
+  });
+  return setTags;
+};
+
+const setCategory = (
+  currentCategory: typeof CATEGORY[number][],
+  newCategory: typeof CATEGORY[number]
+) => {
+  let setCategories = currentCategory ? [...currentCategory] : [];
+
+  if (currentCategory?.includes(newCategory) || newCategory === "no-category") {
+    setCategories = [...currentCategory];
+  } else {
+    setCategories = [...currentCategory, newCategory];
+  }
+
+  return setCategories;
+};
