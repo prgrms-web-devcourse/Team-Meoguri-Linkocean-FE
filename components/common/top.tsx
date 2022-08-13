@@ -1,17 +1,35 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { color } from "@/styles/theme";
+import { useState, useEffect } from "react";
 
 const Top = () => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    if (window.scrollY >= 100) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  };
+
   const moveToTop = () => {
     document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  return (
+  return show ? (
     <Wrapper onClick={moveToTop}>
       <Icon src="/icon/arrow.svg" alt="top" width={50} height={50} />
     </Wrapper>
-  );
+  ) : null;
 };
 
 const Icon = styled(Image)`
