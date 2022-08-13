@@ -16,7 +16,7 @@ const profileAPI = {
     authInstance.get<{ hasProfile: boolean }>("/login/success"),
   logout: () => authInstance.post("/users/logout"),
   createProfile: (payload: ProfilesPayload) =>
-    authInstance.post("/profiles", payload),
+    authInstance.post<{ id: number }>("/profiles", payload),
   getOtherProfile: (profileId: number) =>
     authInstance.get<ProfileDetail>(`/profiles/${profileId}`),
   getFollow: (profileId: number, tab: string, queryString: string) =>

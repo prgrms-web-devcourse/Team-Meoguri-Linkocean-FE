@@ -1,24 +1,42 @@
-import Button from "@/components/common/button";
-import CategoryItem from "@/components/common/categoryItem";
-import ErrorText from "@/components/common/errorText";
-import Input from "@/components/common/input";
-import Label from "@/components/common/label";
-import { CATEGORY } from "@/types/type";
-import styled from "@emotion/styled";
-import Link from "next/link";
 import {
   ChangeEventHandler,
   FormEvent,
+  MouseEvent,
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from "react";
-import { usernameRegExp } from "@/utils/validation";
-import Head from "next/head";
-import * as theme from "@/styles/theme";
 import axios from "axios";
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
+import {
+  Button,
+  CategoryItem,
+  ErrorText,
+  Input,
+  Label,
+} from "@/components/common";
+import { useProfileDispatch } from "@/hooks/useProfile";
+import storage from "@/utils/localStorage";
+import { CATEGORY } from "@/types/type";
+import { ProfileDetail } from "@/types/model";
+import { usernameRegExp } from "@/utils/validation";
 import profileAPI, { ProfilesPayload } from "@/utils/apis/profile";
+import * as theme from "@/styles/theme";
+import styled from "@emotion/styled";
+import { TOKEN_KEY, OAUTH_TYPE } from "./index";
+
+const INITIAL_PROFILE = {
+  favoriteCategories: ["인문", "사회", "정치"],
+  isFollow: false,
+  followerCount: 0,
+  followeeCount: 0,
+  tags: [],
+  categories: [],
+};
 
 type ChangeInputHandler = ChangeEventHandler<HTMLInputElement>;
 type CategoryType = typeof CATEGORY[number];
@@ -33,6 +51,7 @@ const SignUp = () => {
     errorText: "* 1개 이상 선택해주세요.",
   });
   const [username, setUsername] = useState({ value: "", errorText: "" });
+  const userProfileDispatcher = useProfileDispatch();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -73,7 +92,19 @@ const SignUp = () => {
 
   const signup = async (payload: ProfilesPayload) => {
     try {
-      await profileAPI.createProfile(payload);
+      const {
+        data: { id },
+      } = await profileAPI.createProfile(payload);
+
+      userProfileDispatcher({
+        type: "GET_PROFILES",
+        profile: {
+          ...INITIAL_PROFILE,
+          profileId: id,
+          username: username.value,
+          categories: userCategory.value,
+        } as ProfileDetail,
+      });
 
       router.push("/my/favorite");
     } catch (error) {
@@ -202,7 +233,7 @@ const LinkText = styled.a`
   display: block;
   margin: 9px auto 0;
   color: ${theme.color.$gray600};
-  ${theme.text.$caption};
+  ${theme.text.$caption}
 `;
 
 export default SignUp;

@@ -14,8 +14,8 @@ import {
   LoginButton,
 } from "@/components/main";
 
-const OAUTH_TYPE = "OAUTH_TYPE";
-const TOKEN_KEY = "LINKOCEAN_TOKEN";
+export const OAUTH_TYPE = "OAUTH_TYPE";
+export const TOKEN_KEY = "LINKOCEAN_TOKEN";
 
 export default function Home() {
   const { data: session } = useSession();
