@@ -2,7 +2,7 @@
 export const STORAGE_KEY = {
   oauthType: "OAUTH_TYPE",
   token: "LINKOCEAN_TOKEN",
-};
+} as const;
 
 export const LINKOCEAN_PATH = {
   login: "/",
@@ -20,4 +20,4 @@ export const LINKOCEAN_PATH = {
   feed: "/feed",
   feedDetail: "/feed/detail",
   notFound: "/404",
-};
+} as const;
