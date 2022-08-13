@@ -56,6 +56,14 @@ const DefaultInput = styled.input`
   &:focus {
     box-shadow: 0px 0px 1px 2px ${theme.color.$skyBlue};
   }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: black !important;
+  }
 `;
 
 const SearchInput = styled.div`
