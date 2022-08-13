@@ -1,12 +1,18 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
 import Header from "@/components/common/header";
 import { color } from "@/styles/theme";
 import Button from "@/components/common/button";
 import Link from "next/link";
+import NotFoundTooltip from "@/components/common/notFoundTooltip";
 
 const NotFound = () => {
   const HeaderMemo = React.useMemo(() => <Header />, []);
+  const [show, setShow] = useState(false);
+
+  const toggle = () => {
+    setShow(!show);
+  };
 
   return (
     <Layout>
@@ -23,7 +29,14 @@ const NotFound = () => {
             </Link>
           </ButtonWrapper>
           <MemberWrapper>
-            <Joy src="/image/joy.png" width={109} height={104} />
+            <Joy
+              src="/image/joy.png"
+              width={109}
+              height={104}
+              onMouseOver={toggle}
+              onMouseOut={toggle}
+            />
+            {show && <JoyToolTip index="joy" />}
             <Nadia src="/image/nadia.png" width={123} height={102} />
             <Hani src="/image/hani.png" width={187} height={176} />
             <Crush src="/image/crush.png" width={164} height={164} />
@@ -70,7 +83,7 @@ const Title = styled.div`
   color: ${color.$skyBlue};
   font-size: 100px;
   font-weight: 700;
-  margin-top: 5%;
+  margin-top: 8%;
 `;
 
 const Subtitle = styled.div`
@@ -95,46 +108,63 @@ const Joy = styled.img`
   position: fixed;
   left: 3%;
   bottom: 30%;
+  cursor: pointer;
+
+  &:hover {
+  }
+`;
+
+const JoyToolTip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 4%;
+  bottom: 48%;
 `;
 
 const Nadia = styled.img`
   position: fixed;
   left: 18%;
   bottom: 25%;
+  cursor: pointer;
 `;
 
 const Hani = styled.img`
   position: fixed;
   left: 33%;
   bottom: 5%;
+  cursor: pointer;
 `;
 
 const Crush = styled.img`
   position: fixed;
   left: 54%;
   bottom: 13%;
+  cursor: pointer;
 `;
 
 const Jacob = styled.img`
   position: fixed;
   left: 72%;
   bottom: 23%;
+  cursor: pointer;
 `;
 
 const Hyoni = styled.img`
   position: fixed;
   left: 1%;
   bottom: 3%;
+  cursor: pointer;
 `;
 
 const Haha = styled.img`
   position: fixed;
   left: 79%;
   bottom: 2%;
+  cursor: pointer;
 `;
 
 const Groot = styled.img`
   position: fixed;
   left: 87%;
   bottom: 6%;
+  cursor: pointer;
 `;
