@@ -70,13 +70,11 @@ const Meoguri = () => {
     const queryString = getQueryString(state);
 
     try {
-      const response = await profileAPI.getProfilesByUsername(queryString);
-      const responseProfiles = response.data.profiles;
+      const {
+        data: { profiles: responseProfiles, hasNext },
+      } = await profileAPI.getProfilesByUsername(queryString);
 
-      if (
-        responseProfiles.length === 0 ||
-        responseProfiles.length < state.size
-      ) {
+      if (!hasNext) {
         setIsEndPage(true);
       }
 
