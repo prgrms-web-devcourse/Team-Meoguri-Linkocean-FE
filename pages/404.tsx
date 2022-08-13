@@ -22,6 +22,16 @@ const NotFound = () => {
               </Button>
             </Link>
           </ButtonWrapper>
+          <MemberWrapper>
+            <Joy src="/image/joy.png" width={109} height={104} />
+            <Nadia src="/image/nadia.png" width={123} height={102} />
+            <Hani src="/image/hani.png" width={187} height={176} />
+            <Crush src="/image/crush.png" width={164} height={164} />
+            <Jacob src="/image/jacob.png" width={143} height={145} />
+            <Hyoni src="/image/hyoni.png" width={64} height={53} />
+            <Haha src="/image/haha.png" width={84} height={85} />
+            <Groot src="/image/groot.png" width={173} height={159} />
+          </MemberWrapper>
         </Back>
       </Main>
     </Layout>
@@ -75,4 +85,56 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 15px;
+`;
+
+const MemberWrapper = styled.div`
+  position: relative;
+`;
+
+const Joy = styled.img`
+  position: fixed;
+  left: 3%;
+  bottom: 30%;
+`;
+
+const Nadia = styled.img`
+  position: fixed;
+  left: 18%;
+  bottom: 25%;
+`;
+
+const Hani = styled.img`
+  position: fixed;
+  left: 33%;
+  bottom: 5%;
+`;
+
+const Crush = styled.img`
+  position: fixed;
+  left: 54%;
+  bottom: 13%;
+`;
+
+const Jacob = styled.img`
+  position: fixed;
+  left: 72%;
+  bottom: 23%;
+`;
+
+const Hyoni = styled.img`
+  position: fixed;
+  left: 1%;
+  bottom: 3%;
+`;
+
+const Haha = styled.img`
+  position: fixed;
+  left: 79%;
+  bottom: 2%;
+`;
+
+const Groot = styled.img`
+  position: fixed;
+  left: 87%;
+  bottom: 6%;
 `;
