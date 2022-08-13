@@ -12,7 +12,7 @@ import {
 } from "@/components/main";
 import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
-import { STORAGE_KEY } from "@/utils/constants";
+import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -44,7 +44,9 @@ export default function Home() {
   const loginSuccess = useCallback(async () => {
     try {
       const response = await profileAPI.loginSuccess();
-      const nextPage = response.data.hasProfile ? "/my/favorite" : "/signup";
+      const nextPage = response.data.hasProfile
+        ? LINKOCEAN_PATH.myFavorite
+        : LINKOCEAN_PATH.signup;
       router.push(nextPage);
     } catch (error) {
       console.error(error);
