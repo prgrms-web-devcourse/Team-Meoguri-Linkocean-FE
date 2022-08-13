@@ -15,6 +15,7 @@ import profileAPI from "@/utils/apis/profile";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import { LINKOCEAN_PATH } from "@/utils/constants";
 
 const PAGE_SIZE = 8;
 
@@ -65,13 +66,11 @@ const Follow = () => {
       isFollow: !userProfile.isFollow,
     });
 
-    const nextFolloweeCount = isDeleteFollowAction
-      ? myProfile.followeeCount - 1
-      : myProfile.followeeCount + 1;
-    myProfileDispatcher({
-      type: "GET_PROFILES",
-      profile: { ...myProfile, followeeCount: nextFolloweeCount },
-    });
+    if (isDeleteFollowAction) {
+      myProfileDispatcher({ type: "UN_FOLLOW" });
+    } else {
+      myProfileDispatcher({ type: "FOLLOW" });
+    }
 
     if (state.tab === "follower") {
       const { profileId, imageUrl, username, isFollow } = myProfile;
@@ -97,11 +96,9 @@ const Follow = () => {
     );
 
     const isDeleteFollowAction = followProfiles.value[index].isFollow;
-    if (isDeleteFollowAction) {
-      myProfileDispatcher({ type: "UN_FOLLOW" });
-    } else {
-      myProfileDispatcher({ type: "FOLLOW" });
-    }
+    myProfileDispatcher({
+      type: isDeleteFollowAction ? "UN_FOLLOW" : "FOLLOW",
+    });
 
     const copiedValue = [...followProfiles.value];
     copiedValue[index].isFollow = !copiedValue[index].isFollow;
@@ -133,18 +130,18 @@ const Follow = () => {
       setFollowProfiles(({ value }) => ({ value, isLoading: true }));
 
       const {
-        data: { profiles },
+        data: { profiles: responseProfiles, hasNext },
       } = await profileAPI.getFollow(userProfile.profileId, tab, queryString);
 
-      if (profiles.length === 0 || profiles.length < query.size) {
+      if (!hasNext) {
         setIsEndPage(true);
       }
 
       setFollowProfiles(({ value }) => {
         const nextValue =
           query.page === INITIAL_FILTERING.page
-            ? profiles
-            : [...value, ...profiles];
+            ? responseProfiles
+            : [...value, ...responseProfiles];
 
         return {
           value: nextValue,
@@ -178,7 +175,7 @@ const Follow = () => {
 
     const queryProfileId = parseInt(router.query.profileId as string, 10);
     if (queryProfileId === myProfile.profileId) {
-      router.push(`/my/follow`);
+      router.push(LINKOCEAN_PATH.myFollow);
     }
 
     getUserProfile();
@@ -209,12 +206,12 @@ const Follow = () => {
                 categoryList={userProfile.categories}
                 getCategoryData={(category) => {
                   router.push(
-                    `/profile/${userProfile.profileId}/category?category=${category}`
+                    `${LINKOCEAN_PATH.other}/${userProfile.profileId}/category?category=${category}`
                   );
                 }}
                 getTagsData={(tags) => {
                   router.push(
-                    `/profile/${userProfile.profileId}/tag?tags=${tags[0]}`
+                    `${LINKOCEAN_PATH.other}/${userProfile.profileId}/tag?tags=${tags[0]}`
                   );
                 }}
               />

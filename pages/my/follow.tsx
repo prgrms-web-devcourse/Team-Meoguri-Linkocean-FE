@@ -8,8 +8,9 @@ import { Following, UserInfo, PageLayout } from "@/components/common";
 import { Profile } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import { getQueryString } from "@/utils/queryString";
 import { useProfileState, useProfileDispatch } from "@/hooks/useProfile";
+import { getQueryString } from "@/utils/queryString";
+import { LINKOCEAN_PATH } from "@/utils/constants";
 
 const PAGE_SIZE = 8;
 export const isLastCard = (index: number, length: number) =>
@@ -47,11 +48,9 @@ const Follow = () => {
       (followProfile) => followProfile.profileId === profileId
     );
     const isDeleteFollowAction = followProfiles.value[index].isFollow;
-    if (isDeleteFollowAction) {
-      userProfileDispatcher({ type: "UN_FOLLOW" });
-    } else {
-      userProfileDispatcher({ type: "FOLLOW" });
-    }
+    userProfileDispatcher({
+      type: isDeleteFollowAction ? "UN_FOLLOW" : "FOLLOW",
+    });
 
     const isFolloweeTab = state.tab === "followee";
     const copiedValue = [...followProfiles.value];
@@ -75,18 +74,18 @@ const Follow = () => {
       setFollowProfiles(({ value }) => ({ value, isLoading: true }));
 
       const {
-        data: { profiles },
+        data: { profiles: responseProfiles, hasNext },
       } = await profileAPI.getFollow(userProfile.profileId, tab, queryString);
 
-      if (profiles.length === 0 || profiles.length < query.size) {
+      if (!hasNext) {
         setIsEndPage(true);
       }
 
       setFollowProfiles(({ value }) => {
         const nextValue =
           query.page === INITIAL_FILTERING.page
-            ? profiles
-            : [...value, ...profiles];
+            ? responseProfiles
+            : [...value, ...responseProfiles];
 
         return {
           value: nextValue,
@@ -134,10 +133,10 @@ const Follow = () => {
             tagList={userProfile.tags}
             categoryList={userProfile.categories}
             getCategoryData={(category: string) => {
-              router.push(`/my/category?category=${category}`);
+              router.push(`${LINKOCEAN_PATH.myCategory}?category=${category}`);
             }}
             getTagsData={(tags: string[]) => {
-              router.push(`/my/tag?tags=${tags[0]}`);
+              router.push(`${LINKOCEAN_PATH.myCategory}?tags=${tags[0]}`);
             }}
           />
         </PageLayout.Aside>

@@ -21,7 +21,7 @@ const NotFoundTooltip = ({ index, ...props }: TooltipProps) => {
       <Logout color={color} {...props}>
         {name}
       </Logout>
-      <Arrow color={color} />
+      {/* <Arrow color={color} /> */}
     </Tooltip>
   );
 };
@@ -43,16 +43,6 @@ const Tooltip = styled.div`
   display: position;
 `;
 
-const Arrow = styled.div`
-  width: 0;
-  height: 0;
-  margin-left: 17px;
-  border-bottom: 12px solid transparent;
-  border-top: 12px solid ${(props) => props.color};
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-`;
-
 const Logout = styled.div`
   width: 81px;
   height: 40px;
@@ -64,4 +54,20 @@ const Logout = styled.div`
   align-items: center;
   box-sizing: border-box;
   cursor: pointer;
+  background-color: white;
+
+  ::before {
+    position: absolute;
+    top: 35px;
+    left: 12px;
+    display: block;
+    width: 0;
+    height: 0;
+    margin-left: 17px;
+    border-bottom: 12px solid transparent;
+    border-top: 12px solid ${(props) => props.color};
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    content: "";
+  }
 `;
