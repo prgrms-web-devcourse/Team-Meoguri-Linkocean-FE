@@ -70,13 +70,11 @@ const Meoguri = () => {
     const queryString = getQueryString(state);
 
     try {
-      const response = await profileAPI.getProfilesByUsername(queryString);
-      const responseProfiles = response.data.profiles;
+      const {
+        data: { profiles: responseProfiles, hasNext },
+      } = await profileAPI.getProfilesByUsername(queryString);
 
-      if (
-        responseProfiles.length === 0 ||
-        responseProfiles.length < state.size
-      ) {
+      if (!hasNext) {
         setIsEndPage(true);
       }
 
@@ -133,6 +131,14 @@ const Meoguri = () => {
     setState({ ...INITIAL_FILTERING, username: queryName });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (Object.keys(router.query).length === 0) {
+      setUsernameInputValue("");
+      setState(INITIAL_FILTERING);
+      setProfiles([]);
+    }
+  }, [router.query]);
 
   useEffect(() => {
     getProfiles();

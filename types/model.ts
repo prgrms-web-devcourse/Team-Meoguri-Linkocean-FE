@@ -9,6 +9,7 @@ export interface Profile {
 
 export interface ProfileList {
   profiles: Profile[];
+  hasNext: boolean;
 }
 
 export interface ProfileDetail {
