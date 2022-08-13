@@ -92,8 +92,13 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
           </FlexBetween>
         ) : (
           <UserFollow>
-            <ProfileImage src={profile.imageUrl} size="sm" />
-            <span>{profile.username}</span>
+            <FollowLink
+              href={`/profile/${profile.profileId}/favorite`}
+              style={{ textDecoration: "none" }}
+            >
+              <ProfileImage src={profile.imageUrl} size="sm" />
+              <span>{profile.username}</span>
+            </FollowLink>
             {isFollow ? (
               <Button
                 style={{ height: "33px", width: "128px" }}
@@ -230,6 +235,10 @@ const Link = styled.a`
     text-decoration: underline;
   }
   ${shortenOneLine}
+`;
+const FollowLink = styled.a`
+  display: flex;
+  align-items: center;
 `;
 
 const Date = styled.span`
