@@ -82,7 +82,6 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   useEffect(() => {
     if (!router.isReady) return;
     setPage(1);
-    // console.log(router.asPath);
     if (searchInput.current) {
       searchInput.current.value = "";
     }
@@ -106,9 +105,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
       getOtherBookmarksApi(requestQuery);
     }
   }, [requestQuery, router.isReady]);
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
+
   return (
     <Wrapper>
       <Title>{PageTitle}</Title>
