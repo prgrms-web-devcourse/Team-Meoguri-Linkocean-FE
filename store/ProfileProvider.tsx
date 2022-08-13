@@ -28,7 +28,7 @@ type Action =
   | {
       type: "CREATE_BOOKMARK";
       tags: string[];
-      categories: typeof CATEGORY[number];
+      categories: typeof CATEGORY[number] | "no-category";
     }
   | {
       type: "REMOVE_BOOKMARK";
@@ -38,7 +38,7 @@ type Action =
       type: "EDIT_BOOKMARK";
       newTags: string[];
       tags: string[];
-      categories: typeof CATEGORY[number];
+      categories: typeof CATEGORY[number] | "no-category";
     };
 
 export const ProfileContext = createContext<ProfileDetail | null>(null);
@@ -174,11 +174,11 @@ const setCreateTags = (currentTags: TagType[], newTags: string[]) => {
 
 const setCategory = (
   currentCategory: typeof CATEGORY[number][],
-  newCategory: typeof CATEGORY[number]
+  newCategory: typeof CATEGORY[number] | "no-category"
 ) => {
   let setCategories = currentCategory ? [...currentCategory] : [];
 
-  if (currentCategory?.includes(newCategory) || newCategory === "no-category") {
+  if (newCategory === "no-category" || currentCategory?.includes(newCategory)) {
     setCategories = [...currentCategory];
   } else {
     setCategories = [...currentCategory, newCategory];
