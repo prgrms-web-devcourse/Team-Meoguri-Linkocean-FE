@@ -11,7 +11,6 @@ export const CATEGORY = [
   "건강",
   "여행",
   "요리",
-  "no-category",
 ] as const;
 
 export type OpenType = "private" | "all" | "partial";
