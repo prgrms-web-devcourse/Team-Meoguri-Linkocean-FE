@@ -31,7 +31,7 @@ const MyDetail = () => {
         <UserInfo />
         <MyFilterMenu
           tagList={userProfile.tags}
-          categoryList={userProfile.favoriteCategories}
+          categoryList={userProfile.categories}
           getCategoryData={(category) => {
             router.push(`/my/category?category=${category}`);
           }}
