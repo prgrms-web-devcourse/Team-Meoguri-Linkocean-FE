@@ -76,6 +76,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
 
   useEffect(() => {
     if (!router.isReady) return;
+    setPage(1);
     if (searchInput.current) {
       searchInput.current.value = "";
     }
@@ -110,6 +111,10 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
       getMyBookmarksApi(requestQuery);
     }
   }, [deleteId, router.isReady]);
+
+  // useEffect(() => {
+  //   console.log(page);
+  // }, [page]);
 
   return (
     <Wrapper>
@@ -157,7 +162,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           onChange={(pageNum) => {
             changePage(pageNum);
           }}
-          defaultPage={1}
+          defaultPage={page}
         />
       </PaginationDiv>
     </Wrapper>
