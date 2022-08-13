@@ -143,7 +143,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           {myBookmarks.bookmarks.map((element) =>
             deleteId !== element.id ? (
               <BookmarkCard
-                key={element.title}
+                key={element.id} // 고쳐
                 data={element}
                 deleteBookmark={setDeleteId}
               />
