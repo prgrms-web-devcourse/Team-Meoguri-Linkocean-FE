@@ -112,10 +112,6 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     }
   }, [deleteId, router.isReady]);
 
-  // useEffect(() => {
-  //   console.log(page);
-  // }, [page]);
-
   return (
     <Wrapper>
       <Title>{PageTitle}</Title>

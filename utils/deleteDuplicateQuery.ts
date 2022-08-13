@@ -4,7 +4,9 @@ export const deleteDuplicateQuery = (query: string, keyword: string) => {
   queryArr.forEach((element) => {
     const queryElements = element.split("=");
     if (queryElements[0] !== keyword) {
-      result += `${element}&`;
+      if (element.length !== 0) {
+        result += `${element}&`;
+      }
     }
   });
   return result;
