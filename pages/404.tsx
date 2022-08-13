@@ -8,10 +8,38 @@ import NotFoundTooltip from "@/components/common/notFoundTooltip";
 
 const NotFound = () => {
   const HeaderMemo = React.useMemo(() => <Header />, []);
-  const [show, setShow] = useState(false);
+  const [joyShow, setJoyShow] = useState(false);
+  const [nadiaShow, setNadiaShow] = useState(false);
+  const [haniShow, setHaniShow] = useState(false);
+  const [crushShow, setCrushShow] = useState(false);
+  const [jacobShow, setJacobShow] = useState(false);
+  const [hyoniShow, setHyoniShow] = useState(false);
+  const [hahaShow, setHahaShow] = useState(false);
+  const [grootShow, setGrootShow] = useState(false);
 
-  const toggle = () => {
-    setShow(!show);
+  const joyToggle = () => {
+    setJoyShow(!joyShow);
+  };
+  const nadiaToggle = () => {
+    setNadiaShow(!nadiaShow);
+  };
+  const haniToggle = () => {
+    setHaniShow(!haniShow);
+  };
+  const crushToggle = () => {
+    setCrushShow(!crushShow);
+  };
+  const jacobToggle = () => {
+    setJacobShow(!jacobShow);
+  };
+  const hyoniToggle = () => {
+    setHyoniShow(!hyoniShow);
+  };
+  const hahaToggle = () => {
+    setHahaShow(!hahaShow);
+  };
+  const grootToggle = () => {
+    setGrootShow(!grootShow);
   };
 
   return (
@@ -33,17 +61,73 @@ const NotFound = () => {
               src="/image/joy.png"
               width={109}
               height={104}
-              onMouseOver={toggle}
-              onMouseOut={toggle}
+              onMouseOver={joyToggle}
+              onMouseOut={joyToggle}
             />
-            {show && <JoyToolTip index="joy" />}
-            <Nadia src="/image/nadia.png" width={123} height={102} />
-            <Hani src="/image/hani.png" width={187} height={176} />
-            <Crush src="/image/crush.png" width={164} height={164} />
-            <Jacob src="/image/jacob.png" width={143} height={145} />
-            <Hyoni src="/image/hyoni.png" width={64} height={53} />
-            <Haha src="/image/haha.png" width={84} height={85} />
-            <Groot src="/image/groot.png" width={173} height={159} />
+            {joyShow && <JoyTooltip index="joy" />}
+
+            <Nadia
+              src="/image/nadia.png"
+              width={123}
+              height={102}
+              onMouseOver={nadiaToggle}
+              onMouseOut={nadiaToggle}
+            />
+            {nadiaShow && <NadiaTooltip index="nadia" />}
+
+            <Hani
+              src="/image/hani.png"
+              width={187}
+              height={176}
+              onMouseOver={haniToggle}
+              onMouseOut={haniToggle}
+            />
+            {haniShow && <HaniTooltip index="hani" />}
+
+            <Crush
+              src="/image/crush.png"
+              width={164}
+              height={164}
+              onMouseOver={crushToggle}
+              onMouseOut={crushToggle}
+            />
+            {crushShow && <CrushTooltip index="crush" />}
+
+            <Jacob
+              src="/image/jacob.png"
+              width={143}
+              height={145}
+              onMouseOver={jacobToggle}
+              onMouseOut={jacobToggle}
+            />
+            {jacobShow && <JacobTooltip index="jacob" />}
+
+            <Hyoni
+              src="/image/hyoni.png"
+              width={64}
+              height={53}
+              onMouseOver={hyoniToggle}
+              onMouseOut={hyoniToggle}
+            />
+            {hyoniShow && <HyoniTooltip index="hyoni" />}
+
+            <Haha
+              src="/image/haha.png"
+              width={84}
+              height={85}
+              onMouseOver={hahaToggle}
+              onMouseOut={hahaToggle}
+            />
+            {hahaShow && <HahaTooltip index="haha" />}
+
+            <Groot
+              src="/image/groot.png"
+              width={173}
+              height={159}
+              onMouseOver={grootToggle}
+              onMouseOut={grootToggle}
+            />
+            {grootShow && <GrootTooltip index="groot" />}
           </MemberWrapper>
         </Back>
       </Main>
@@ -109,12 +193,9 @@ const Joy = styled.img`
   left: 3%;
   bottom: 30%;
   cursor: pointer;
-
-  &:hover {
-  }
 `;
 
-const JoyToolTip = styled(NotFoundTooltip)`
+const JoyTooltip = styled(NotFoundTooltip)`
   position: fixed;
   left: 4%;
   bottom: 48%;
@@ -127,11 +208,23 @@ const Nadia = styled.img`
   cursor: pointer;
 `;
 
+const NadiaTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 19%;
+  bottom: 40%;
+`;
+
 const Hani = styled.img`
   position: fixed;
   left: 33%;
   bottom: 5%;
   cursor: pointer;
+`;
+
+const HaniTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 36%;
+  bottom: 26%;
 `;
 
 const Crush = styled.img`
@@ -141,6 +234,12 @@ const Crush = styled.img`
   cursor: pointer;
 `;
 
+const CrushTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 57%;
+  bottom: 36%;
+`;
+
 const Jacob = styled.img`
   position: fixed;
   left: 72%;
@@ -148,18 +247,36 @@ const Jacob = styled.img`
   cursor: pointer;
 `;
 
+const JacobTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 73.5%;
+  bottom: 45%;
+`;
+
 const Hyoni = styled.img`
   position: fixed;
-  left: 1%;
+  left: 2%;
   bottom: 3%;
   cursor: pointer;
+`;
+
+const HyoniTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 1.5%;
+  bottom: 14%;
 `;
 
 const Haha = styled.img`
   position: fixed;
   left: 79%;
-  bottom: 2%;
+  bottom: 1.5%;
   cursor: pointer;
+`;
+
+const HahaTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 79%;
+  bottom: 14%;
 `;
 
 const Groot = styled.img`
@@ -167,4 +284,10 @@ const Groot = styled.img`
   left: 87%;
   bottom: 6%;
   cursor: pointer;
+`;
+
+const GrootTooltip = styled(NotFoundTooltip)`
+  position: fixed;
+  left: 89.5%;
+  bottom: 25%;
 `;
