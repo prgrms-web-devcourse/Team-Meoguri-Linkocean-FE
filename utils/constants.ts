@@ -9,7 +9,7 @@ export const LINKOCEAN_PATH = {
   signup: "/signup",
   myFavorite: "/my/favorite",
   myTag: "/my/tag",
-  myCategory: "my/category",
+  myCategory: "/my/category",
   myFollow: "/my/follow",
   myEdit: "/my/edit",
   myDetail: "/my/detail",
