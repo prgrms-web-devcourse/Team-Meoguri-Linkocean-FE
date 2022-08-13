@@ -148,14 +148,3 @@ const PageName = styled.div`
 const AlarmWrapper = styled.div`
   width: 836px;
 `;
-
-const data = {
-  profileId: 1,
-  imageUrl: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
-  favoriteCategories: ["it"],
-  categories: ["it", "technology"],
-  username: "joy",
-  bio: "안녕하세요! 행복한 조이입니당.",
-  followerCount: 12,
-  followeeCount: 10,
-};
