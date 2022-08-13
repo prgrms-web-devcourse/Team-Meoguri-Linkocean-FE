@@ -101,7 +101,7 @@ const Create = () => {
           categories: payload.category,
         });
       }
-      router.push(`/feed/detail/${response.data.id}`);
+      router.replace(`/my/detail/${response.data.id}`);
     } catch (error) {
       console.error(error);
     }
