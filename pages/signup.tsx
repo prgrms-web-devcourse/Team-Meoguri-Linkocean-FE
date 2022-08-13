@@ -89,6 +89,13 @@ const SignUp = () => {
 
     signup({ username: username.value, categories: userCategory.value });
   };
+  const handleCancel = (e?: MouseEvent<HTMLAnchorElement>) => {
+    e?.preventDefault();
+    storage.removeItem(OAUTH_TYPE);
+    storage.removeItem(TOKEN_KEY);
+
+    signOut({ callbackUrl: "/" });
+  };
 
   const signup = async (payload: ProfilesPayload) => {
     try {
@@ -122,6 +129,12 @@ const SignUp = () => {
       }
     }
   };
+
+  useEffect(() => {
+    router.events.on("beforeHistoryChange", handleCancel);
+    return () => router.events.off("beforeHistoryChange", handleCancel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -180,7 +193,9 @@ const SignUp = () => {
           </StyledButton>
 
           <Link href="/" passHref>
-            <LinkText>이미 다른 계정이 있나요? 로그인하러 가기</LinkText>
+            <LinkText onClick={handleCancel}>
+              이미 다른 계정이 있나요? 로그인하러 가기
+            </LinkText>
           </Link>
         </Form>
       </Layout>
