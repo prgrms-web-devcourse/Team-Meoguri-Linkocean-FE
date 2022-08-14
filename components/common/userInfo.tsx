@@ -84,7 +84,9 @@ const UserInfo = ({ data, handleClick }: UserInfoProps) => {
           </FollowWrapper>
         </GridWrapper>
       </Top>
-      <Bio>{bio}</Bio>
+      <pre>
+        <Bio>{bio}</Bio>
+      </pre>
       {userData.profileId === loginUser.profileId && (
         <Link href="/my/edit" passHref>
           <Button buttonType="large" colorType="skyblue" width="277">
