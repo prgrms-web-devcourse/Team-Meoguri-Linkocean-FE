@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Tag from "@/components/create/tag";
 import { useRouter } from "next/router";
 import { color, text } from "@/styles/theme";
@@ -102,9 +102,8 @@ const Create = () => {
     }
   };
 
-  return (
-    <PageLayout>
-      {" "}
+  const AsideMemo = React.useMemo(
+    () => (
       <PageLayout.Aside>
         <UserInfo data={userProfile} />
         <MyFilterMenu
@@ -118,6 +117,14 @@ const Create = () => {
           }}
         />
       </PageLayout.Aside>
+    ),
+    [userProfile, router]
+  );
+
+  return (
+    <PageLayout>
+      {/* {" "} */}
+      {AsideMemo}
       <PageLayout.Article>
         <Contents>
           <DivWrapper>
