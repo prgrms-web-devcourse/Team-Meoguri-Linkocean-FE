@@ -68,7 +68,10 @@ const MyDetail = () => {
           bookmarkData?.tags?.map((tag) => `#${tag}`).join(" ") || ""
         }/${bookmarkData?.memo || ""}/${bookmarkData?.url || ""}`}
         titleWithoutSuffix
-        needOg
+        og={{
+          title: "상세페이지 | LinkOcean",
+          description: "LinkOcean 상세페이지",
+        }}
       />
       <PageLayout>
         <PageLayout.Aside>

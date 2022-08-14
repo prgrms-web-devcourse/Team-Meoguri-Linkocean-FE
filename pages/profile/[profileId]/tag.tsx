@@ -58,7 +58,10 @@ const Tag = () => {
         description={`${
           otherProfileInfo ? otherProfileInfo.username : ""
         }의 북마크 모음`}
-        needOg
+        og={{
+          title: "다른 머구리의 북마크 | LinkOcean",
+          description: "다른 머구리의 북마크 모음",
+        }}
         robots="index, follow"
       />
       <PageLayout>

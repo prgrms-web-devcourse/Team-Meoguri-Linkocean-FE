@@ -77,7 +77,7 @@ export default function Home() {
         title="LinkOcean"
         titleWithoutSuffix
         description="세계 최고의 북마크 공유 & 관리 서비스 링크오션"
-        needOg
+        og={{}}
         robots="index, nofollow"
       />
 

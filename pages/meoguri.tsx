@@ -146,9 +146,9 @@ const Meoguri = () => {
   return (
     <>
       <Meta
-        title="머구리찾기"
+        title="머구리 찾기"
         description="세계 최고의 북마크 공유 & 관리 서비스 링크오션"
-        needOg
+        og={{}}
         robots="noindex, nofollow"
       />
 
