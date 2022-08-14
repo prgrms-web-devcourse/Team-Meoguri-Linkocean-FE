@@ -3,7 +3,7 @@ import { authInstance } from "./instance";
 
 const notificationAPI = {
   shareNotification: (targetId: number, bookmarkId: number) =>
-    authInstance.post(`/bookmark/${bookmarkId}/share`, {
+    authInstance.post(`/bookmarks/${bookmarkId}/share`, {
       targetId,
     }),
   getNotifications: (queryString: string) =>
