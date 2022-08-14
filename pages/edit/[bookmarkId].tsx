@@ -18,6 +18,7 @@ import {
   Radio,
   Button,
   ErrorText,
+  Meta,
 } from "@/components/common";
 
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
@@ -133,156 +134,163 @@ const Edit = () => {
   );
 
   return (
-    <PageLayout>
-      {AsideMemo}
-      <PageLayout.Article>
-        <Contents>
-          <DivWrapper>
-            <PageName>북마크 수정</PageName>
+    <>
+      <Meta
+        title="북마크 추가 | LinkOcean"
+        description="북마크 추가 | LinkOcean"
+        robots="noindex, nofollow"
+      />
+      <PageLayout>
+        {AsideMemo}
+        <PageLayout.Article>
+          <Contents>
+            <DivWrapper>
+              <PageName>북마크 수정</PageName>
 
-            <StyledLabel>URL</StyledLabel>
-            <StyledInput
-              style={{ marginBottom: "40px" }}
-              value={url}
-              disabled
-            />
+              <StyledLabel>URL</StyledLabel>
+              <StyledInput
+                style={{ marginBottom: "40px" }}
+                value={url}
+                disabled
+              />
 
-            <StyledLabel>제목</StyledLabel>
-            <StyledInput
-              ref={titleRef}
-              value={title}
-              placeholder="제목을 입력하세요."
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            {submit && title === "" ? (
-              <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
-            ) : (
-              <StyledErrorText> </StyledErrorText>
-            )}
+              <StyledLabel>제목</StyledLabel>
+              <StyledInput
+                ref={titleRef}
+                value={title}
+                placeholder="제목을 입력하세요."
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              {submit && title === "" ? (
+                <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
+              ) : (
+                <StyledErrorText> </StyledErrorText>
+              )}
 
-            <StyledLabel>
-              메모
-              <OverLine>{memo.length}/200</OverLine>
-            </StyledLabel>
-            {memo.length > 199 ? (
-              <>
+              <StyledLabel>
+                메모
+                <OverLine>{memo.length}/200</OverLine>
+              </StyledLabel>
+              {memo.length > 199 ? (
+                <>
+                  <Textarea
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value.substring(0, 200))}
+                    placeholder="텍스트를 입력하세요."
+                    style={{
+                      width: "470px",
+                      height: "155px",
+                      padding: "10px 16px",
+                      fontSize: "16px",
+                    }}
+                  />
+                  <ErrorText style={{ marginBottom: "40px", marginTop: "3px" }}>
+                    * 200자 이내로 입력 가능합니다.
+                  </ErrorText>
+                </>
+              ) : (
                 <Textarea
                   value={memo}
-                  onChange={(e) => setMemo(e.target.value.substring(0, 200))}
+                  onChange={(e) => setMemo(e.target.value)}
                   placeholder="텍스트를 입력하세요."
                   style={{
                     width: "470px",
                     height: "155px",
                     padding: "10px 16px",
+                    marginBottom: "40px",
                     fontSize: "16px",
                   }}
                 />
-                <ErrorText style={{ marginBottom: "40px", marginTop: "3px" }}>
-                  * 200자 이내로 입력 가능합니다.
-                </ErrorText>
-              </>
-            ) : (
-              <Textarea
-                value={memo}
-                onChange={(e) => setMemo(e.target.value)}
-                placeholder="텍스트를 입력하세요."
-                style={{
-                  width: "470px",
-                  height: "155px",
-                  padding: "10px 16px",
-                  marginBottom: "40px",
-                  fontSize: "16px",
-                }}
-              />
-            )}
+              )}
 
-            <StyledLabel>카테고리</StyledLabel>
-            {selectedOption && (
-              <StyledSelect>
-                <Select
-                  selectedOption={
-                    selectedOption.value === "no-category"
-                      ? undefined
-                      : selectedOption
-                  }
-                  width="470px"
-                  onChange={handleChangeCategory}
-                >
-                  <Select.Trigger>선택</Select.Trigger>
-                  <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                    {categoryList.map((index) =>
-                      index === "no-category" ? (
-                        <Select.Option value={index}>
-                          -- 카테고리 없음 --
-                        </Select.Option>
-                      ) : (
-                        <Select.Option value={index}>{index}</Select.Option>
-                      )
-                    )}
-                  </Select.OptionList>
-                </Select>
-              </StyledSelect>
-            )}
+              <StyledLabel>카테고리</StyledLabel>
+              {selectedOption && (
+                <StyledSelect>
+                  <Select
+                    selectedOption={
+                      selectedOption.value === "no-category"
+                        ? undefined
+                        : selectedOption
+                    }
+                    width="470px"
+                    onChange={handleChangeCategory}
+                  >
+                    <Select.Trigger>선택</Select.Trigger>
+                    <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
+                      {categoryList.map((index) =>
+                        index === "no-category" ? (
+                          <Select.Option value={index}>
+                            -- 카테고리 없음 --
+                          </Select.Option>
+                        ) : (
+                          <Select.Option value={index}>{index}</Select.Option>
+                        )
+                      )}
+                    </Select.OptionList>
+                  </Select>
+                </StyledSelect>
+              )}
 
-            <StyledLabel>태그</StyledLabel>
-            <Tag tag={tag} setTag={setTag} />
+              <StyledLabel>태그</StyledLabel>
+              <Tag tag={tag} setTag={setTag} />
 
-            <StyledLabel>공개 범위</StyledLabel>
-            <RadioWrapper>
-              <Contents>
-                <OptionLabel>전체공개</OptionLabel>
-                <StyledRadio
-                  name="openType"
-                  value="all"
-                  checked={openType === "all"}
-                  onChange={radioHandler}
-                />
-              </Contents>
-              <Contents>
-                <OptionLabel>비공개</OptionLabel>
-                <StyledRadio
-                  name="openType"
-                  value="private"
-                  checked={openType === "private"}
-                  onChange={radioHandler}
-                />
-              </Contents>
-              <Contents>
-                <OptionLabel>일부공개</OptionLabel>
-                <StyledRadio
-                  name="openType"
-                  value="partial"
-                  checked={openType === "partial"}
-                  onChange={radioHandler}
-                />
-              </Contents>
-            </RadioWrapper>
+              <StyledLabel>공개 범위</StyledLabel>
+              <RadioWrapper>
+                <Contents>
+                  <OptionLabel>전체공개</OptionLabel>
+                  <StyledRadio
+                    name="openType"
+                    value="all"
+                    checked={openType === "all"}
+                    onChange={radioHandler}
+                  />
+                </Contents>
+                <Contents>
+                  <OptionLabel>비공개</OptionLabel>
+                  <StyledRadio
+                    name="openType"
+                    value="private"
+                    checked={openType === "private"}
+                    onChange={radioHandler}
+                  />
+                </Contents>
+                <Contents>
+                  <OptionLabel>일부공개</OptionLabel>
+                  <StyledRadio
+                    name="openType"
+                    value="partial"
+                    checked={openType === "partial"}
+                    onChange={radioHandler}
+                  />
+                </Contents>
+              </RadioWrapper>
 
-            <ButtonWrapper>
-              <Button
-                buttonType="large"
-                colorType="main-color"
-                width="194"
-                style={{ margin: "120px auto" }}
-                onClick={handleEdit}
-              >
-                수정 완료
-              </Button>
-              <Link href="/" passHref>
+              <ButtonWrapper>
                 <Button
                   buttonType="large"
-                  colorType="gray"
+                  colorType="main-color"
                   width="194"
                   style={{ margin: "120px auto" }}
+                  onClick={handleEdit}
                 >
-                  취소
+                  수정 완료
                 </Button>
-              </Link>
-            </ButtonWrapper>
-          </DivWrapper>
-        </Contents>
-      </PageLayout.Article>
-    </PageLayout>
+                <Link href="/" passHref>
+                  <Button
+                    buttonType="large"
+                    colorType="gray"
+                    width="194"
+                    style={{ margin: "120px auto" }}
+                  >
+                    취소
+                  </Button>
+                </Link>
+              </ButtonWrapper>
+            </DivWrapper>
+          </Contents>
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 
