@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import { FormEvent, useState, useEffect, useCallback } from "react";
@@ -11,6 +10,7 @@ import {
   Button,
   NoResult,
   Top,
+  Meta,
 } from "@/components/common";
 import { Profile } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
@@ -145,9 +145,12 @@ const Meoguri = () => {
 
   return (
     <>
-      <Head>
-        <title>LinkOcean | 머구리 찾기</title>
-      </Head>
+      <Meta
+        title="머구리찾기"
+        description="세계 최고의 북마크 공유 & 관리 서비스 링크오션"
+        needOg
+        robots="noindex, nofollow"
+      />
 
       <PageLayout>
         <PageLayout.Aside>
