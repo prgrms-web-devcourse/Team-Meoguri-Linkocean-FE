@@ -1,7 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { PageLayout, UserInfo, OtherFilterMenu } from "@/components/common";
+import {
+  PageLayout,
+  UserInfo,
+  OtherFilterMenu,
+  Meta,
+} from "@/components/common";
 import OtherBookmark from "@/components/otherBookmark/otherBookmarkTemplate";
 import profileAPI from "@/utils/apis/profile";
 import { ProfileDetail } from "@/types/model";
@@ -49,24 +54,34 @@ const Category = () => {
   }, [category]);
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        {otherProfileInfo !== undefined ? (
-          <>
-            <UserInfo data={otherProfileInfo} />
-            <OtherFilterMenu
-              categoryList={otherProfileInfo.categories}
-              tagList={otherProfileInfo.tags}
-              getCategoryData={setCategory}
-              getTagsData={setTags}
-            />
-          </>
-        ) : null}
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        <OtherBookmark PageTitle="카테고리 목록" />
-      </PageLayout.Article>
-    </PageLayout>
+    <>
+      <Meta
+        title={`${otherProfileInfo ? otherProfileInfo.username : ""}`}
+        description={`${
+          otherProfileInfo ? otherProfileInfo.username : ""
+        }의 북마크 모음`}
+        needOg
+        robots="index, follow"
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          {otherProfileInfo !== undefined ? (
+            <>
+              <UserInfo data={otherProfileInfo} />
+              <OtherFilterMenu
+                categoryList={otherProfileInfo.categories}
+                tagList={otherProfileInfo.tags}
+                getCategoryData={setCategory}
+                getTagsData={setTags}
+              />
+            </>
+          ) : null}
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          <OtherBookmark PageTitle="카테고리 목록" />
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 
