@@ -179,7 +179,7 @@ const Meoguri = () => {
                 colorType="main-color"
                 buttonType="small"
                 type="submit"
-                width="67"
+                width="82"
               >
                 검색
               </Button>
@@ -221,9 +221,9 @@ const Meoguri = () => {
 };
 
 const Title = styled.h2`
-  margin: 10px 0 29px 4px;
+  margin: 9px 0 35px 15px;
   color: ${theme.color.$gray800};
-  ${theme.text.$headline5}
+  ${theme.text.$headline5};
 `;
 
 const Form = styled.form`
