@@ -23,3 +23,9 @@ export type TagType = {
 };
 
 export type Reaction = "like" | "hate";
+
+export type RobotsType =
+  | "noindex, nofollow"
+  | "index, follow"
+  | "noindex, follow"
+  | "index, nofollow";
