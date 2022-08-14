@@ -26,10 +26,14 @@ const Top = () => {
   };
 
   return show ? (
-    <Wrapper onClick={moveToTop}>
+    <Wrapper onClick={moveToTop} style={{ visibility: "visible" }}>
       <Icon src="/icon/arrow.svg" alt="top" width={50} height={50} />
     </Wrapper>
-  ) : null;
+  ) : (
+    <Wrapper onClick={moveToTop} style={{ visibility: "hidden" }}>
+      <Icon src="/icon/arrow.svg" alt="top" width={50} height={50} />
+    </Wrapper>
+  );
 };
 
 const Icon = styled(Image)`
