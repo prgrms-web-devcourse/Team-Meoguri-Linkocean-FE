@@ -4,6 +4,7 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 
 const INITIAL_OPTION = { value: "", text: "" };
@@ -43,6 +44,12 @@ const SelectProvider = ({
   const [selectedOption, setSelectedOption] = useState(
     props.selectedOption ?? INITIAL_OPTION
   );
+
+  useEffect(() => {
+    if (props.selectedOption) {
+      setSelectedOption(props.selectedOption);
+    }
+  }, [props.selectedOption]);
 
   const handleChange = (newValue: typeof INITIAL_OPTION) => {
     setSelectedOption(newValue);
