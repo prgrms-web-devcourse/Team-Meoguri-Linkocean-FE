@@ -6,9 +6,10 @@ const Edit = () => {
   return (
     <>
       <Meta
-        title="프로필 수정 | LinkOcean"
+        title="프로필 수정"
         description="프로필 수정"
         robots="noindex, nofollow"
+        titleWithoutSuffix
       />
       <PageLayout>
         <PageLayout.Article>
