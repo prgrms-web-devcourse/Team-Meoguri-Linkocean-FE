@@ -220,7 +220,7 @@ const Feed = () => {
         title={`${state.searchTitle} 전체 피드 검색`.trim()}
         description={`${
           state.searchTitle !== "" ? `${state.searchTitle}의` : ""
-        } 링크오션 전체 피드 검색 결과입니다.`}
+        } 링크오션 전체 피드 검색 결과입니다.`.trim()}
         needOg
         robots="index, follow"
       />
