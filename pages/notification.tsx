@@ -13,6 +13,7 @@ import {
   PageLayout,
   Alarm,
   Top,
+  Meta,
 } from "@/components/common";
 
 const PAGE_SIZE = 8;
@@ -90,42 +91,51 @@ const Notifications = () => {
   }, [getNotification]);
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        <UserInfo data={userProfile} />
-        <MyFilterMenu
-          tagList={userProfile.tags}
-          categoryList={userProfile.categories}
-          getCategoryData={(category) => {
-            router.push(`/my/category?category=${category}`);
-          }}
-          getTagsData={(tags) => {
-            router.push(`/my/tag?tags=${tags[0]}`);
-          }}
-        />
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        <Contents>
-          <DivWrapper>
-            <PageName>알림</PageName>
-            <AlarmWrapper>
-              {notification.value.map((index, i) => (
-                <div
-                  ref={
-                    isLastCard(i, notification.value.length) ? setTarget : null
-                  }
-                  key={notification.value[i].info.bookmark.id}
-                >
-                  <Alarm data={index} />
-                  <Contents style={{ height: "10px" }} />
-                </div>
-              ))}
-            </AlarmWrapper>
-          </DivWrapper>
-          <Top />
-        </Contents>
-      </PageLayout.Article>
-    </PageLayout>
+    <>
+      <Meta
+        title="북마크 알림 | LinkOcean"
+        description="북마크 알림 | LinkOcean"
+        robots="noindex, nofollow"
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          <UserInfo data={userProfile} />
+          <MyFilterMenu
+            tagList={userProfile.tags}
+            categoryList={userProfile.categories}
+            getCategoryData={(category) => {
+              router.push(`/my/category?category=${category}`);
+            }}
+            getTagsData={(tags) => {
+              router.push(`/my/tag?tags=${tags[0]}`);
+            }}
+          />
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          <Contents>
+            <DivWrapper>
+              <PageName>알림</PageName>
+              <AlarmWrapper>
+                {notification.value.map((index, i) => (
+                  <div
+                    ref={
+                      isLastCard(i, notification.value.length)
+                        ? setTarget
+                        : null
+                    }
+                    key={notification.value[i].info.bookmark.id}
+                  >
+                    <Alarm data={index} />
+                    <Contents style={{ height: "10px" }} />
+                  </div>
+                ))}
+              </AlarmWrapper>
+            </DivWrapper>
+            <Top />
+          </Contents>
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 
