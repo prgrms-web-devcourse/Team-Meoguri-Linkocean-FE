@@ -1,4 +1,4 @@
-import { FeedFilterMenu, PageLayout } from "@/components/common";
+import { FeedFilterMenu, Meta, PageLayout } from "@/components/common";
 import DetailPage from "@/components/detail";
 import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
@@ -24,23 +24,34 @@ const MyDetail = () => {
   }, [router.query, router.isReady, router]);
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        <FeedFilterMenu
-          getCategoryData={(category) => {
-            router.push(`/feed?category=${category}`);
-          }}
-        />
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        {bookmarkData ? (
-          <DetailPage
-            id={Number(router.query.bookmarkId)}
-            data={bookmarkData}
+    <>
+      <Meta
+        title={`${bookmarkData?.title || ""}`}
+        robots="index, follow"
+        description={`${
+          bookmarkData?.tags?.map((tag) => `#${tag}`).join(" ") || ""
+        }/${bookmarkData?.memo || ""}/${bookmarkData?.url || ""}`}
+        titleWithoutSuffix
+        needOg
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          <FeedFilterMenu
+            getCategoryData={(category) => {
+              router.push(`/feed?category=${category}`);
+            }}
           />
-        ) : null}
-      </PageLayout.Article>
-    </PageLayout>
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          {bookmarkData ? (
+            <DetailPage
+              id={Number(router.query.bookmarkId)}
+              data={bookmarkData}
+            />
+          ) : null}
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 
