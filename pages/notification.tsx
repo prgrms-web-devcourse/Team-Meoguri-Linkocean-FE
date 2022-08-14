@@ -1,8 +1,3 @@
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import PageLayout from "@/components/common/pageLayout";
-import UserInfo from "@/components/common/userInfo";
-import Alarm from "@/components/common/alarm";
-import Top from "@/components/common/top";
 import styled from "@emotion/styled";
 import { useCallback, useEffect, useState } from "react";
 import { color, text } from "@/styles/theme";
@@ -12,6 +7,13 @@ import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileState } from "@/hooks/useProfile";
 import { useRouter } from "next/router";
+import {
+  UserInfo,
+  MyFilterMenu,
+  PageLayout,
+  Alarm,
+  Top,
+} from "@/components/common";
 
 const PAGE_SIZE = 8;
 const isLastCard = (index: number, length: number) =>
