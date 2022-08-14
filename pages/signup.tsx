@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import axios from "axios";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -15,6 +14,7 @@ import {
   ErrorText,
   Input,
   Label,
+  Meta,
 } from "@/components/common";
 import { useProfileDispatch } from "@/hooks/useProfile";
 import { CATEGORY } from "@/types/type";
@@ -122,9 +122,8 @@ const SignUp = () => {
 
   return (
     <>
-      <Head>
-        <title>LinkOcean | 회원가입</title>
-      </Head>
+      <Meta title="회원가입" robots="noindex, nofollow" />
+
       <Layout>
         <h1>
           <img src="/icon/logo.svg" alt="Link Ocean" width={357} height={57} />
