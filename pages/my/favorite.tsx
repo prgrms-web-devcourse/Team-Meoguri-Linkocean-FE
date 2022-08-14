@@ -47,7 +47,7 @@ const Favorite = () => {
   return (
     <>
       <Meta
-        title={`${profile.username} `}
+        title={`${profile.username}`}
         description="나의 북마크 모음"
         needOg
         robots="noindex, nofollow"
