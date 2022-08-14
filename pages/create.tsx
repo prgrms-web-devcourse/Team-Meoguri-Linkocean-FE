@@ -217,9 +217,6 @@ const Create = () => {
                         <Select.Option value={index}>{index}</Select.Option>
                       )
                     )}
-                    {/* {categoryList.map((index) => (
-                      <Select.Option value={index}>{index}</Select.Option>
-                    ))} */}
                   </Select.OptionList>
                 </Select>
               </div>
