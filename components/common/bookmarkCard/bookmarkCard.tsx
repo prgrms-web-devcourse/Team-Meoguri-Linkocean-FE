@@ -146,10 +146,10 @@ const Wrapper = styled.div`
   display: inline-block;
   margin-right: calc((100% - (190px * 4)) / 3);
   margin-bottom: 29px;
-  &:nth-child(4) {
+  &:nth-of-type(4) {
     margin-right: 0px;
   }
-  &:nth-child(8) {
+  &:nth-of-type(8) {
     margin-right: 0px;
   }
 `;
