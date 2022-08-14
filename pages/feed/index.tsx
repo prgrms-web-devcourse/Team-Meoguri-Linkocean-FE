@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 import {
   ChangeEvent,
@@ -19,6 +18,7 @@ import {
   Pagination,
   BookmarkCard,
   NoResult,
+  Meta,
 } from "@/components/common";
 import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
 import { BookmarkList } from "@/types/model";
@@ -216,9 +216,14 @@ const Feed = () => {
 
   return (
     <>
-      <Head>
-        <title>LinkOcean | 피드</title>
-      </Head>
+      <Meta
+        title={`${state.searchTitle} 전체 피드 검색`.trim()}
+        description={`${
+          state.searchTitle !== "" ? `${state.searchTitle}의` : ""
+        } 링크오션 전체 피드 검색 결과입니다.`}
+        needOg
+        robots="index, follow"
+      />
 
       <PageLayout>
         <PageLayout.Aside>
