@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { PageLayout, UserInfo, Following } from "@/components/common";
+import { PageLayout, UserInfo, Following, Top } from "@/components/common";
 import FollowRadio from "@/components/follow/followRadio";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import {
@@ -265,6 +265,7 @@ const Follow = () => {
                 )
               )}
             </FollowCardContainer>
+            <Top />
           </Layout>
         </PageLayout.Article>
       </PageLayout>

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import FollowRadio from "@/components/follow/followRadio";
-import { Following, UserInfo, PageLayout } from "@/components/common";
+import { Following, UserInfo, PageLayout, Top } from "@/components/common";
 import { Profile } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
@@ -185,6 +185,7 @@ const Follow = () => {
                 )
               )}
             </FollowCardContainer>
+            <Top />
           </Layout>
         </PageLayout.Article>
       </PageLayout>
