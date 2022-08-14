@@ -1,4 +1,9 @@
-import { OtherFilterMenu, PageLayout, UserInfo } from "@/components/common";
+import {
+  Meta,
+  OtherFilterMenu,
+  PageLayout,
+  UserInfo,
+} from "@/components/common";
 import DetailPage from "@/components/detail";
 import { useProfileDispatch } from "@/hooks/useProfile";
 import { BookmarkDetail, ProfileDetail } from "@/types/model";
@@ -55,35 +60,46 @@ const MyDetail = () => {
   };
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        <UserInfo data={userProfile} handleClick={handleUserInfo} />
-        <OtherFilterMenu
-          tagList={userProfile?.tags}
-          categoryList={userProfile?.categories}
-          getCategoryData={(category) => {
-            router.push(
-              `/profile/${Number(
-                userProfile?.profileId
-              )}/category?category=${category}`
-            );
-          }}
-          getTagsData={(tags) => {
-            router.push(
-              `/profile/${Number(userProfile?.profileId)}/tag?tags=${tags[0]}`
-            );
-          }}
-        />
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        {bookmarkData ? (
-          <DetailPage
-            id={Number(router.query.bookmarkId)}
-            data={bookmarkData}
+    <>
+      <Meta
+        title={`${bookmarkData?.title || ""}`}
+        robots="index, follow"
+        description={`${
+          bookmarkData?.tags?.map((tag) => `#${tag}`).join(" ") || ""
+        }/${bookmarkData?.memo || ""}/${bookmarkData?.url || ""}`}
+        titleWithoutSuffix
+        needOg
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          <UserInfo data={userProfile} handleClick={handleUserInfo} />
+          <OtherFilterMenu
+            tagList={userProfile?.tags}
+            categoryList={userProfile?.categories}
+            getCategoryData={(category) => {
+              router.push(
+                `/profile/${Number(
+                  userProfile?.profileId
+                )}/category?category=${category}`
+              );
+            }}
+            getTagsData={(tags) => {
+              router.push(
+                `/profile/${Number(userProfile?.profileId)}/tag?tags=${tags[0]}`
+              );
+            }}
           />
-        ) : null}
-      </PageLayout.Article>
-    </PageLayout>
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          {bookmarkData ? (
+            <DetailPage
+              id={Number(router.query.bookmarkId)}
+              data={bookmarkData}
+            />
+          ) : null}
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 export default MyDetail;
