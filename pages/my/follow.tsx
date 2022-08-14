@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
 import FollowRadio from "@/components/follow/followRadio";
-import { Following, UserInfo, PageLayout, Top } from "@/components/common";
+import {
+  Following,
+  UserInfo,
+  PageLayout,
+  Top,
+  Meta,
+} from "@/components/common";
 import { Profile } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
@@ -118,13 +123,12 @@ const Follow = () => {
 
   return (
     <>
-      <Head>
-        <title>
-          {state.tab === "follower"
-            ? "LinkOcean | 팔로워"
-            : "LinkOcean | 팔로잉"}
-        </title>
-      </Head>
+      <Meta
+        title="나의 특별한 머구리들"
+        description="나의 특별한 머구리들 입니다."
+        needOg
+        robots="noindex, nofollow"
+      />
 
       <PageLayout>
         <PageLayout.Aside>
