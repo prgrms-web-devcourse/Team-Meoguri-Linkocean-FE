@@ -82,7 +82,6 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
     }
     let routerQuery = "no";
     const key = Object.keys(router.query)[0];
-    console.log(key);
     const value = router.query[key];
     if (key === "category" || key === "tags") {
       if (value === "전체") {

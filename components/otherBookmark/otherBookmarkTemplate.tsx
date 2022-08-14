@@ -35,9 +35,9 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const getOtherBookmarksApi = (query: string) => {
     (async () => {
       try {
-        if (profileId !== undefined) {
+        if (typeof profileId === "string") {
           const res = await bookmarkAPI.getOtherBookmarks(
-            parseInt(profileId[0], 10),
+            parseInt(profileId, 10),
             query
           );
           setOtherBookmarks(res.data);
