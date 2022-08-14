@@ -171,7 +171,6 @@ const Meoguri = () => {
               <Input
                 searchIcon
                 name="name"
-                width="400px"
                 value={usernameInputValue}
                 onChange={(e) => setUsernameInputValue(e.target.value)}
               />
