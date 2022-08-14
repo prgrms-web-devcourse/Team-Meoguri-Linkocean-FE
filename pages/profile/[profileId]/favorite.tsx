@@ -25,8 +25,8 @@ const Favorite = () => {
   };
 
   useEffect(() => {
-    if (profileId !== undefined) {
-      getOtherProfileApi(parseInt(profileId[0], 10));
+    if (typeof profileId === "string") {
+      getOtherProfileApi(parseInt(profileId, 10));
     }
   }, [profileId]);
 
@@ -34,16 +34,16 @@ const Favorite = () => {
     const tagsString = tags === undefined ? "" : tags.join(",");
     const tagParamsObj = { tags: tagsString };
     const searchParams = new URLSearchParams(tagParamsObj).toString();
-    if (tags !== undefined && profileId !== undefined) {
-      router.push(`/profile/${profileId[0]}/tag/?${searchParams}`);
+    if (tags !== undefined && typeof profileId === "string") {
+      router.push(`/profile/${profileId}/tag/?${searchParams}`);
     }
   }, [tags]);
 
   useEffect(() => {
     const categoryParamsObj = category ? { category } : { category: "" };
     const searchParams = new URLSearchParams(categoryParamsObj).toString();
-    if (category !== undefined && profileId) {
-      router.push(`/profile/${profileId[0]}/category/?${searchParams}`);
+    if (category !== undefined && typeof profileId === "string") {
+      router.push(`/profile/${profileId}/category/?${searchParams}`);
     }
   }, [category]);
 
