@@ -121,6 +121,7 @@ const MyBookmark = ({ PageTitle }: MyBookmarkProps) => {
           <Button
             buttonType="small"
             colorType="main-color"
+            width="82"
             onClick={() => searching()}
           >
             검색

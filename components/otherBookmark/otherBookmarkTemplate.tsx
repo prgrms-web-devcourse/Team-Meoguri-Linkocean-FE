@@ -114,6 +114,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
           <Input searchIcon ref={searchInput} onKeyDown={onKeyPress} />
           <Button
             buttonType="small"
+            width="82"
             colorType="main-color"
             onClick={() => searching()}
           >
