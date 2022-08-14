@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
 import Tag from "@/components/create/tag";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
-import { CATEGORY, OpenType, TagType } from "@/types/type";
+import { CATEGORY, OpenType } from "@/types/type";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import {
   UserInfo,
@@ -113,9 +113,8 @@ const Edit = () => {
     }
   };
 
-  return (
-    <PageLayout>
-      {" "}
+  const AsideMemo = React.useMemo(
+    () => (
       <PageLayout.Aside>
         <UserInfo data={userProfile} />
         <MyFilterMenu
@@ -129,6 +128,13 @@ const Edit = () => {
           }}
         />
       </PageLayout.Aside>
+    ),
+    [userProfile, router]
+  );
+
+  return (
+    <PageLayout>
+      {AsideMemo}
       <PageLayout.Article>
         <Contents>
           <DivWrapper>
