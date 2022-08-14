@@ -46,7 +46,7 @@ const Category = () => {
       <Meta
         title={`${profile.username}`}
         description="나의 북마크 모음"
-        needOg
+        og={{ title: "나의 북마크 | LinkOcean" }}
         robots="noindex, nofollow"
       />
       <PageLayout>

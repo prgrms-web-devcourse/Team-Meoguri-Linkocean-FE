@@ -217,11 +217,14 @@ const Feed = () => {
   return (
     <>
       <Meta
-        title={`${state.searchTitle} 전체 피드 검색`.trim()}
+        title={`${state.searchTitle} - 전체 피드 검색`.trim()}
         description={`${
-          state.searchTitle !== "" ? `${state.searchTitle}의` : ""
-        } 링크오션 전체 피드 검색 결과입니다.`.trim()}
-        needOg
+          state.searchTitle !== "" ? `${state.searchTitle} -` : ""
+        } LinkOcean 전체 피드 검색 결과입니다.`.trim()}
+        og={{
+          title: "전체 피드 검색 | LinkOcean",
+          description: "LinkOcean 전체 피드 검색 결과입니다.",
+        }}
         robots="index, follow"
       />
 

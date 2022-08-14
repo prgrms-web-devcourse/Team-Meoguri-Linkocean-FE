@@ -198,7 +198,10 @@ const Follow = () => {
         description={`${
           userProfile ? userProfile.username : ""
         }의 특별한 머구리들 입니다.`}
-        needOg
+        og={{
+          title: "다른 머구리의 특별한 머구리들",
+          description: "다른 머구리의 특별한 머구리들 입니다.",
+        }}
         robots="noindex, nofollow"
       />
 
