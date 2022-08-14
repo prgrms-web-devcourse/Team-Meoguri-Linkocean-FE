@@ -1,8 +1,3 @@
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import PageLayout from "@/components/common/pageLayout";
-import UserInfo from "@/components/common/userInfo";
-import Alarm from "@/components/common/alarm";
-import Top from "@/components/common/top";
 import styled from "@emotion/styled";
 import { useCallback, useEffect, useState } from "react";
 import { color, text } from "@/styles/theme";
@@ -12,6 +7,14 @@ import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileState } from "@/hooks/useProfile";
 import { useRouter } from "next/router";
+import {
+  UserInfo,
+  MyFilterMenu,
+  PageLayout,
+  Alarm,
+  Top,
+  Meta,
+} from "@/components/common";
 
 const PAGE_SIZE = 8;
 const isLastCard = (index: number, length: number) =>
@@ -88,42 +91,51 @@ const Notifications = () => {
   }, [getNotification]);
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        <UserInfo data={userProfile} />
-        <MyFilterMenu
-          tagList={userProfile.tags}
-          categoryList={userProfile.categories}
-          getCategoryData={(category) => {
-            router.push(`/my/category?category=${category}`);
-          }}
-          getTagsData={(tags) => {
-            router.push(`/my/tag?tags=${tags[0]}`);
-          }}
-        />
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        <Contents>
-          <DivWrapper>
-            <PageName>알림</PageName>
-            <AlarmWrapper>
-              {notification.value.map((index, i) => (
-                <div
-                  ref={
-                    isLastCard(i, notification.value.length) ? setTarget : null
-                  }
-                  key={notification.value[i].info.bookmark.id}
-                >
-                  <Alarm data={index} />
-                  <Contents style={{ height: "10px" }} />
-                </div>
-              ))}
-            </AlarmWrapper>
-          </DivWrapper>
-          <Top />
-        </Contents>
-      </PageLayout.Article>
-    </PageLayout>
+    <>
+      <Meta
+        title="북마크 알림"
+        description="북마크 알림"
+        robots="noindex, nofollow"
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          <UserInfo data={userProfile} />
+          <MyFilterMenu
+            tagList={userProfile.tags}
+            categoryList={userProfile.categories}
+            getCategoryData={(category) => {
+              router.push(`/my/category?category=${category}`);
+            }}
+            getTagsData={(tags) => {
+              router.push(`/my/tag?tags=${tags[0]}`);
+            }}
+          />
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          <Contents>
+            <DivWrapper>
+              <PageName>알림</PageName>
+              <AlarmWrapper>
+                {notification.value.map((index, i) => (
+                  <div
+                    ref={
+                      isLastCard(i, notification.value.length)
+                        ? setTarget
+                        : null
+                    }
+                    key={notification.value[i].info.bookmark.id}
+                  >
+                    <Alarm data={index} />
+                    <Contents style={{ height: "10px" }} />
+                  </div>
+                ))}
+              </AlarmWrapper>
+            </DivWrapper>
+            <Top />
+          </Contents>
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 

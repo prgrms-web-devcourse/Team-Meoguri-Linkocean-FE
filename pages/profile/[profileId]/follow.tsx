@@ -1,7 +1,12 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { PageLayout, UserInfo, Following } from "@/components/common";
+import {
+  PageLayout,
+  UserInfo,
+  Following,
+  Top,
+  Meta,
+} from "@/components/common";
 import FollowRadio from "@/components/follow/followRadio";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import {
@@ -188,13 +193,14 @@ const Follow = () => {
 
   return (
     <>
-      <Head>
-        <title>
-          {state.tab === "follower"
-            ? "LinkOcean | 팔로워"
-            : "LinkOcean | 팔로잉"}
-        </title>
-      </Head>
+      <Meta
+        title={`${userProfile ? userProfile.username : ""}의 특별한 머구리들`}
+        description={`${
+          userProfile ? userProfile.username : ""
+        }의 특별한 머구리들 입니다.`}
+        needOg
+        robots="noindex, nofollow"
+      />
 
       <PageLayout>
         <PageLayout.Aside>
@@ -265,6 +271,7 @@ const Follow = () => {
                 )
               )}
             </FollowCardContainer>
+            <Top />
           </Layout>
         </PageLayout.Article>
       </PageLayout>

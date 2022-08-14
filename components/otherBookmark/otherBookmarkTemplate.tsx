@@ -35,9 +35,9 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
   const getOtherBookmarksApi = (query: string) => {
     (async () => {
       try {
-        if (profileId !== undefined) {
+        if (typeof profileId === "string") {
           const res = await bookmarkAPI.getOtherBookmarks(
-            parseInt(profileId[0], 10),
+            parseInt(profileId, 10),
             query
           );
           setOtherBookmarks(res.data);
@@ -114,6 +114,7 @@ const OtherBookmark = ({ PageTitle }: OtherBookmarkProps) => {
           <Input searchIcon ref={searchInput} onKeyDown={onKeyPress} />
           <Button
             buttonType="small"
+            width="82"
             colorType="main-color"
             onClick={() => searching()}
           >

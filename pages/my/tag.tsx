@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { PageLayout, UserInfo, MyFilterMenu } from "@/components/common";
+import { PageLayout, UserInfo, MyFilterMenu, Meta } from "@/components/common";
 import BookmarkTemplate from "@/components/myBookmark/bookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
 
@@ -29,20 +29,28 @@ const Tag = () => {
   }, [category]);
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        <UserInfo data={profile} />
-        <MyFilterMenu
-          categoryList={profile.categories}
-          tagList={profile.tags}
-          getCategoryData={setCategory}
-          getTagsData={setTags}
-        />
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        <BookmarkTemplate PageTitle="태그 목록" />
-      </PageLayout.Article>
-    </PageLayout>
+    <>
+      <Meta
+        title={`${profile.username}`}
+        description="나의 북마크 모음"
+        needOg
+        robots="noindex, nofollow"
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          <UserInfo data={profile} />
+          <MyFilterMenu
+            categoryList={profile.categories}
+            tagList={profile.tags}
+            getCategoryData={setCategory}
+            getTagsData={setTags}
+          />
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          <BookmarkTemplate PageTitle="태그 목록" />
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 

@@ -1,10 +1,9 @@
-import Head from "next/head";
-import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import styled from "@emotion/styled";
-import * as theme from "@/styles/theme";
-import { useEffect, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, MouseEvent, useCallback } from "react";
+import styled from "@emotion/styled";
+import { Meta } from "@/components/common";
 import {
   GoogleLoginButton,
   NaverLoginButton,
@@ -13,6 +12,7 @@ import {
 import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
+import * as theme from "@/styles/theme";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -73,9 +73,13 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>LinkOcean</title>
-      </Head>
+      <Meta
+        title="LinkOcean"
+        titleWithoutSuffix
+        description="세계 최고의 북마크 공유 & 관리 서비스 링크오션"
+        needOg
+        robots="index, nofollow"
+      />
 
       <Section>
         <SectionLayout>

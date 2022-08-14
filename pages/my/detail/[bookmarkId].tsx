@@ -1,4 +1,4 @@
-import { MyFilterMenu, PageLayout, UserInfo } from "@/components/common";
+import { Meta, MyFilterMenu, PageLayout, UserInfo } from "@/components/common";
 import DetailPage from "@/components/detail";
 import { useProfileState } from "@/hooks/useProfile";
 import { BookmarkDetail } from "@/types/model";
@@ -26,29 +26,40 @@ const MyDetail = () => {
   }, [router.query, router.isReady, router]);
 
   return (
-    <PageLayout>
-      <PageLayout.Aside>
-        <UserInfo />
-        <MyFilterMenu
-          tagList={userProfile.tags}
-          categoryList={userProfile.categories}
-          getCategoryData={(category) => {
-            router.push(`/my/category?category=${category}`);
-          }}
-          getTagsData={(tags) => {
-            router.push(`/my/tag?tags=${tags[0]}`);
-          }}
-        />
-      </PageLayout.Aside>
-      <PageLayout.Article>
-        {bookmarkData ? (
-          <DetailPage
-            id={Number(router.query.bookmarkId)}
-            data={bookmarkData}
+    <>
+      <Meta
+        title={`${bookmarkData?.title || ""}`}
+        robots="index, follow"
+        description={`${
+          bookmarkData?.tags?.map((tag) => `#${tag}`).join(" ") || ""
+        }/${bookmarkData?.memo || ""}/${bookmarkData?.url || ""}`}
+        titleWithoutSuffix
+        needOg
+      />
+      <PageLayout>
+        <PageLayout.Aside>
+          <UserInfo />
+          <MyFilterMenu
+            tagList={userProfile.tags}
+            categoryList={userProfile.categories}
+            getCategoryData={(category) => {
+              router.push(`/my/category?category=${category}`);
+            }}
+            getTagsData={(tags) => {
+              router.push(`/my/tag?tags=${tags[0]}`);
+            }}
           />
-        ) : null}
-      </PageLayout.Article>
-    </PageLayout>
+        </PageLayout.Aside>
+        <PageLayout.Article>
+          {bookmarkData ? (
+            <DetailPage
+              id={Number(router.query.bookmarkId)}
+              data={bookmarkData}
+            />
+          ) : null}
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 export default MyDetail;

@@ -1,4 +1,4 @@
-import { color, shortenOneLine, text } from "@/styles/theme";
+import { color, media, shortenOneLine, text } from "@/styles/theme";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { BookmarkDetail } from "@/types/model";
@@ -123,13 +123,12 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
       </FlexBetween>
       <Content>
         <BookMarkInfo>
-          <MetaImage
-            src={imageUrl || "/image/default-card-meta-image.jpg"}
-            width={325}
-            height={176}
-            onError={handleImgError}
-            style={{ flexGrow: 1 }}
-          />
+          <ImageWrapper>
+            <MetaImage
+              src={imageUrl || "/image/default-card-meta-image.jpg"}
+              onError={handleImgError}
+            />
+          </ImageWrapper>
           <Info>
             <div>
               <Title>
@@ -149,7 +148,9 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
             </LinkDataBox>
           </Info>
         </BookMarkInfo>
-        <Description>{memo}</Description>
+        <pre>
+          <Description>{memo}</Description>
+        </pre>
         <Reaction
           id={id}
           isLike={reaction.LIKE}
@@ -166,6 +167,9 @@ const Page = styled.div`
   width: 835px;
   margin: auto;
   cursor: default;
+  ${media.desktop} {
+    width: auto;
+  }
 `;
 const FlexBetween = styled.div`
   display: flex;
@@ -179,8 +183,12 @@ const LinkDataBox = styled.div`
 `;
 const LinkBox = styled.div`
   display: inline-flex;
-  width: 400px;
+  width: 300px;
   align-items: center;
+  ${media.desktop} {
+    max-width: 300px;
+    width: 50%;
+  }
 `;
 const UserFollow = styled.div`
   display: flex;
@@ -194,6 +202,7 @@ const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 1;
 `;
 
 const Content = styled.div`
@@ -203,10 +212,34 @@ const BookMarkInfo = styled.div`
   display: flex;
   gap: 35px;
   margin-bottom: 60px;
+  ${media.laptop} {
+    flex-direction: column;
+  }
 `;
 
 const MetaImage = styled.img`
   border-radius: 8px;
+  width: 100%;
+  ${media.laptop} {
+    width: calc(100vw - 420px);
+    height: auto;
+    flex-direction: column;
+  }
+`;
+const ImageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 325px;
+  max-height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+  ${media.laptop} {
+    max-width: 100%;
+    width: calc(100vw - 420px);
+    max-height: 300px;
+    flex-direction: column;
+  }
 `;
 
 const Title = styled.div`

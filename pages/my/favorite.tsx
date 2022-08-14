@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { PageLayout, UserInfo, MyFilterMenu } from "@/components/common";
+import { PageLayout, UserInfo, MyFilterMenu, Meta } from "@/components/common";
 import BookmarkTemplate from "@/components/myBookmark/bookmarkTemplate";
 import { useProfileState } from "@/hooks/useProfile";
 
@@ -45,12 +45,20 @@ const Favorite = () => {
   );
 
   return (
-    <PageLayout>
-      {AsideMemo}
-      <PageLayout.Article>
-        <BookmarkTemplate PageTitle="즐겨찾기 목록" />
-      </PageLayout.Article>
-    </PageLayout>
+    <>
+      <Meta
+        title={`${profile.username}`}
+        description="나의 북마크 모음"
+        needOg
+        robots="noindex, nofollow"
+      />
+      <PageLayout>
+        {AsideMemo}
+        <PageLayout.Article>
+          <BookmarkTemplate PageTitle="즐겨찾기 목록" />
+        </PageLayout.Article>
+      </PageLayout>
+    </>
   );
 };
 
