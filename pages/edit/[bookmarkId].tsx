@@ -136,8 +136,8 @@ const Edit = () => {
   return (
     <>
       <Meta
-        title="북마크 수정 | LinkOcean"
-        description="북마크 수정 | LinkOcean"
+        title="북마크 수정"
+        description="북마크 수정"
         robots="noindex, nofollow"
       />
       <PageLayout>

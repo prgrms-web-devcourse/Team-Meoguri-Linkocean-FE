@@ -125,8 +125,8 @@ const Create = () => {
   return (
     <>
       <Meta
-        title="북마크 추가 | LinkOcean"
-        description="북마크 추가 | LinkOcean"
+        title="북마크 추가"
+        description="북마크 추가"
         robots="noindex, nofollow"
       />
       <PageLayout>
