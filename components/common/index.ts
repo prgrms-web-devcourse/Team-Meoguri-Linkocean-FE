@@ -11,6 +11,7 @@ export { default as Header } from "./header";
 export { default as Input } from "./input";
 export { default as Label } from "./label";
 export { default as LogoutTooltip } from "./logoutTooltip";
+export { default as Meta } from "./meta";
 export { default as Modal } from "./modal";
 export { default as MyFilterMenu } from "./filterMenu/myFilterMenu";
 export { default as NoResult } from "./noResult";
