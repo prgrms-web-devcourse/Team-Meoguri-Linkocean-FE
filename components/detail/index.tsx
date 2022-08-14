@@ -149,7 +149,9 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
             </LinkDataBox>
           </Info>
         </BookMarkInfo>
-        <Description>{memo}</Description>
+        <pre>
+          <Description>{memo}</Description>
+        </pre>
         <Reaction
           id={id}
           isLike={reaction.LIKE}
