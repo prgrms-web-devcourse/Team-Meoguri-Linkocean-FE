@@ -93,8 +93,8 @@ const Notifications = () => {
   return (
     <>
       <Meta
-        title="북마크 알림 | LinkOcean"
-        description="북마크 알림 | LinkOcean"
+        title="북마크 알림"
+        description="북마크 알림"
         robots="noindex, nofollow"
       />
       <PageLayout>
