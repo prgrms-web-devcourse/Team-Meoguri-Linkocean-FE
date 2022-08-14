@@ -107,7 +107,7 @@ const Edit = () => {
         categories: payload.category,
       });
 
-      router.push(`/my/detail/${Number(router.query.bookmarkId)}`);
+      router.replace(`/my/detail/${Number(router.query.bookmarkId)}`);
     } catch (error) {
       console.error(error);
     }
