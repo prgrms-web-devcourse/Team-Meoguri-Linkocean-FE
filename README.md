@@ -9,8 +9,8 @@
 
 | [김남경](https://github.com/NamgyungKim)                                         | [김지은](https://github.com/jieun0411)                                            | [박유현](https://github.com/YuHyun-P)                                            | [유창헌](https://github.com/dbckdgjs369)                                          |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------  | -------------------------------------------------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/67778677?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/87519250?v=4" width="150px" />  | <img src="https://avatars.githubusercontent.com/u/96400112?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/49175629?v=4"  width="150px" /> |
-| frontend                                                                          | frontend                                                                         | frontend                                                                          | frontend                                                                         
+| <img src="https://avatars.githubusercontent.com/u/87519250?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/67778677?v=4" width="150px" />   | <img src="https://avatars.githubusercontent.com/u/96400112?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/49175629?v=4"  width="150px" /> |
+| Team Leader                                                                      | Developer                                                                        | Developer                                                                          | Developer                                                                         
 
 
 ## 📖 DOCS
