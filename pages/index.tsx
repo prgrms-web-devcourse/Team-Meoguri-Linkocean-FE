@@ -1,18 +1,19 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, MouseEvent, useCallback } from "react";
 import styled from "@emotion/styled";
 import { Meta } from "@/components/common";
 import {
   GoogleLoginButton,
-  NaverLoginButton,
   KakaoLoginButton,
+  GithubLoginButton,
 } from "@/components/main";
 import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
 import * as theme from "@/styles/theme";
+import { handleLogout } from "@/utils/logout";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -38,6 +39,7 @@ export default function Home() {
       const response = await profileAPI.login(payload);
       storage.setItem(STORAGE_KEY.token, response.data.token);
     } catch (error) {
+      handleLogout();
       console.error(error);
     }
   }, []);
@@ -110,8 +112,8 @@ export default function Home() {
                 onClick={handleLogin}
                 disabled={!!session}
               />
-              <NaverLoginButton
-                name="naver"
+              <GithubLoginButton
+                name="github"
                 onClick={handleLogin}
                 disabled={!!session}
               />
