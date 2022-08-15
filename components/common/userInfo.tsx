@@ -163,6 +163,7 @@ const Bio = styled.div`
   padding: 10px 0;
   overflow-y: auto;
   word-wrap: break-word;
+  ${text.$body1};
 
   &::-webkit-scrollbar {
     width: 11px;
