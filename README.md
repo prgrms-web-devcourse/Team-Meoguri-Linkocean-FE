@@ -17,8 +17,7 @@
 
 - [🖼디자인](https://www.figma.com/file/TPYf5qe89Mu2VGQx03eCsI/%EB%94%94%EC%9E%90%EC%9D%B8?node-id=541%3A7251)
 - [와이어프레임](https://www.figma.com/file/Mlv7oIKDBPmnRaeWGDaNjN/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=3%3A5)
-- [🤝회의록]()
-- [😁회고록]()
+- [🤝회의록](https://www.notion.so/prgrms/FE-c1f9c7e444d64ae68f6d796123c08918)
 - [📏컨벤션 룰](https://github.com/prgrms-web-devcourse/Team-Meoguri-Linkocean-FE/wiki/%EC%BB%A8%EB%B2%A4%EC%85%98-%EB%A3%B0)
 
 
@@ -47,14 +46,23 @@ Then, you can access to http://localhost:3000
 
 **Frontend**
 
-
-<image src="https://user-images.githubusercontent.com/49175629/184593189-6cc4d800-e659-4ba8-bebe-23d8da244033.png" width="300px"/>
-
+<!--<image src="https://user-images.githubusercontent.com/49175629/184593189-6cc4d800-e659-4ba8-bebe-23d8da244033.png" width="300px"/> -->
+- ![title](https://img.shields.io/badge/-Next-181717?&logo=next.js&logoColor=white)
+- ![title](https://img.shields.io/badge/-TypeScript-3178C6?&logo=typescript&logoColor=white)
+- ![title](https://img.shields.io/badge/-Storybook-CC6699?&logo=storybook&logoColor=white)
+- ![title](https://img.shields.io/badge/-Emotion-DCA0D7?&logo=emotion&logoColor=white)
+- ![title](https://img.shields.io/badge/-contextAPI-61DAFB?&logo=react&logoColor=white)
+- ![title](https://img.shields.io/badge/-Prettier-1A2B34?&logo=prettier&logoColor=white)
+- ![title](https://img.shields.io/badge/-EsLint-4B32C3?&logo=EsLint&logoColor=white)
 
 **ETC**
 
-<image src="https://user-images.githubusercontent.com/49175629/184593509-03c0956a-5e21-4580-80d4-129706522241.png" width="300px"/>
-
+<!-- <image src="https://user-images.githubusercontent.com/49175629/184593509-03c0956a-5e21-4580-80d4-129706522241.png" width="300px"/> -->
+- ![title](https://img.shields.io/badge/-Github-181717?&logo=Github&logoColor=white)
+- ![title](https://img.shields.io/badge/-Slack-4A154B?&logo=Slack&logoColor=white)
+- ![title](https://img.shields.io/badge/-Notion-181717?&logo=Notion&logoColor=white)
+- ![title](https://img.shields.io/badge/-Figma-9D56F7?&logo=Figma&logoColor=white)
+- ![title](https://img.shields.io/badge/-Discord-404EED?&logo=Discord&logoColor=white)
 
 ---
 ## Deployment 
