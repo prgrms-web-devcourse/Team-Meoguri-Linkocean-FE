@@ -16,7 +16,7 @@
 ## 📖 DOCS
 
 - [🖼디자인](https://www.figma.com/file/TPYf5qe89Mu2VGQx03eCsI/%EB%94%94%EC%9E%90%EC%9D%B8?node-id=541%3A7251)
-- [와이어프레임](https://www.figma.com/file/Mlv7oIKDBPmnRaeWGDaNjN/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=3%3A5)
+- [🖼와이어프레임](https://www.figma.com/file/Mlv7oIKDBPmnRaeWGDaNjN/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=3%3A5)
 - [🤝회의록](https://www.notion.so/prgrms/FE-c1f9c7e444d64ae68f6d796123c08918)
 - [📏컨벤션 룰](https://github.com/prgrms-web-devcourse/Team-Meoguri-Linkocean-FE/wiki/%EC%BB%A8%EB%B2%A4%EC%85%98-%EB%A3%B0)
 
