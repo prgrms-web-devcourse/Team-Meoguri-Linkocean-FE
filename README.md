@@ -1,1 +1,114 @@
 # Team-Meoguri-Linkocean-FE
+
+## Link Ocean
+
+<image src="https://user-images.githubusercontent.com/49175629/184593027-ab20679d-59b3-4a7a-bf47-89f99ae02137.jpg" width="500px"/>
+
+
+## ✋ Team Members
+
+| [김남경](https://github.com/NamgyungKim)                                         | [김지은](https://github.com/jieun0411)                                            | [박유현](https://github.com/YuHyun-P)                                            | [유창헌](https://github.com/dbckdgjs369)                                          |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------  | -------------------------------------------------------------------------------- |
+| <img src="https://avatars.githubusercontent.com/u/67778677?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/87519250?v=4" width="150px" />  | <img src="https://avatars.githubusercontent.com/u/96400112?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/49175629?v=4"  width="150px" /> |
+| frontend                                                                          | frontend                                                                         | frontend                                                                          | frontend                                                                         
+
+
+## 📖 DOCS
+
+- [🖼디자인](https://www.figma.com/file/TPYf5qe89Mu2VGQx03eCsI/%EB%94%94%EC%9E%90%EC%9D%B8?node-id=541%3A7251)
+- [와이어프레임](https://www.figma.com/file/Mlv7oIKDBPmnRaeWGDaNjN/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=3%3A5)
+- [🤝회의록]()
+- [😁회고록]()
+- [📏컨벤션 룰](https://github.com/prgrms-web-devcourse/Team-Meoguri-Linkocean-FE/wiki/%EC%BB%A8%EB%B2%A4%EC%85%98-%EB%A3%B0)
+
+
+## 🧞 Quick Start(Local)
+
+### 1. Clone & Install Packages
+
+```bash
+
+git clone https://github.com/prgrms-web-devcourse/Team-Meoguri-Linkocean-FE.git
+
+npm install
+
+```
+
+### 2. Run 
+
+```bash
+npm run dev
+```
+Then, you can access to http://localhost:3000
+
+---
+
+## ⌨️ Tech stack
+
+**Frontend**
+
+
+<image src="https://user-images.githubusercontent.com/49175629/184593189-6cc4d800-e659-4ba8-bebe-23d8da244033.png" width="300px"/>
+
+
+**ETC**
+
+<image src="https://user-images.githubusercontent.com/49175629/184593509-03c0956a-5e21-4580-80d4-129706522241.png" width="300px"/>
+
+
+---
+## Deployment 
+
+
+[배포주소](https://team-meoguri-linkocean-fe.vercel.app/)
+
+
+---
+
+## Structure
+
+```bash
+|-- Team-Meoguri-Linkocean-FE
+    |
+    |-- components
+    |       |-- common
+    |   
+    |
+    |-- hooks
+    |   ...// custom hooks  
+    |
+    |
+    |-- pages
+    |   ...// 페이지 모음
+    |
+    |
+    |-- public       
+    |      |-- icon
+    |      |   ...//icon 모음
+    |      |-- image
+    |          ...//image 모음
+    |      
+    |
+    |-- store
+    |   ...//전역 store
+    |      
+    |-- stories      
+    |   ...//storybook 파일 모음
+    |     
+    |
+    |-- styles
+    |   ...//css초기화, 전역 스타일   
+    |       
+    |       
+    |-- types
+    |   ...//공통 타입 정의     
+    |       
+    |
+    |-- utils
+    |   ...// 유틸 함수
+    |      |-- apis
+    |          ...//api 정의
+    |
+    |
+    |-- package.json //설치 모듈 및 버전
+```
