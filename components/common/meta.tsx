@@ -32,7 +32,11 @@ const Meta = ({
       {og
         ? Object.entries(ogObj).map(([property, content]) =>
             content === "" ? null : (
-              <meta property={`og:${property}`} content={content} />
+              <meta
+                property={`og:${property}`}
+                content={content}
+                key={property}
+              />
             )
           )
         : null}
