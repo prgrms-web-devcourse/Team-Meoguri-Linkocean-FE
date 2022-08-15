@@ -102,7 +102,7 @@ const SignUp = () => {
         } as ProfileDetail,
       });
 
-      router.push(LINKOCEAN_PATH.myCategory);
+      router.push(LINKOCEAN_PATH.myFavorite);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response !== undefined) {
         const isDuplicatedUserName = error.response.status === 400;
