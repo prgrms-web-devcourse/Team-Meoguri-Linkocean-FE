@@ -1,9 +1,10 @@
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, MouseEvent, useCallback } from "react";
 import styled from "@emotion/styled";
-import { Meta } from "@/components/common";
+import { Meta, ErrorText } from "@/components/common";
 import {
   GoogleLoginButton,
   KakaoLoginButton,
@@ -12,8 +13,8 @@ import {
 import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
-import * as theme from "@/styles/theme";
 import { handleLogout } from "@/utils/logout";
+import * as theme from "@/styles/theme";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -40,6 +41,15 @@ export default function Home() {
       storage.setItem(STORAGE_KEY.token, response.data.token);
     } catch (error) {
       handleLogout();
+
+      if (axios.isAxiosError(error) && error.response !== undefined) {
+        const notAllowKakaoEmail =
+          payload.oauthType === "KAKAO" && error.response.status === 400;
+        if (notAllowKakaoEmail) {
+          alert("이메일 제공에 동의하지 않아 회원가입에 실패했습니다.");
+        }
+      }
+
       console.error(error);
     }
   }, []);
@@ -122,6 +132,11 @@ export default function Home() {
                 onClick={handleLogin}
                 disabled={!!session}
               />
+              <ErrorText style={{ color: "gray" }}>
+                * 카카오 로그인은 개발 단계로 이메일 제공에
+                <br />
+                동의해야 회원가입할 수 있습니다.
+              </ErrorText>
             </ButtonContainer>
           </LoginContainer>
 
