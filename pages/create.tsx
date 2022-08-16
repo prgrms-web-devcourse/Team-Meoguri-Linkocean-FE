@@ -210,11 +210,13 @@ const Create = () => {
                   <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
                     {categoryList.map((index) =>
                       index === "-- 카테고리 없음 --" ? (
-                        <Select.Option value="no-category">
+                        <Select.Option value="no-category" key={index}>
                           -- 카테고리 없음 --
                         </Select.Option>
                       ) : (
-                        <Select.Option value={index}>{index}</Select.Option>
+                        <Select.Option value={index} key={index}>
+                          {index}
+                        </Select.Option>
                       )
                     )}
                   </Select.OptionList>
