@@ -172,7 +172,7 @@ const Create = () => {
               />
               {submit && title === "" ? (
                 <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
-              ) : title.length >= 50 ? (
+              ) : title.length > 49 ? (
                 <StyledErrorText>
                   * 50자 이내로 입력 가능합니다.
                 </StyledErrorText>
