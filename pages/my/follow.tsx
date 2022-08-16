@@ -126,7 +126,7 @@ const Follow = () => {
       <Meta
         title="나의 특별한 머구리들"
         description="나의 특별한 머구리들 입니다."
-        needOg
+        og={{}}
         robots="noindex, nofollow"
       />
 

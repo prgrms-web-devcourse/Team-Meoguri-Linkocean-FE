@@ -30,35 +30,35 @@ const Reaction = ({ like, hate, isLike, isHate, id }: ReactionProps) => {
   }, [like, hate]);
 
   const clickLike = () => {
-    if (!selectLike && !selectHate) {
-      // 둘다 비어있거나 싫어요
-      createReaction("like");
-      setSelectLike(true);
-      setLikeCount(likeCount + 1);
+    if (selectLike) {
+      setSelectLike(false);
+      setLikeCount(likeCount - 1);
     } else if (selectHate) {
-      // Hate 빼주고, Like 올리기
-      createReaction("like");
       setSelectHate(false);
       setHateCount(hateCount - 1);
       setSelectLike(true);
       setLikeCount(likeCount + 1);
+    } else {
+      setSelectLike(true);
+      setLikeCount(likeCount + 1);
     }
+    createReaction("like");
   };
 
   const clickHate = () => {
-    if (!selectLike && !selectHate) {
-      // 둘다 비어있거나 싫어요
-      createReaction("hate");
+    if (selectHate) {
+      setSelectHate(false);
+      setHateCount(hateCount - 1);
+    } else if (selectLike) {
       setSelectHate(true);
       setHateCount(hateCount + 1);
-    } else if (selectLike) {
-      // Hate 빼주고, Like 올리기
-      createReaction("hate");
       setSelectLike(false);
       setLikeCount(likeCount - 1);
+    } else {
       setSelectHate(true);
       setHateCount(hateCount + 1);
     }
+    createReaction("hate");
   };
 
   const createReaction = useCallback(

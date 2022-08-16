@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as theme from "@/styles/theme";
 import useToggle from "@/hooks/useToggle";
-import { ChangeEventHandler } from "react";
+import { useEffect, ChangeEventHandler } from "react";
 
 type HandleChange = ChangeEventHandler<HTMLInputElement>;
 export interface CheckboxProps
@@ -22,6 +22,13 @@ const Checkbox = ({ on = false, onChange, ...props }: CheckboxProps) => {
 
     onChange(e);
   };
+
+  useEffect(() => {
+    if (checked !== on) {
+      toggle();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [on]);
 
   return (
     <Container>

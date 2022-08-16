@@ -27,7 +27,6 @@ import { handleLogout } from "@/utils/logout";
 import { LINKOCEAN_PATH } from "@/utils/constants";
 
 const INITIAL_PROFILE = {
-  favoriteCategories: ["인문", "사회", "정치"],
   isFollow: false,
   followerCount: 0,
   followeeCount: 0,
@@ -99,11 +98,11 @@ const SignUp = () => {
           ...INITIAL_PROFILE,
           profileId: id,
           username: username.value,
-          categories: userCategory.value,
+          favoriteCategories: userCategory.value,
         } as ProfileDetail,
       });
 
-      router.push(LINKOCEAN_PATH.myCategory);
+      router.push(LINKOCEAN_PATH.myFavorite);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response !== undefined) {
         const isDuplicatedUserName = error.response.status === 400;

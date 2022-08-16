@@ -86,12 +86,12 @@ const Feed = () => {
 
   const changeRoutePath = useCallback(
     (nextState: Filtering) => {
-      const { category, searchTitle } = nextState;
-      const queryString =
-        searchTitle === ""
-          ? `category=${category}`
-          : getQueryString({ category, searchTitle });
-      router.push(`${LINKOCEAN_PATH.feed}?${queryString}`);
+      const { size, searchTitle, ...query } = nextState;
+
+      router.push({
+        pathname: LINKOCEAN_PATH.feed,
+        query: searchTitle === "" ? { ...query } : { ...query, searchTitle },
+      });
     },
     [router]
   );
@@ -179,25 +179,17 @@ const Feed = () => {
       return;
     }
 
-    const VALID_KEYS = ["category", "searchTitle"];
-    const isValidQuery =
-      queryKeys.every((key) => VALID_KEYS.includes(key)) &&
-      ["전체", ...CATEGORY].includes(query.category as string);
-
-    if (!isValidQuery) {
-      router.push(LINKOCEAN_PATH.notFound);
-    }
-
     const searchTitle = query.searchTitle as string;
+    const page = parseInt(query.page as string, 10);
+    const follow = (query.follow as string) === "true";
     setIsRouterReady(true);
-    if (searchTitle === "") {
-      setState({
-        ...INITIAL_FILTERING,
-        category: query.category as CategoryType,
-      });
-    } else {
-      setState({ ...INITIAL_FILTERING, ...query });
-    }
+
+    setState({
+      ...INITIAL_FILTERING,
+      ...query,
+      page,
+      follow,
+    });
     setSearchTitleInputValue(searchTitle);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -217,11 +209,14 @@ const Feed = () => {
   return (
     <>
       <Meta
-        title={`${state.searchTitle} 전체 피드 검색`.trim()}
+        title={`${state.searchTitle} - 전체 피드 검색`.trim()}
         description={`${
-          state.searchTitle !== "" ? `${state.searchTitle}의` : ""
-        } 링크오션 전체 피드 검색 결과입니다.`.trim()}
-        needOg
+          state.searchTitle !== "" ? `${state.searchTitle} -` : ""
+        } LinkOcean 전체 피드 검색 결과입니다.`.trim()}
+        og={{
+          title: "전체 피드 검색 | LinkOcean",
+          description: "LinkOcean 전체 피드 검색 결과입니다.",
+        }}
         robots="index, follow"
       />
 

@@ -40,7 +40,11 @@ const Create = () => {
   const dispatch = useProfileDispatch();
 
   const handleChangeCategory = (elements: string) => {
-    setCategoryType(elements as EditCategoryType);
+    if (elements === "no-category") {
+      setCategoryType(undefined);
+    } else {
+      setCategoryType(elements as EditCategoryType);
+    }
   };
 
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,9 +208,15 @@ const Create = () => {
                 <Select width="470px" onChange={handleChangeCategory}>
                   <Select.Trigger>선택</Select.Trigger>
                   <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
-                    {categoryList.map((index) => (
-                      <Select.Option value={index}>{index}</Select.Option>
-                    ))}
+                    {categoryList.map((index) =>
+                      index === "-- 카테고리 없음 --" ? (
+                        <Select.Option value="no-category">
+                          -- 카테고리 없음 --
+                        </Select.Option>
+                      ) : (
+                        <Select.Option value={index}>{index}</Select.Option>
+                      )
+                    )}
                   </Select.OptionList>
                 </Select>
               </div>
@@ -346,6 +356,7 @@ const StyledErrorText = styled(ErrorText)`
 `;
 
 const categoryList = [
+  "-- 카테고리 없음 --",
   "자기계발",
   "인문",
   "정치",
