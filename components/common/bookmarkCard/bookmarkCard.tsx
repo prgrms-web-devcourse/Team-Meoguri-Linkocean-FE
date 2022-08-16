@@ -1,5 +1,5 @@
 import { color, text } from "@/styles/theme";
-import { Bookmark, Profile } from "@/types/model";
+import { Bookmark } from "@/types/model";
 import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
@@ -104,6 +104,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
               setIsShowShareBookmark={setIsShowShareBookmark}
               deleteBookmark={deleteBookmark}
               isWriter={isMine ?? isWriter}
+              openType={openType}
               tags={tags}
               id={id}
             >

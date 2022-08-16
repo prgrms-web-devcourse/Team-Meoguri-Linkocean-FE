@@ -1,6 +1,7 @@
 import { useProfileDispatch } from "@/hooks/useProfile";
 import useToggle from "@/hooks/useToggle";
 import { color, text } from "@/styles/theme";
+import { OpenType } from "@/types/type";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
@@ -11,6 +12,7 @@ export interface DropBoxProps {
   isWriter: boolean;
   id: number;
   tags?: string[];
+  openType: OpenType;
   deleteBookmark: (id: number) => void;
   setIsShowShareBookmark: Dispatch<SetStateAction<boolean>>;
 }
@@ -20,6 +22,7 @@ const DropBox = ({
   isWriter = true,
   id,
   tags,
+  openType,
   deleteBookmark,
   setIsShowShareBookmark,
 }: DropBoxProps) => {
@@ -58,22 +61,29 @@ const DropBox = ({
     }
   };
 
-  const openBox = (e: React.MouseEvent<HTMLElement>) => {
+  const toggleBox = (e: React.MouseEvent<HTMLElement>) => {
     toggle();
     e.stopPropagation();
   };
 
   return (
     <Box>
-      <button type="button" onClick={openBox}>
+      <button type="button" onClick={toggleBox}>
         {children}
       </button>
       <List checked={checked}>
-        <li>
-          <button type="button" onClick={share}>
-            공유하기
-          </button>
-        </li>
+        {openType !== "all" && !isWriter ? (
+          <li>
+            <NoShare onClick={toggleBox}>공유불가</NoShare>
+          </li>
+        ) : null}
+        {openType === "all" || isWriter ? (
+          <li>
+            <button type="button" onClick={share}>
+              공유하기
+            </button>
+          </li>
+        ) : null}
         {isWriter ? (
           <>
             <li>
@@ -146,6 +156,18 @@ const List = styled.ul`
       background-color: ${color.$gray50};
     }
   }
+`;
+
+const NoShare = styled.span`
+  display: flex;
+  height: 26px;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+  width: 100%;
+  text-align: center;
+  ${text.$caption}
+  cursor: default;
 `;
 
 export default DropBox;
