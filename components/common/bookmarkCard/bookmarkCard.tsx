@@ -20,8 +20,6 @@ const OPEN_TYPE = {
   private: "비공개",
 };
 
-const feedUrlRegExp = /^feed.*/g;
-
 const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
   const {
     category,
@@ -46,7 +44,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
 
   const clickCard = () => {
     const link = router.asPath.split("/")[1];
-    if (feedUrlRegExp.test(link)) {
+    if (link === "feed") {
       router.push(`/feed/detail/${id}`);
     } else if (link === "profile") {
       const otherId = router.asPath.split("/")[2];
