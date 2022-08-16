@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from "@emotion/styled";
 import React, { useRef, useState } from "react";
 import Tag from "@/components/create/tag";
