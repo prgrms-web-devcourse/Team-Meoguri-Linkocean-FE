@@ -1,20 +1,36 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { color } from "@/styles/theme";
 import Image from "next/image";
 import ProfileImage from "@/components/common/profileImage";
 import LogoutTooltip from "@/components/common/logoutTooltip";
 import Link from "next/link";
 import { useProfileState } from "@/hooks/useProfile";
+import { useRouter } from "next/router";
+import storage from "@/utils/localStorage";
 
 const Header: React.FC = () => {
   const [show, setShow] = useState(false);
+  const router = useRouter();
 
   const { username, imageUrl } = useProfileState();
 
   const toggle = () => {
     setShow(!show);
   };
+
+  useEffect(() => {
+    (() => {
+      try {
+        if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
+          router.push("/");
+          alert("로그인 후 이용 가능한 서비스 입니다~");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [router]);
 
   return (
     <StyledHeader>
