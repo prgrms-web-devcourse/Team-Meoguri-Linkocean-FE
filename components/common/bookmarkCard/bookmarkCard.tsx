@@ -25,7 +25,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
     category,
     url,
     id,
-    updatedAt,
+    createdAt,
     tags,
     isFavorite,
     imageUrl,
@@ -94,7 +94,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
         <Top>
           <div>
             <Category>{category === "no-category" ? null : category}</Category>
-            <CreateDate>{dateFormat(updatedAt)}</CreateDate>
+            <CreateDate>{dateFormat(createdAt)}</CreateDate>
           </div>
           <div>
             <Star id={id.toString()} favorite={isFavorite} />
