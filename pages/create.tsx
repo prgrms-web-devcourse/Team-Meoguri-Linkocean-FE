@@ -54,7 +54,7 @@ const Create = () => {
 
   const handleCreate = () => {
     setSubmit(true);
-    if (url === "") {
+    if (url === "" || url.endsWith("/") || result) {
       urlRef.current?.focus();
     } else if (title === "") {
       titleRef.current?.focus();
@@ -85,6 +85,10 @@ const Create = () => {
         setResult(true);
         return;
       }
+    }
+
+    if (url.endsWith("/")) {
+      return;
     }
 
     const response = await bookmarkAPI.getLinkMetadata(url);
@@ -157,6 +161,11 @@ const Create = () => {
               )}
               {result && (
                 <ErrorText>* 중복된 url은 등록할 수 없습니다.</ErrorText>
+              )}
+              {url.endsWith("/") && (
+                <ErrorText>
+                  * 현재 url에서 마지막 &#39;/&#39;를 제거해주세요.
+                </ErrorText>
               )}
               <div style={{ marginBottom: "40px" }} />
 
