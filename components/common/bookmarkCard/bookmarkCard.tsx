@@ -1,5 +1,5 @@
 import { color, text } from "@/styles/theme";
-import { Bookmark, Profile } from "@/types/model";
+import { Bookmark } from "@/types/model";
 import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
@@ -20,14 +20,12 @@ const OPEN_TYPE = {
   private: "비공개",
 };
 
-const feedUrlRegExp = /^feed.*/g;
-
 const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
   const {
     category,
     url,
     id,
-    updatedAt,
+    createdAt,
     tags,
     isFavorite,
     imageUrl,
@@ -46,7 +44,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
 
   const clickCard = () => {
     const link = router.asPath.split("/")[1];
-    if (feedUrlRegExp.test(link)) {
+    if (link === "feed") {
       router.push(`/feed/detail/${id}`);
     } else if (link === "profile") {
       const otherId = router.asPath.split("/")[2];
@@ -96,7 +94,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
         <Top>
           <div>
             <Category>{category === "no-category" ? null : category}</Category>
-            <CreateDate>{dateFormat(updatedAt)}</CreateDate>
+            <CreateDate>{dateFormat(createdAt)}</CreateDate>
           </div>
           <div>
             <Star id={id.toString()} favorite={isFavorite} />
@@ -104,6 +102,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
               setIsShowShareBookmark={setIsShowShareBookmark}
               deleteBookmark={deleteBookmark}
               isWriter={isMine ?? isWriter}
+              openType={openType}
               tags={tags}
               id={id}
             >

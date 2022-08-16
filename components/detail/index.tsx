@@ -19,7 +19,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
     profile,
     tags,
     isFavorite,
-    updatedAt,
+    createdAt,
     memo,
     reaction,
     reactionCount,
@@ -127,6 +127,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
             <MetaImage
               src={imageUrl || "/image/default-card-meta-image.jpg"}
               onError={handleImgError}
+              alt={title}
             />
           </ImageWrapper>
           <Info>
@@ -144,7 +145,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
                 </Link>
                 <CopyLink copyUrl={url} />
               </LinkBox>
-              <Date>{dateFormat(updatedAt)}</Date>
+              <Date>{dateFormat(createdAt)}</Date>
             </LinkDataBox>
           </Info>
         </BookMarkInfo>

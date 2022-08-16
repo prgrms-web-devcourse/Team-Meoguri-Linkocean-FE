@@ -6,7 +6,7 @@
 ## 🚀Deployment 
 
 
-[배포주소](https://team-meoguri-linkocean-fe.vercel.app/)
+[https://www.linkocean.co.kr](https://www.linkocean.co.kr)
 
 ---
 ## 🎖️핵심가치

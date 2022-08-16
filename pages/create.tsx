@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from "@emotion/styled";
 import React, { useRef, useState } from "react";
 import Tag from "@/components/create/tag";
@@ -57,16 +58,16 @@ const Create = () => {
       urlRef.current?.focus();
     } else if (title === "") {
       titleRef.current?.focus();
+    } else {
+      create({
+        title,
+        url,
+        memo,
+        category: categoryType as EditCategoryType,
+        tags: tag,
+        openType,
+      });
     }
-
-    create({
-      title,
-      url,
-      memo,
-      category: categoryType as EditCategoryType,
-      tags: tag,
-      openType,
-    });
   };
 
   const handleBlur = async () => {
@@ -87,8 +88,11 @@ const Create = () => {
     }
 
     const response = await bookmarkAPI.getLinkMetadata(url);
-
-    setTitle(response.data.title);
+    if (response.data.title.length > 47) {
+      setTitle(`${response.data.title.substring(0, 47)}...`);
+    } else {
+      setTitle(response.data.title);
+    }
   };
 
   const create = async (payload: CreateBookmarkPayload) => {
@@ -156,15 +160,22 @@ const Create = () => {
               )}
               <div style={{ marginBottom: "40px" }} />
 
-              <StyledLabel>제목</StyledLabel>
+              <StyledLabel>
+                제목
+                <OverLine>{title.length}/50</OverLine>
+              </StyledLabel>
               <StyledInput
                 ref={titleRef}
                 placeholder="제목을 입력하세요."
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value.substring(0, 50))}
               />
               {submit && title === "" ? (
                 <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
+              ) : title.length > 49 ? (
+                <StyledErrorText>
+                  * 50자 이내로 입력 가능합니다.
+                </StyledErrorText>
               ) : (
                 <StyledErrorText> </StyledErrorText>
               )}
@@ -186,7 +197,9 @@ const Create = () => {
                       fontSize: "16px",
                     }}
                   />
-                  <ErrorText>* 200자 이내로 입력 가능합니다.</ErrorText>
+                  <StyledErrorText>
+                    * 200자 이내로 입력 가능합니다.
+                  </StyledErrorText>
                 </>
               ) : (
                 <Textarea
@@ -210,11 +223,13 @@ const Create = () => {
                   <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
                     {categoryList.map((index) =>
                       index === "-- 카테고리 없음 --" ? (
-                        <Select.Option value="no-category">
+                        <Select.Option value="no-category" key={index}>
                           -- 카테고리 없음 --
                         </Select.Option>
                       ) : (
-                        <Select.Option value={index}>{index}</Select.Option>
+                        <Select.Option value={index} key={index}>
+                          {index}
+                        </Select.Option>
                       )
                     )}
                   </Select.OptionList>

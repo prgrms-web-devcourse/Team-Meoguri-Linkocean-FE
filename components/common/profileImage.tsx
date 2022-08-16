@@ -5,12 +5,19 @@ type ImgSize = "lg" | "md" | "sm" | number;
 export interface ProfileImageProps {
   src?: string;
   size?: ImgSize;
+  alt?: string;
 }
 
-const ProfileImage = ({ src, size = "md", ...props }: ProfileImageProps) => (
+const ProfileImage = ({
+  src,
+  size = "md",
+  alt,
+  ...props
+}: ProfileImageProps) => (
   <ProfileImg
     src={src || "/image/default-profile-image.png"}
     size={size}
+    alt="프로필 이미지"
     {...props}
   />
 );

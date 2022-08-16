@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from "@emotion/styled";
 import React, { useEffect, useRef, useState } from "react";
 import { color, text } from "@/styles/theme";
@@ -78,15 +79,15 @@ const Edit = () => {
     setSubmit(true);
     if (title === "") {
       titleRef.current?.focus();
+    } else {
+      edit(Number(router.query.bookmarkId), {
+        title,
+        memo,
+        category: categoryType,
+        tags: tag,
+        openType: openType as OpenType,
+      });
     }
-
-    edit(Number(router.query.bookmarkId), {
-      title,
-      memo,
-      category: categoryType,
-      tags: tag,
-      openType: openType as OpenType,
-    });
   };
 
   const edit = async (bookmarkId: number, payload: EditBookmarkPayload) => {
@@ -154,19 +155,25 @@ const Edit = () => {
                 disabled
               />
 
-              <StyledLabel>제목</StyledLabel>
+              <StyledLabel>
+                제목
+                <OverLine>{title.length}/50</OverLine>
+              </StyledLabel>
               <StyledInput
                 ref={titleRef}
                 value={title}
                 placeholder="제목을 입력하세요."
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value.substring(0, 50))}
               />
               {submit && title === "" ? (
                 <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
+              ) : title.length > 49 ? (
+                <StyledErrorText>
+                  * 50자 이내로 입력 가능합니다.
+                </StyledErrorText>
               ) : (
                 <StyledErrorText> </StyledErrorText>
               )}
-
               <StyledLabel>
                 메모
                 <OverLine>{memo.length}/200</OverLine>
@@ -219,11 +226,13 @@ const Edit = () => {
                     <Select.OptionList style={{ zIndex: "10", width: "470px" }}>
                       {categoryList.map((index) =>
                         index === "no-category" ? (
-                          <Select.Option value={index}>
+                          <Select.Option value={index} key={index}>
                             -- 카테고리 없음 --
                           </Select.Option>
                         ) : (
-                          <Select.Option value={index}>{index}</Select.Option>
+                          <Select.Option value={index} key={index}>
+                            {index}
+                          </Select.Option>
                         )
                       )}
                     </Select.OptionList>
