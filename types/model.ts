@@ -33,7 +33,7 @@ export interface Bookmark {
   tags?: string[];
   category: typeof CATEGORY[number] | "no-category";
   url: string;
-  updatedAt: string;
+  createdAt: string;
   openType: OpenType;
   likeCount: number;
   isWriter: boolean;
@@ -49,7 +49,7 @@ export interface BookmarkDetail {
   openType: OpenType;
   isFavorite: boolean;
   profile: Profile;
-  updatedAt: string;
+  createdAt: string;
   tags?: string[];
   reactionCount: {
     LIKE: number;
