@@ -20,16 +20,10 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    (() => {
-      try {
-        if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
-          router.push("/");
-          alert("로그인 후 이용 가능한 서비스 입니다~");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
+      router.push("/");
+      alert("로그인 후 이용 가능한 서비스 입니다~");
+    }
   }, [router]);
 
   return (
