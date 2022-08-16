@@ -31,8 +31,10 @@ const bookmarkAPI = {
     ),
   getFeedBookmarks: (queryString: string) =>
     authInstance.get<BookmarkList>(`/bookmarks/feed?${queryString}`),
-  getLinkMetadata: (link: string) =>
-    authInstance.post<{ title: string }>(`/linkmetadatas/obtain?link=${link}`),
+  getLinkMetadata: (url: string) =>
+    authInstance.post<{ title: string }>(`/linkmetadatas/obtain`, {
+      url,
+    }),
   getIsDuplicateUrl: (url: string) =>
     authInstance.get<{ isDuplicateUrl: boolean }>(`/bookmarks?url=${url}`),
   createFavorite: (bookmarkId: string) =>
