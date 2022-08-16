@@ -127,6 +127,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
             <MetaImage
               src={imageUrl || "/image/default-card-meta-image.jpg"}
               onError={handleImgError}
+              alt={title}
             />
           </ImageWrapper>
           <Info>
