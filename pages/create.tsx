@@ -57,16 +57,16 @@ const Create = () => {
       urlRef.current?.focus();
     } else if (title === "") {
       titleRef.current?.focus();
+    } else {
+      create({
+        title,
+        url,
+        memo,
+        category: categoryType as EditCategoryType,
+        tags: tag,
+        openType,
+      });
     }
-
-    create({
-      title,
-      url,
-      memo,
-      category: categoryType as EditCategoryType,
-      tags: tag,
-      openType,
-    });
   };
 
   const handleBlur = async () => {
@@ -87,8 +87,11 @@ const Create = () => {
     }
 
     const response = await bookmarkAPI.getLinkMetadata(url);
-
-    setTitle(response.data.title);
+    if (response.data.title.length > 47) {
+      setTitle(`${response.data.title.substring(0, 47)}...`);
+    } else {
+      setTitle(response.data.title);
+    }
   };
 
   const create = async (payload: CreateBookmarkPayload) => {
@@ -156,15 +159,22 @@ const Create = () => {
               )}
               <div style={{ marginBottom: "40px" }} />
 
-              <StyledLabel>제목</StyledLabel>
+              <StyledLabel>
+                제목
+                <OverLine>{title.length}/50</OverLine>
+              </StyledLabel>
               <StyledInput
                 ref={titleRef}
                 placeholder="제목을 입력하세요."
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value.substring(0, 50))}
               />
               {submit && title === "" ? (
                 <StyledErrorText>* 제목은 필수 입력값입니다.</StyledErrorText>
+              ) : title.length >= 50 ? (
+                <StyledErrorText>
+                  * 50자 이내로 입력 가능합니다.
+                </StyledErrorText>
               ) : (
                 <StyledErrorText> </StyledErrorText>
               )}
@@ -186,7 +196,9 @@ const Create = () => {
                       fontSize: "16px",
                     }}
                   />
-                  <ErrorText>* 200자 이내로 입력 가능합니다.</ErrorText>
+                  <StyledErrorText>
+                    * 200자 이내로 입력 가능합니다.
+                  </StyledErrorText>
                 </>
               ) : (
                 <Textarea
