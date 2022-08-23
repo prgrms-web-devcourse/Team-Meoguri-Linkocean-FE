@@ -4,6 +4,10 @@ export default {
   title: "Components/Reaction",
   component: Reaction,
   argTypes: {
+    id: {
+      defaultValue: 1,
+      control: "number",
+    },
     like: {
       defaultValue: 1,
       control: "number",
@@ -26,6 +30,7 @@ export default {
 export const Default = ({ ...args }: ReactionProps) => {
   return (
     <Reaction
+      id={args.id}
       like={args.like}
       hate={args.hate}
       isLike={args.isLike}
