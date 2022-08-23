@@ -1,7 +1,7 @@
-import Tooltip404, { TooltipProps } from "@/components/common/404tooltip";
+import Tooltip404, { TooltipProps } from "@/components/common/notFoundTooltip";
 
 export default {
-  title: "components/Tooltip404",
+  title: "components/notFoundTooltip",
   component: Tooltip404,
   argTypes: {
     index: {
