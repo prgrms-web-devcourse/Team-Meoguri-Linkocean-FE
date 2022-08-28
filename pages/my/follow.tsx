@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import FollowRadio from "@/components/follow/followRadio";
 import {
   Following,
   UserInfo,
@@ -16,13 +15,15 @@ import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileState, useProfileDispatch } from "@/hooks/useProfile";
 import { getQueryString } from "@/utils/queryString";
 import { LINKOCEAN_PATH } from "@/utils/constants";
+import { FollowTabType } from "@/types/type";
+import FollowTabList from "../../components/follow/followTabList";
 
 const PAGE_SIZE = 8;
 export const isLastCard = (index: number, length: number) =>
   index === Math.max(0, length - 1);
 
 type Filtering = {
-  tab: "follower" | "followee";
+  tab: FollowTabType;
   page: number;
   size: number;
 };
@@ -44,8 +45,8 @@ const Follow = () => {
   const [isEndPage, setIsEndPage] = useState(false);
   const router = useRouter();
 
-  const handleChange = (type: string, value: string | number) => {
-    setState({ ...state, [type]: value, page: INITIAL_FILTERING.page });
+  const handleChange = (tab: FollowTabType) => {
+    setState({ ...state, tab, page: INITIAL_FILTERING.page });
     setIsEndPage(false);
   };
   const handleFollow = (profileId: number) => {
@@ -146,26 +147,7 @@ const Follow = () => {
         </PageLayout.Aside>
         <PageLayout.Article>
           <Layout>
-            <Form>
-              <FollowRadio
-                name="follow"
-                id="follower"
-                text={`팔로워 (${userProfile.followerCount})`}
-                checked={state.tab === "follower"}
-                onChange={() => {
-                  handleChange("tab", "follower");
-                }}
-              />
-              <FollowRadio
-                name="follow"
-                id="followee"
-                text={`팔로잉 (${userProfile.followeeCount})`}
-                checked={state.tab === "followee"}
-                onChange={() => {
-                  handleChange("tab", "followee");
-                }}
-              />
-            </Form>
+            <FollowTabList profile={userProfile} onClick={handleChange} />
 
             <FollowCardContainer>
               {followProfiles.value.map(
@@ -203,11 +185,6 @@ export const Layout = styled.div`
   justify-content: center;
   width: 835px;
   margin: 0 auto;
-`;
-
-export const Form = styled.form`
-  margin-bottom: 37px;
-  text-align: center;
 `;
 
 export const FollowCardContainer = styled.div`
