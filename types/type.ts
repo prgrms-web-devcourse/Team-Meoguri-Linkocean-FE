@@ -29,3 +29,5 @@ export type RobotsType =
   | "index, follow"
   | "noindex, follow"
   | "index, nofollow";
+
+export type FollowTabType = "follower" | "followee";
