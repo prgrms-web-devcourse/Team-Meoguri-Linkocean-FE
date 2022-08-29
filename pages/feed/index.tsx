@@ -209,7 +209,9 @@ const Feed = () => {
   return (
     <>
       <Meta
-        title={`${state.searchTitle} - 전체 피드 검색`.trim()}
+        title={`${
+          state.searchTitle !== "" ? `${state.searchTitle} -` : ""
+        } 전체 피드 검색`.trim()}
         description={`${
           state.searchTitle !== "" ? `${state.searchTitle} -` : ""
         } LinkOcean 전체 피드 검색 결과입니다.`.trim()}
