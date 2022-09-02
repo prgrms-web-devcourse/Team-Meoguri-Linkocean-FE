@@ -15,14 +15,14 @@ export default LogoutTooltip;
 
 const Tooltip = styled.div`
   position: absolute;
-  margin-top: 110px;
-  right: 20px;
+  margin-top: 90px;
+  right: 200px;
 `;
 
 const Arrow = styled.div`
   width: 0;
   height: 0;
-  margin-left: 146px;
+  margin-left: 88px;
   border-bottom: 8px solid ${color.$skyBlue};
   border-top: 8px solid transparent;
   border-left: 8px solid transparent;
