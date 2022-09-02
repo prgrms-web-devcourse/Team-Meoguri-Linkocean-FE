@@ -69,7 +69,6 @@ const Header: React.FC = () => {
         <UserImg onClick={toggle}>
           <ProfileImage size="sm" src={imageUrl} />
         </UserImg>
-        <UserName onClick={toggle}>{username}</UserName>
         <LogoutTooltip
           onMouseLeave={toggle}
           style={{ display: show ? "block" : "none" }}
@@ -154,18 +153,5 @@ const AlarmWrapper = styled.div`
 
 const UserImg = styled.div`
   cursor: pointer;
-`;
-
-const UserName = styled.div`
-  color: ${color.$gray600};
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 29px;
-  cursor: pointer;
-  user-select: none;
-  margin-right: 20px;
-
-  &:active {
-    color: ${color.$gray800};
-  }
+  margin-right: 10px;
 `;
