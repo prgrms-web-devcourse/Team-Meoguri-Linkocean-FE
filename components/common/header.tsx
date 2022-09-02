@@ -19,12 +19,12 @@ const Header: React.FC = () => {
     setShow(!show);
   };
 
-  useEffect(() => {
-    if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
-      router.push("/");
-      alert("로그인 후 이용 가능한 서비스 입니다~");
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
+  //     router.push("/");
+  //     alert("로그인 후 이용 가능한 서비스 입니다.");
+  //   }
+  // }, [router]);
 
   return (
     <StyledHeader>
@@ -32,10 +32,10 @@ const Header: React.FC = () => {
         <Logo>
           <LinkOcean />
           <Image
-            src="/image/logo.jpg"
+            src="/image/logo.png"
             alt="Link Ocean"
-            width={252}
-            height={44}
+            width={188}
+            height={37}
           />
         </Logo>
       </Link>
@@ -73,8 +73,8 @@ export default Header;
 
 const StyledHeader = styled.h1`
   min-width: 820px;
-  height: 62px;
-  padding: 0 20px;
+  height: 80px;
+  padding: 0 125px;
   display: flex;
   box-sizing: border-box;
   justify-content: space-between;
@@ -83,7 +83,7 @@ const StyledHeader = styled.h1`
 
 const Logo = styled.a`
   cursor: pointer;
-  padding-top: 5px;
+  padding-top: 20px;
 `;
 
 const LinkOcean = styled.h1`
