@@ -28,18 +28,18 @@ const Header: React.FC = () => {
 
   return (
     <StyledHeader>
-      <Link href="/my/favorite" passHref>
-        <Logo>
-          <LinkOcean />
-          <Image
-            src="/image/logo.png"
-            alt="Link Ocean"
-            width={188}
-            height={37}
-          />
-        </Logo>
-      </Link>
       <NavigatorWrapper>
+        <Link href="/my/favorite" passHref>
+          <Logo>
+            <LinkOcean />
+            <Image
+              src="/image/logo.png"
+              alt="Link Ocean"
+              width={188}
+              height={37}
+            />
+          </Logo>
+        </Link>
         <Link href="/feed" passHref>
           <Navigator>전체 피드</Navigator>
         </Link>
@@ -84,6 +84,7 @@ const StyledHeader = styled.h1`
 const Logo = styled.a`
   cursor: pointer;
   padding-top: 20px;
+  margin-right: 20px;
 `;
 
 const LinkOcean = styled.h1`
