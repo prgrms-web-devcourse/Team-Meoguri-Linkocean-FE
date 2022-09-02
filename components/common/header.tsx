@@ -17,18 +17,18 @@ const Header: React.FC = () => {
   const [my, setMy] = useState(false);
   const router = useRouter();
 
-  const { username, imageUrl } = useProfileState();
+  const { imageUrl } = useProfileState();
 
   const toggle = () => {
     setShow(!show);
   };
 
-  // useEffect(() => {
-  //   if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
-  //     router.push("/");
-  //     alert("로그인 후 이용 가능한 서비스 입니다.");
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
+      router.push("/");
+      alert("로그인 후 이용 가능한 서비스 입니다.");
+    }
+  }, [router]);
 
   useEffect(() => {
     if (window.location.pathname === "/feed") {
