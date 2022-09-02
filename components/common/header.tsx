@@ -12,6 +12,9 @@ import storage from "@/utils/localStorage";
 
 const Header: React.FC = () => {
   const [show, setShow] = useState(false);
+  const [feed, setFeed] = useState(false);
+  const [meoguri, setMeoguri] = useState(false);
+  const [my, setMy] = useState(false);
   const router = useRouter();
 
   const { username, imageUrl } = useProfileState();
@@ -26,6 +29,20 @@ const Header: React.FC = () => {
   //     alert("로그인 후 이용 가능한 서비스 입니다.");
   //   }
   // }, [router]);
+
+  useEffect(() => {
+    if (window.location.pathname === "/feed") {
+      setFeed(true);
+    }
+
+    if (window.location.pathname === "/meoguri") {
+      setMeoguri(true);
+    }
+
+    if (window.location.pathname === "/my/favorite") {
+      setMy(true);
+    }
+  }, [feed, meoguri, my]);
 
   return (
     <StyledHeader>
@@ -42,13 +59,25 @@ const Header: React.FC = () => {
           </Logo>
         </Link>
         <Link href="/feed" passHref>
-          <Navigator>전체 피드</Navigator>
+          {feed ? (
+            <CurrentNavigator>전체 피드</CurrentNavigator>
+          ) : (
+            <Navigator>전체 피드</Navigator>
+          )}
         </Link>
         <Link href="/meoguri" passHref>
-          <Navigator>머구리 찾기</Navigator>
+          {meoguri ? (
+            <CurrentNavigator>사용자 검색</CurrentNavigator>
+          ) : (
+            <Navigator>사용자 검색</Navigator>
+          )}
         </Link>
         <Link href="/my/favorite" passHref>
-          <Navigator>마이페이지</Navigator>
+          {my ? (
+            <CurrentNavigator>마이페이지</CurrentNavigator>
+          ) : (
+            <Navigator>마이페이지</Navigator>
+          )}
         </Link>
       </NavigatorWrapper>
 
@@ -136,6 +165,16 @@ const Navigator = styled.a`
   &:hover {
     color: ${color.$gray800};
   }
+`;
+
+const CurrentNavigator = styled.a`
+  margin: auto 20px;
+  color: ${color.$mainColor};
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 29px;
+  text-decoration: none;
+  cursor: pointer;
 `;
 
 const UserWrapper = styled.div`
