@@ -4,6 +4,7 @@ import { color } from "@/styles/theme";
 import Image from "next/image";
 import ProfileImage from "@/components/common/profileImage";
 import LogoutTooltip from "@/components/common/logoutTooltip";
+import Button from "@/components/common/button";
 import Link from "next/link";
 import { useProfileState } from "@/hooks/useProfile";
 import { useRouter } from "next/router";
@@ -73,6 +74,16 @@ const Header: React.FC = () => {
           onMouseLeave={toggle}
           style={{ display: show ? "block" : "none" }}
         />
+        <Link href="/create">
+          <Button
+            buttonType="large"
+            colorType="main-color"
+            width="127"
+            style={{ margin: "120px auto" }}
+          >
+            북마크 추가 +
+          </Button>
+        </Link>
       </UserWrapper>
     </StyledHeader>
   );
