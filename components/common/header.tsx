@@ -50,11 +50,20 @@ const Header: React.FC = () => {
           <Navigator>마이페이지</Navigator>
         </Link>
       </NavigatorWrapper>
+
       <UserWrapper>
+        <Link href="/my/favorite">
+          <Icon
+            src="/icon/favorite.svg"
+            alt="favorite"
+            width={30}
+            height={30}
+          />
+        </Link>
         <Link href="/notification" passHref>
-          <AlarmButton>
-            <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
-          </AlarmButton>
+          <AlarmWrapper>
+            <Icon src="/icon/bell.svg" alt="alarm" width={30} height={30} />
+          </AlarmWrapper>
         </Link>
         <UserImg onClick={toggle}>
           <ProfileImage size="sm" src={imageUrl} />
@@ -124,12 +133,15 @@ const UserWrapper = styled.div`
   display: flex;
 `;
 
-const AlarmButton = styled.div`
+const Icon = styled(Image)`
   cursor: pointer;
 `;
 
+const AlarmWrapper = styled.div`
+  margin: 0 10px 0 10px;
+`;
+
 const UserImg = styled.div`
-  margin: auto 10px;
   cursor: pointer;
 `;
 
