@@ -23,9 +23,10 @@ const FilterBar = () => {
         </Select>
         <Input searchIcon />
       </SelectDiv>
-      <div>
-        <SelectedElement />
-      </div>
+      <TagDiv>
+        <SelectedElement content="hello" />
+        <SelectedElement content="hellohellohello" />
+      </TagDiv>
     </Wrapper>
   );
 };
@@ -33,7 +34,7 @@ const FilterBar = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  // align-items: center;
+  border-radius: 8px;
   width: 1053px;
   height: 73px;
   background-color: #f4f9fc;
@@ -41,6 +42,12 @@ const Wrapper = styled.div`
 `;
 
 const SelectDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const TagDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
