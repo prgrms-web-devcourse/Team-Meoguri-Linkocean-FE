@@ -10,6 +10,7 @@ const Select = ({
   selectedOption,
   children,
   onChange,
+  version2,
 }: Partial<SelectProviderProps>) => {
   return (
     <SelectProvider
@@ -17,6 +18,7 @@ const Select = ({
       open={open}
       selectedOption={selectedOption}
       onChange={onChange}
+      version2={version2}
     >
       <Container>{children}</Container>
     </SelectProvider>
