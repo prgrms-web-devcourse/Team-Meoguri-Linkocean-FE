@@ -5,7 +5,10 @@ export default {
   title: "Components/Input",
   component: Input,
   argTypes: {
+    width: { control: "text", defaultValue: "367px" },
+    height: { control: "text", defaultValue: "45px" },
     searchIcon: { control: "boolean", defaultValue: false },
+    endIcon: { control: "boolean", defaultValue: false },
   },
 };
 
@@ -20,7 +23,7 @@ export const StyleCustom = (args: InputProps) => (
 );
 StyleCustom.parameters = {
   controls: {
-    exclude: "searchIcon",
+    exclude: ["searchIcon", "endIcon"],
   },
 };
 
@@ -41,7 +44,7 @@ export const WithState = (args: InputProps) => {
 };
 WithState.parameters = {
   controls: {
-    exclude: "searchIcon",
+    exclude: ["searchIcon", "endIcon"],
   },
 };
 
@@ -59,6 +62,6 @@ export const WithRef = (args: InputProps) => {
 };
 WithRef.parameters = {
   controls: {
-    exclude: "searchIcon",
+    exclude: ["searchIcon", "endIcon"],
   },
 };

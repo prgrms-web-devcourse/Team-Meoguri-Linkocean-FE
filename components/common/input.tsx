@@ -5,6 +5,7 @@ import { forwardRef } from "react";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   searchIcon?: boolean;
+  endIcon?: boolean;
   width?: string;
   height?: string;
 }
@@ -13,6 +14,7 @@ const Input = forwardRef(
   (
     {
       searchIcon = false,
+      endIcon = false,
       width = "367px",
       height = "45px",
       ...props
@@ -20,14 +22,8 @@ const Input = forwardRef(
     ref?: React.Ref<HTMLInputElement>
   ) => {
     return searchIcon ? (
-      <SearchInput>
-        <img
-          src="/icon/search.svg"
-          alt="search"
-          aria-hidden
-          width={24}
-          height={24}
-        />
+      <SearchInput endIcon={endIcon} width={width}>
+        <img src="/icon/search.svg" alt="" width={24} height={24} />
         <DefaultInput
           placeholder="검색어를 입력해주세요."
           width={width}
@@ -66,18 +62,19 @@ const DefaultInput = styled.input`
   }
 `;
 
-const SearchInput = styled.div`
+const SearchInput = styled.div<{ width: string; endIcon: boolean }>`
   position: relative;
 
   img {
     position: absolute;
     top: 50%;
-    left: 12px;
+    left: ${({ width, endIcon }) =>
+      endIcon ? `calc(${width} - 24px - 17px)` : "12px"};
     transform: translateY(-50%);
   }
 
   input {
-    padding-left: 48px;
+    padding-left: ${({ endIcon }) => (endIcon ? "17px" : "48px")};
   }
 `;
 
