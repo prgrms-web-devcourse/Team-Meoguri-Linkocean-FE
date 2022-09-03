@@ -1,5 +1,7 @@
 import Select from "@/components/common/select";
 import { useState } from "react";
+import * as theme from "@/styles/theme";
+import styled from "@emotion/styled";
 
 export default {
   title: "Components/Select",
@@ -82,4 +84,25 @@ export const Scroll = ({
 Scroll.argTypes = {
   maxHeight: { control: { type: "text" }, defaultValue: "100px" },
   width: { control: { type: "text" }, defaultValue: "100px" },
+};
+
+export const Version2 = () => {
+  const categories = ["전체", "자기계발", "예술"];
+  return (
+    <Select
+      width="127px"
+      selectedOption={{ value: "전체", text: "전체" }}
+      onChange={(category) => alert(category)}
+      version2
+    >
+      <Select.Trigger>선택</Select.Trigger>
+      <Select.OptionList>
+        {categories.map((category) => (
+          <Select.Option value={category} key={category}>
+            {category}
+          </Select.Option>
+        ))}
+      </Select.OptionList>
+    </Select>
+  );
 };
