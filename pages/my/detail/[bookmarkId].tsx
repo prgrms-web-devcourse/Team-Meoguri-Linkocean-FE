@@ -1,6 +1,5 @@
-import { Meta, MyFilterMenu, PageLayout, UserInfo } from "@/components/common";
+import { Meta, PageLayout } from "@/components/common";
 import DetailPage from "@/components/detail";
-import { useProfileState } from "@/hooks/useProfile";
 import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { useRouter } from "next/router";
@@ -8,7 +7,6 @@ import { useEffect, useState } from "react";
 
 const MyDetail = () => {
   const router = useRouter();
-  const userProfile = useProfileState();
   const [bookmarkData, setBookmarkData] = useState<BookmarkDetail>();
 
   useEffect(() => {
@@ -40,19 +38,6 @@ const MyDetail = () => {
         }}
       />
       <PageLayout>
-        <PageLayout.Aside>
-          <UserInfo />
-          <MyFilterMenu
-            tagList={userProfile.tags}
-            categoryList={userProfile.categories}
-            getCategoryData={(category) => {
-              router.push(`/my/category?category=${category}`);
-            }}
-            getTagsData={(tags) => {
-              router.push(`/my/tag?tags=${tags[0]}`);
-            }}
-          />
-        </PageLayout.Aside>
         <PageLayout.Article>
           {bookmarkData ? (
             <DetailPage

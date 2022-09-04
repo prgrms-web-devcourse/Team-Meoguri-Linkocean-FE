@@ -1,4 +1,4 @@
-import { FeedFilterMenu, Meta, PageLayout } from "@/components/common";
+import { Meta, PageLayout } from "@/components/common";
 import DetailPage from "@/components/detail";
 import { BookmarkDetail } from "@/types/model";
 import bookmarkAPI from "@/utils/apis/bookmark";
@@ -38,13 +38,6 @@ const MyDetail = () => {
         }}
       />
       <PageLayout>
-        <PageLayout.Aside>
-          <FeedFilterMenu
-            getCategoryData={(category) => {
-              router.push(`/feed?category=${category}`);
-            }}
-          />
-        </PageLayout.Aside>
         <PageLayout.Article>
           {bookmarkData ? (
             <DetailPage
