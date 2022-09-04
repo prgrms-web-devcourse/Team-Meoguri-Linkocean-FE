@@ -18,7 +18,9 @@ const Layout = styled.div`
   min-height: 100vh;
   main {
     display: flex;
+    margin: auto;
     min-height: calc(100vh - 62px);
+    min-width: 1130px;
   }
   box-sizing: border-box;
 `;
