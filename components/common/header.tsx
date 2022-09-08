@@ -23,12 +23,12 @@ const Header: React.FC = () => {
     setShow(!show);
   };
 
-  useEffect(() => {
-    if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
-      router.push("/");
-      alert("로그인 후 이용 가능한 서비스 입니다.");
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
+  //     router.push("/");
+  //     alert("로그인 후 이용 가능한 서비스 입니다.");
+  //   }
+  // }, [router]);
 
   useEffect(() => {
     if (window.location.pathname === "/feed") {
@@ -39,7 +39,7 @@ const Header: React.FC = () => {
       setMeoguri(true);
     }
 
-    if (window.location.pathname === "/my/favorite") {
+    if (window.location.pathname.slice(0, 4) === "/my/") {
       setMy(true);
     }
   }, [feed, meoguri, my]);
