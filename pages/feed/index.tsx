@@ -37,7 +37,6 @@ type OrderType = "upload" | "like";
 type Filtering = {
   category: CategoryType;
   searchTitle: string;
-  follow: boolean;
   order: OrderType;
   page: number;
   size: number;
@@ -46,7 +45,6 @@ type Filtering = {
 const INITIAL_FILTERING: Filtering = {
   category: "전체",
   searchTitle: "",
-  follow: false,
   order: "upload",
   page: 1,
   size: PAGE_SIZE,
@@ -99,15 +97,6 @@ const Feed = () => {
   const handleChangeState = (nextState: Filtering) => {
     setState(nextState);
     changeRoutePath(nextState);
-  };
-  const handleChangeFollow = ({
-    target: { checked },
-  }: ChangeEvent<HTMLInputElement>) => {
-    handleChangeState({
-      ...state,
-      page: INITIAL_FILTERING.page,
-      follow: checked,
-    });
   };
 
   const handleChangeCategory = (selectedCategory: string) => {
@@ -181,14 +170,12 @@ const Feed = () => {
 
     const searchTitle = query.searchTitle as string;
     const page = parseInt(query.page as string, 10);
-    const follow = (query.follow as string) === "true";
     setIsRouterReady(true);
 
     setState({
       ...INITIAL_FILTERING,
       ...query,
       page,
-      follow,
     });
     setSearchTitleInputValue(searchTitle);
 
@@ -244,6 +231,7 @@ const Feed = () => {
                   ref={searchTitleRef}
                   value={searchTitleInputValue}
                   onChange={(e) => setSearchTitleInputValue(e.target.value)}
+                  autoFocus
                 />
                 <Button
                   colorType="main-color"
@@ -255,38 +243,19 @@ const Feed = () => {
                 </Button>
               </SearchTitle>
 
-              <FormRight>
-                <Follow>
-                  <Label
-                    htmlFor="follow"
-                    style={{ userSelect: "none", cursor: "pointer" }}
-                  >
-                    팔로워 게시글만
-                  </Label>
-                  <Checkbox
-                    name="follow"
-                    id="follow"
-                    on={state.follow}
-                    onChange={handleChangeFollow}
-                  />
-                </Follow>
-
-                <div>
-                  <Select
-                    onChange={handleChangeOrder}
-                    selectedOption={{
-                      value: state.order,
-                      text: state.order === "upload" ? "최신 순" : "좋아요 순",
-                    }}
-                  >
-                    <Select.Trigger>정렬</Select.Trigger>
-                    <Select.OptionList>
-                      <Select.Option value="upload">최신 순</Select.Option>
-                      <Select.Option value="like">좋아요 순</Select.Option>
-                    </Select.OptionList>
-                  </Select>
-                </div>
-              </FormRight>
+              <Select
+                onChange={handleChangeOrder}
+                selectedOption={{
+                  value: state.order,
+                  text: state.order === "upload" ? "최신 순" : "좋아요 순",
+                }}
+              >
+                <Select.Trigger>정렬</Select.Trigger>
+                <Select.OptionList>
+                  <Select.Option value="upload">최신 순</Select.Option>
+                  <Select.Option value="like">좋아요 순</Select.Option>
+                </Select.OptionList>
+              </Select>
             </Form>
 
             <BookmarkContainer>
@@ -341,18 +310,6 @@ const Form = styled.form`
 const SearchTitle = styled.div`
   display: flex;
   gap: 10px;
-`;
-
-const FormRight = styled.div`
-  display: flex;
-  gap: 27px;
-`;
-
-const Follow = styled.div`
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 12px;
 `;
 
 const BookmarkContainer = styled.div`
