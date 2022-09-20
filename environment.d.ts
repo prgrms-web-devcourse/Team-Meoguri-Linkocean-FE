@@ -9,6 +9,7 @@ declare global {
       KAKAO_ID: string;
       KAKAO_SECRET: string;
       END_POINT: string;
+      REDIRECT_URI: string;
     }
   }
 }

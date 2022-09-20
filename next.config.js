@@ -7,5 +7,6 @@ module.exports = {
     KAKAO_ID: process.env.KAKAO_ID,
     KAKAO_SECRET: process.env.KAKAO_SECRET,
     END_POINT: process.env.END_POINT,
+    REDIRECT_URI: process.env.REDIRECT_URI,
   },
 };

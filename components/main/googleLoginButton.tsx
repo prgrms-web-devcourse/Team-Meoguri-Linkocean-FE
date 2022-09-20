@@ -1,13 +1,25 @@
+import { getQueryString } from "@/utils/queryString";
 import styled from "@emotion/styled";
-import { ButtonHTMLAttributes } from "react";
+import Link from "next/link";
 import LoginButton from "./loginButton";
 
-const GoogleLoginButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
+const GOOGLE_END_POINT = "https://accounts.google.com/o/oauth2/v2/auth";
+const params = {
+  client_id: process.env.GOOGLE_ID,
+  redirect_uri: process.env.REDIRECT_URI,
+  response_type: "code",
+  scope: "https://www.googleapis.com/auth/userinfo.email",
+};
+const authorizationURL = `${GOOGLE_END_POINT}?${getQueryString(params)}`;
+
+const GoogleLoginButton = () => {
   return (
-    <GoogleButton {...props}>
-      <GoogleIcon />
-      구글 로그인
-    </GoogleButton>
+    <Link href={authorizationURL}>
+      <GoogleButton>
+        <GoogleIcon />
+        구글 로그인
+      </GoogleButton>
+    </Link>
   );
 };
 
