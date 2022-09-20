@@ -143,26 +143,12 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
 
 const Wrapper = styled.div`
   display: inline-block;
-  margin-right: 25px;
-  margin-bottom: 29px;
-  &:nth-of-type(5) {
-    margin-right: 0px;
-  }
-  &:nth-of-type(10) {
-    margin-right: 0px;
-  }
-  &:nth-of-type(15) {
-    margin-right: 0px;
-  }
-  &:nth-of-type(20) {
-    margin-right: 0px;
-  }
 `;
 
 const Card = styled.div`
   display: inline-flex;
   flex-direction: column;
-  width: calc(1030px / 5 - 25px);
+  width: 100%;
   height: 260px;
   border-radius: 8px;
   background-color: #fff;
