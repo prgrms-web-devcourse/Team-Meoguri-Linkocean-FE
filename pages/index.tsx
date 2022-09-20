@@ -83,6 +83,23 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
+  useEffect(() => {
+    (async () => {
+      const { code } = router.query;
+      if (typeof code !== "string") {
+        return;
+      }
+
+      try {
+        const response = await profileAPI.auth(code);
+        storage.setItem(STORAGE_KEY.token, response.data.token);
+        loginSuccess();
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [router.query, loginSuccess]);
+
   return (
     <>
       <Meta
@@ -117,11 +134,7 @@ export default function Home() {
             </Logo>
 
             <ButtonContainer>
-              <GoogleLoginButton
-                name="google"
-                onClick={handleLogin}
-                disabled={!!session}
-              />
+              <GoogleLoginButton />
               <GithubLoginButton
                 name="github"
                 onClick={handleLogin}

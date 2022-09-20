@@ -10,6 +10,16 @@ export type ProfilesPayload = {
 };
 
 const profileAPI = {
+  auth: (code: string) => {
+    const data = new FormData();
+    data.append("code", code);
+
+    return unauthInstance.post<{ token: string }>("/auth/google", data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+  },
   login: (payload: LoginPayload) =>
     unauthInstance.post<{ token: string }>("/login", payload),
   loginSuccess: () =>
