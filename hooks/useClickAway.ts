@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 
-const events = ["mousedown", "touchstart"];
+const eventName = "mousedown";
 
-const useClickAway = (handler) => {
+const useClickAway = (handler: (e?: MouseEvent) => void) => {
   const ref = useRef(null);
   const savedHandler = useRef(handler);
 
@@ -11,22 +11,16 @@ const useClickAway = (handler) => {
   }, [handler]);
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    const element = ref.current as unknown as HTMLElement;
+    if (!element) return undefined;
 
-    const handleEvent = (e: MouseEvent | TouchEvent) => {
-      if (!element.contains(e.target)) savedHandler.current(e);
+    const handleEvent = (e: MouseEvent) => {
+      if (!element.contains(e.target as HTMLElement)) savedHandler.current(e);
     };
 
-    events.forEach((eventName) =>
-      document.addEventListener(eventName, handleEvent)
-    );
+    document.addEventListener(eventName, handleEvent);
 
-    return () => {
-      events.forEach((eventName) =>
-        document.removeEventListener(eventName, handleEvent)
-      );
-    };
+    return () => document.removeEventListener(eventName, handleEvent);
   }, [ref]);
 
   return ref;
