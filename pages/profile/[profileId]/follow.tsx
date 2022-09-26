@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   PageLayout,
   UserInfo,
@@ -7,20 +7,16 @@ import {
   Top,
   Meta,
 } from "@/components/common";
-import FollowRadio from "@/components/follow/followRadio";
 import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
-import {
-  FollowCardContainer,
-  Form,
-  isLastCard,
-  Layout,
-} from "@/pages/my/follow";
+import { FollowCardContainer, isLastCard, Layout } from "@/pages/my/follow";
 import { Profile, ProfileDetail } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
 import { getQueryString } from "@/utils/queryString";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
 import { LINKOCEAN_PATH } from "@/utils/constants";
+import FollowTabList from "@/components/follow/followTabList";
+import { FollowTabType } from "@/types/type";
 
 const PAGE_SIZE = 8;
 
@@ -50,9 +46,8 @@ const Follow = () => {
   }>({ value: [], isLoading: false });
   const [isEndPage, setIsEndPage] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, id } = e.currentTarget;
-    setState({ ...state, [name]: id, page: INITIAL_FILTERING.page });
+  const handleChange = (tab: FollowTabType) => {
+    setState({ ...state, tab, page: INITIAL_FILTERING.page });
     setIsEndPage(false);
   };
   const handleUserInfo = () => {
@@ -231,26 +226,8 @@ const Follow = () => {
         </PageLayout.Aside>
         <PageLayout.Article>
           <Layout>
-            <Form>
-              <FollowRadio
-                name="tab"
-                id="follower"
-                text={`팔로워 (${
-                  userProfile ? userProfile.followerCount : " "
-                })`}
-                checked={state.tab === "follower"}
-                onChange={handleChange}
-              />
-              <FollowRadio
-                name="tab"
-                id="followee"
-                text={`팔로잉 (${
-                  userProfile ? userProfile.followeeCount : " "
-                })`}
-                checked={state.tab === "followee"}
-                onChange={handleChange}
-              />
-            </Form>
+            <FollowTabList profile={userProfile} onClick={handleChange} />
+
             <FollowCardContainer>
               {followProfiles.value.map(
                 ({ profileId, imageUrl, isFollow, username }, index) => (

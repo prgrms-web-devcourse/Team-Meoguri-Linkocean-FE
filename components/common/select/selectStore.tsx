@@ -10,7 +10,7 @@ import React, {
 const INITIAL_OPTION = { value: "", text: "" };
 
 interface SelectContextProps {
-  style: { width: string };
+  style: { width: string; version2: boolean };
   state: {
     open: boolean;
     selectedOption: typeof INITIAL_OPTION;
@@ -30,6 +30,7 @@ export interface SelectProviderProps {
   open?: boolean;
   selectedOption?: typeof INITIAL_OPTION;
   width?: string;
+  version2?: boolean;
   onChange?: (value: string) => void;
   children: React.ReactNode;
 }
@@ -38,6 +39,7 @@ const SelectProvider = ({
   width = "120px",
   children,
   onChange,
+  version2 = false,
   ...props
 }: SelectProviderProps) => {
   const [open, setOpen] = useState(props.open ?? false);
@@ -61,7 +63,7 @@ const SelectProvider = ({
 
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const value = {
-    style: { width },
+    style: { width, version2 },
     state: { open, selectedOption },
     actions: { setOpen, handleChange },
   };
