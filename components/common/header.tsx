@@ -23,12 +23,12 @@ const Header: React.FC = () => {
     setShow(!show);
   };
 
-  // useEffect(() => {
-  //   if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
-  //     router.push("/");
-  //     alert("로그인 후 이용 가능한 서비스 입니다.");
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
+      router.push("/");
+      alert("로그인 후 이용 가능한 서비스 입니다.");
+    }
+  }, [router]);
 
   useEffect(() => {
     if (window.location.pathname === "/feed") {
@@ -46,87 +46,94 @@ const Header: React.FC = () => {
 
   return (
     <StyledHeader>
-      <NavigatorWrapper>
-        <Link href="/my/favorite" passHref>
-          <Logo>
-            <LinkOcean />
-            <Image
-              src="/image/logo.png"
-              alt="Link Ocean"
-              width={188}
-              height={37}
-            />
-          </Logo>
-        </Link>
-        <Link href="/feed" passHref>
-          {feed ? (
-            <CurrentNavigator>전체 피드</CurrentNavigator>
-          ) : (
-            <Navigator>전체 피드</Navigator>
-          )}
-        </Link>
-        <Link href="/meoguri" passHref>
-          {meoguri ? (
-            <CurrentNavigator>사용자 검색</CurrentNavigator>
-          ) : (
-            <Navigator>사용자 검색</Navigator>
-          )}
-        </Link>
-        <Link href="/my/favorite" passHref>
-          {my ? (
-            <CurrentNavigator>마이페이지</CurrentNavigator>
-          ) : (
-            <Navigator>마이페이지</Navigator>
-          )}
-        </Link>
-      </NavigatorWrapper>
+      <HeaderWrapper>
+        <NavigatorWrapper>
+          <Link href="/my/favorite" passHref>
+            <Logo>
+              <LinkOcean />
+              <Image
+                src="/image/logo.png"
+                alt="Link Ocean"
+                width={188}
+                height={37}
+              />
+            </Logo>
+          </Link>
+          <Link href="/feed" passHref>
+            {feed ? (
+              <CurrentNavigator>전체 피드</CurrentNavigator>
+            ) : (
+              <Navigator>전체 피드</Navigator>
+            )}
+          </Link>
+          <Link href="/meoguri" passHref>
+            {meoguri ? (
+              <CurrentNavigator>사용자 검색</CurrentNavigator>
+            ) : (
+              <Navigator>사용자 검색</Navigator>
+            )}
+          </Link>
+          <Link href="/my/favorite" passHref>
+            {my ? (
+              <CurrentNavigator>마이페이지</CurrentNavigator>
+            ) : (
+              <Navigator>마이페이지</Navigator>
+            )}
+          </Link>
+        </NavigatorWrapper>
 
-      <UserWrapper>
-        <Link href="/my/favorite">
-          <Icon
-            src="/icon/favorite.svg"
-            alt="favorite"
-            width={30}
-            height={30}
+        <UserWrapper>
+          <Link href="/my/favorite">
+            <Icon
+              src="/icon/favorite.svg"
+              alt="favorite"
+              width={30}
+              height={30}
+            />
+          </Link>
+          <Link href="/notification" passHref>
+            <AlarmWrapper>
+              <Icon src="/icon/bell.svg" alt="alarm" width={30} height={30} />
+            </AlarmWrapper>
+          </Link>
+          <UserImg onClick={toggle}>
+            <ProfileImage size="sm" src={imageUrl} />
+          </UserImg>
+          <LogoutTooltip
+            onMouseLeave={toggle}
+            style={{ display: show ? "block" : "none" }}
           />
-        </Link>
-        <Link href="/notification" passHref>
-          <AlarmWrapper>
-            <Icon src="/icon/bell.svg" alt="alarm" width={30} height={30} />
-          </AlarmWrapper>
-        </Link>
-        <UserImg onClick={toggle}>
-          <ProfileImage size="sm" src={imageUrl} />
-        </UserImg>
-        <LogoutTooltip
-          onMouseLeave={toggle}
-          style={{ display: show ? "block" : "none" }}
-        />
-        <Link href="/create">
-          <Button
-            buttonType="large"
-            colorType="main-color"
-            width="127"
-            style={{ margin: "120px auto" }}
-          >
-            북마크 추가 +
-          </Button>
-        </Link>
-      </UserWrapper>
+          <Link href="/create">
+            <Button
+              buttonType="large"
+              colorType="main-color"
+              width="127"
+              style={{ margin: "20px" }}
+            >
+              북마크 추가 +
+            </Button>
+          </Link>
+        </UserWrapper>
+      </HeaderWrapper>
     </StyledHeader>
   );
 };
 
 export default Header;
 
-const StyledHeader = styled.h1`
-  min-width: 820px;
-  height: 80px;
-  padding: 0 125px;
-  display: flex;
-  box-sizing: border-box;
-  justify-content: space-between;
+const StyledHeader = styled.div`
+  width: auto;
   border-bottom: 1px solid ${color.$gray400};
+`;
+
+const HeaderWrapper = styled.h1`
+  min-width: 820px;
+  max-width: 1130px;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin: auto;
 `;
 
 const Logo = styled.a`
@@ -141,6 +148,7 @@ const LinkOcean = styled.h1`
   width: 1px;
   height: 1px;
   padding: 0;
+  padding-left: 20px;
   border: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -192,5 +200,4 @@ const AlarmWrapper = styled.div`
 
 const UserImg = styled.div`
   cursor: pointer;
-  margin-right: 10px;
 `;
