@@ -1,4 +1,4 @@
-import { color, text } from "@/styles/theme";
+import { color, shortenNLine, text } from "@/styles/theme";
 import { Bookmark } from "@/types/model";
 import dateFormat from "@/utils/dateFormat";
 import styled from "@emotion/styled";
@@ -118,11 +118,11 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
         <Contents>
           <div>
             <Title>{title}</Title>
-            <p>
+            <Tags>
               {tags?.map((tag) => (
                 <Tag key={tag}>{`#${tag} `}</Tag>
               ))}
-            </p>
+            </Tags>
           </div>
           <div>
             <Url onClick={urlClick} href={url} target="_blank">
@@ -218,8 +218,12 @@ const Title = styled.p`
   white-space: nowrap;
   overflow: hidden;
 `;
+const Tags = styled.p`
+  ${shortenNLine(2)}
+`;
 const Tag = styled.span`
   color: ${color.$gray800};
+  width: 200px;
   ${text.$caption}
 `;
 
