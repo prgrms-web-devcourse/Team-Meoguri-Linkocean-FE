@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
 
 export default {
-  title: "components/selectCheckbox",
+  title: "components/SelectCheckbox",
   component: SelectCheckbox,
   argTypes: {},
 } as ComponentMeta<typeof SelectCheckbox>;

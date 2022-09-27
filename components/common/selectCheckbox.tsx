@@ -15,7 +15,7 @@ const SelectCheckbox = ({
   checkedList: string[];
   setCheckedList: (tag: string[]) => void;
 }) => {
-  const [selectState, toggle] = useToggle(false);
+  const [selectState, toggle] = useToggle(true);
 
   const clickList = (e: React.MouseEvent<HTMLLIElement>) => {
     const tag = e.currentTarget.getAttribute("data-tag");
@@ -33,7 +33,7 @@ const SelectCheckbox = ({
 
   return (
     <Wrap>
-      <Button {...props} onClick={toggle}>
+      <Button {...props} toggle={selectState} onClick={toggle}>
         태그 선택
         <span>{checkedList.length}</span>
       </Button>
@@ -59,17 +59,21 @@ const Wrap = styled.div`
 
 const Button = styled.button`
   border: none;
-  background-color: ${color.$skyBlue};
-  color: #fff;
+  background-color: ${({ toggle }: { toggle: boolean }) =>
+    toggle ? color.$skyBlue : "#fff"};
+  color: ${({ toggle }: { toggle: boolean }) =>
+    toggle ? "#fff" : color.$gray600};
   height: 44px;
   padding: 0 11px;
   border-radius: 8px;
   ${text.$subtitle1}
   cursor: pointer;
   :hover {
-    background-color: ${color.$hoverSkyBlue};
+    background-color: ${({ toggle }: { toggle: boolean }) =>
+      toggle ? color.$hoverSkyBlue : "#eee"};
     span {
-      color: ${color.$hoverSkyBlue};
+      color: ${({ toggle }: { toggle: boolean }) =>
+        toggle ? color.$hoverSkyBlue : color.$gray600};
     }
   }
   span {
@@ -78,7 +82,8 @@ const Button = styled.button`
     padding: 3px 6px;
     border-radius: 26px;
     background-color: #fff;
-    color: ${color.$skyBlue};
+    color: ${({ toggle }: { toggle: boolean }) =>
+      toggle ? color.$skyBlue : color.$gray600};
     margin-left: 8px;
     box-sizing: border-box;
   }
@@ -86,23 +91,27 @@ const Button = styled.button`
 
 const ListBox = styled.ul`
   position: absolute;
-  left: 0;
-
+  left: 2px;
   width: 220px;
   max-height: 280px;
+  margin-top: 9px;
+  padding: 10px 0;
   overflow-y: auto;
   border: 1px solid ${color.$gray100};
   border-radius: 8px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.15);
-  margin-top: 10px;
+  background-color: #fff;
+  overflow: overlay;
+
+  &::-webkit-scrollbar {
+    width: 11px;
+  }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 6px;
     background-color: ${color.$mainColor};
     background-clip: padding-box;
     border: 4px solid transparent;
-  }
-  &::-webkit-scrollbar {
-    width: 10px;
   }
 `;
 
@@ -111,11 +120,13 @@ const List = styled.li`
   background-color: #fff;
   justify-content: space-between;
   align-items: center;
-  height: 37px;
+  height: 32px;
   padding: 0 15px;
+  margin: 5px 0;
+  color: ${color.$gray600};
   cursor: pointer;
   :hover {
-    background-color: ${color.$gray100};
+    background-color: #88bedf20;
   }
 `;
 
