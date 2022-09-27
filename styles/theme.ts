@@ -82,6 +82,14 @@ export const shortenOneLine = `
   overflow: hidden;
 `;
 
+export const shortenNLine = (n: number) => `
+  overflow: hidden;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: ${n};
+  -webkit-box-orient: vertical;
+`;
+
 export const media = {
   desktop: `@media (max-width: ${size.desktop})`,
   laptop: `@media (max-width: ${size.laptop})`,
