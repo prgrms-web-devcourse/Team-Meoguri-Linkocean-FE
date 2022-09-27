@@ -1,20 +1,27 @@
 import { getQueryString } from "@/utils/queryString";
 import styled from "@emotion/styled";
 import Link from "next/link";
+import { useRef, useEffect } from "react";
 import LoginButton from "./loginButton";
 
 const GOOGLE_END_POINT = "https://accounts.google.com/o/oauth2/v2/auth";
-const params = {
-  client_id: process.env.GOOGLE_ID,
-  redirect_uri: process.env.REDIRECT_URI,
-  response_type: "code",
-  scope: "https://www.googleapis.com/auth/userinfo.email",
-};
-const authorizationURL = `${GOOGLE_END_POINT}?${getQueryString(params)}`;
+const SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 
 const GoogleLoginButton = () => {
+  const authorizationURL = useRef("");
+
+  useEffect(() => {
+    const params = {
+      client_id: process.env.GOOGLE_ID,
+      redirect_uri: window.location.origin,
+      response_type: "code",
+      scope: SCOPE,
+    };
+    authorizationURL.current = `${GOOGLE_END_POINT}?${getQueryString(params)}`;
+  }, []);
+
   return (
-    <Link href={authorizationURL}>
+    <Link href={authorizationURL.current}>
       <GoogleButton>
         <GoogleIcon />
         구글 로그인
