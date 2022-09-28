@@ -54,8 +54,8 @@ const Header: React.FC = () => {
               <Image
                 src="/image/logo.png"
                 alt="Link Ocean"
-                width={188}
-                height={37}
+                width={180}
+                height={28}
               />
             </Logo>
           </Link>
@@ -138,7 +138,7 @@ const HeaderWrapper = styled.h1`
 
 const Logo = styled.a`
   cursor: pointer;
-  padding-top: 20px;
+  padding-top: 25px;
   margin-right: 20px;
 `;
 
