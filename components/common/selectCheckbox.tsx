@@ -15,7 +15,7 @@ const SelectCheckbox = ({
   checkedList: string[];
   setCheckedList: (tag: string[]) => void;
 }) => {
-  const [selectState, toggle] = useToggle(true);
+  const [selectState, toggle] = useToggle(false);
 
   const clickList = (e: React.MouseEvent<HTMLLIElement>) => {
     const tag = e.currentTarget.getAttribute("data-tag");
@@ -42,7 +42,7 @@ const SelectCheckbox = ({
           {tags.map(({ tag, count }) => (
             <List key={tag} onClick={clickList} data-tag={tag}>
               <span>
-                # {tag}({count})
+                # {tag} ({count})
               </span>
               <Checkbox on={checkedList.indexOf(tag) !== -1} />
             </List>
@@ -67,6 +67,8 @@ const Button = styled.button`
   padding: 0 11px;
   border-radius: 8px;
   ${text.$subtitle1}
+  font-weight: ${({ toggle }: { toggle: boolean }) =>
+    toggle ? "bold" : "normal"};
   cursor: pointer;
   :hover {
     background-color: ${({ toggle }: { toggle: boolean }) =>
@@ -123,10 +125,12 @@ const List = styled.li`
   height: 32px;
   padding: 0 15px;
   margin: 5px 0;
-  color: ${color.$gray600};
   cursor: pointer;
   :hover {
     background-color: #88bedf20;
+  }
+  span {
+    color: ${color.$gray600};
   }
 `;
 
