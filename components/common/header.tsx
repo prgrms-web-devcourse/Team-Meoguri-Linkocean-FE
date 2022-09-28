@@ -139,6 +139,7 @@ const HeaderWrapper = styled.h1`
 const Logo = styled.a`
   cursor: pointer;
   padding-top: 25px;
+  padding-left: 20px;
   margin-right: 20px;
 `;
 
