@@ -42,7 +42,7 @@ const SelectCheckbox = ({
           {tags.map(({ tag, count }) => (
             <List key={tag} onClick={clickList} data-tag={tag}>
               <span>
-                # {tag} ({count})
+                # {tag} ({count > 99 ? "99+" : count})
               </span>
               <Checkbox on={checkedList.indexOf(tag) !== -1} />
             </List>
