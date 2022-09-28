@@ -1,10 +1,28 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
 import { handleLogout } from "@/utils/logout";
+import useClickAway from "@/hooks/useClickAway";
 
-const LogoutTooltip = ({ ...props }) => {
+interface LogoutInterface {
+  visible: boolean;
+  onClose: () => void;
+}
+
+const LogoutTooltip = ({
+  visible = false,
+  onClose,
+  ...props
+}: LogoutInterface) => {
+  const ref = useClickAway(() => {
+    onClose();
+  });
+
   return (
-    <Tooltip {...props}>
+    <Tooltip
+      style={{ display: visible ? "block" : "none" }}
+      ref={ref}
+      {...props}
+    >
       <Arrow />
       <Logout onClick={handleLogout}>logout</Logout>
     </Tooltip>

@@ -15,9 +15,9 @@ const Header: React.FC = () => {
 
   const { username, imageUrl } = useProfileState();
 
-  const toggle = () => {
-    setShow(!show);
-  };
+  // const toggle = () => {
+  //   setShow(!show);
+  // };
 
   useEffect(() => {
     if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
@@ -56,13 +56,24 @@ const Header: React.FC = () => {
             <Image src="/icon/bell.svg" alt="alarm" width={30} height={30} />
           </AlarmButton>
         </Link>
-        <UserImg onClick={toggle}>
+        <UserImg
+          onClick={() => {
+            setShow(true);
+          }}
+        >
           <ProfileImage size="sm" src={imageUrl} />
         </UserImg>
-        <UserName onClick={toggle}>{username}</UserName>
+        <UserName
+          onClick={() => {
+            setShow(true);
+          }}
+        >
+          {username}
+        </UserName>
         <LogoutTooltip
-          onMouseLeave={toggle}
-          style={{ display: show ? "block" : "none" }}
+          // onMouseLeave={toggle}
+          visible={show}
+          onClose={() => setShow(false)}
         />
       </UserWrapper>
     </StyledHeader>
