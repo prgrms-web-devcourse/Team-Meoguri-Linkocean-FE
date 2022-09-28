@@ -1,4 +1,4 @@
-import SelectCheckbox from "@/components/common/selectCheckbox";
+import { SelectCheckbox } from "@/components/common";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
 
