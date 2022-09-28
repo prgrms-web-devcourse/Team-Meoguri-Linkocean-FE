@@ -12,16 +12,19 @@ export interface CreateProps {
 }
 
 const Tag = ({ tag, setTag, ...props }: CreateProps) => {
+  const [tagLength, setTagLength] = useState(false);
   const [tagCount, setTagCount] = useState(false);
   const [overlapMsg, setOverlapMsg] = useState(false);
   const [limitMsg, setLimitMsg] = useState(false);
   const TAG_LIMIT = 5;
+  const TAG_LENGTH = 10;
 
   // 태그 제거
   const removeTag = (num: number) => {
     const item = tag.slice(0);
     item.splice(num, 1);
     setTag(item);
+    setTagLength(false);
     setOverlapMsg(false);
     setLimitMsg(false);
   };
@@ -33,6 +36,13 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
     // 태그 개수 제한
     if (tag.length >= TAG_LIMIT) {
       setTagCount(true);
+      return;
+    }
+
+    // 태그 길이 제한
+    if (e.currentTarget.value.length > TAG_LENGTH) {
+      e.currentTarget.value = e.currentTarget.value.substring(0, TAG_LENGTH);
+      setTagLength(true);
       return;
     }
 
@@ -56,6 +66,7 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
       }
       item.push(inputValue);
       setTag(item);
+      setTagLength(false);
       setOverlapMsg(false);
       setLimitMsg(false);
       e.currentTarget.value = "";
@@ -78,6 +89,11 @@ const Tag = ({ tag, setTag, ...props }: CreateProps) => {
       ) : (
         <Text>* 태그는 최대 5개까지 입력 가능합니다.</Text>
       )}
+      {tagLength ? (
+        <div>
+          <ErrorText>* 태그는 최대 10자까지 입력 가능합니다.</ErrorText>
+        </div>
+      ) : null}
       {overlapMsg ? (
         <div>
           <ErrorText>* 이미 등록한 태그입니다.</ErrorText>
