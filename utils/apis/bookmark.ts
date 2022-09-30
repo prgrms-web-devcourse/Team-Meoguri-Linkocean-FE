@@ -24,7 +24,7 @@ const bookmarkAPI = {
   getBookmarkDetail: (bookmarkId: number) =>
     authInstance.get<BookmarkDetail>(`/bookmarks/${bookmarkId}`),
   getMyBookmarks: (queryString: string) =>
-    authInstance.get(`/bookmarks/me?${queryString}`),
+    authInstance.get<BookmarkList>(`/bookmarks/me?${queryString}`),
   getOtherBookmarks: (profileId: number, queryString: string) =>
     authInstance.get<BookmarkList>(
       `/bookmarks/others/${profileId}?${queryString}`
