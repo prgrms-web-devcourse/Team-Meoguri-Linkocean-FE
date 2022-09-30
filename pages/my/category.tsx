@@ -27,20 +27,6 @@ const Category = () => {
     }
   }, [category]);
 
-  const AsideMemo = React.useMemo(
-    () => (
-      <PageLayout.Aside>
-        <UserInfo data={profile} />
-        <MyFilterMenu
-          categoryList={profile.categories}
-          tagList={profile.tags}
-          getCategoryData={setCategory}
-          getTagsData={setTags}
-        />
-      </PageLayout.Aside>
-    ),
-    [profile]
-  );
   return (
     <>
       <Meta
@@ -50,9 +36,8 @@ const Category = () => {
         robots="noindex, nofollow"
       />
       <PageLayout>
-        {AsideMemo}
         <PageLayout.Article>
-          <BookmarkTemplate PageTitle="카테고리 목록" />
+          <BookmarkTemplate type="category" categories={profile.categories} />
         </PageLayout.Article>
       </PageLayout>
     </>

@@ -28,22 +28,6 @@ const Favorite = () => {
     }
   }, [category]);
 
-  const AsideMemo = React.useMemo(
-    () => (
-      <PageLayout.Aside>
-        <UserInfo data={profile} />
-        <MyFilterMenu
-          categoryList={profile.categories}
-          tagList={profile.tags}
-          isFavorite
-          getCategoryData={setCategory}
-          getTagsData={setTags}
-        />
-      </PageLayout.Aside>
-    ),
-    [profile]
-  );
-
   return (
     <>
       <Meta
@@ -53,9 +37,8 @@ const Favorite = () => {
         robots="noindex, nofollow"
       />
       <PageLayout>
-        {AsideMemo}
         <PageLayout.Article>
-          <BookmarkTemplate PageTitle="즐겨찾기 목록" />
+          <BookmarkTemplate type="favorite" />
         </PageLayout.Article>
       </PageLayout>
     </>

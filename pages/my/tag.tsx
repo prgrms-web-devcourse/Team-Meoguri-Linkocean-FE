@@ -37,17 +37,8 @@ const Tag = () => {
         robots="noindex, nofollow"
       />
       <PageLayout>
-        <PageLayout.Aside>
-          <UserInfo data={profile} />
-          <MyFilterMenu
-            categoryList={profile.categories}
-            tagList={profile.tags}
-            getCategoryData={setCategory}
-            getTagsData={setTags}
-          />
-        </PageLayout.Aside>
         <PageLayout.Article>
-          <BookmarkTemplate PageTitle="태그 목록" />
+          <BookmarkTemplate type="tag" tags={profile.tags} />
         </PageLayout.Article>
       </PageLayout>
     </>
