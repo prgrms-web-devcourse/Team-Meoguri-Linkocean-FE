@@ -65,21 +65,10 @@ const Tag = () => {
         robots="index, follow"
       />
       <PageLayout>
-        <PageLayout.Aside>
-          {otherProfileInfo !== undefined ? (
-            <>
-              <UserInfo data={otherProfileInfo} />
-              <OtherFilterMenu
-                categoryList={otherProfileInfo.categories}
-                tagList={otherProfileInfo.tags}
-                getCategoryData={setCategory}
-                getTagsData={setTags}
-              />
-            </>
-          ) : null}
-        </PageLayout.Aside>
         <PageLayout.Article>
-          <OtherBookmark PageTitle="태그 목록" />
+          {otherProfileInfo && (
+            <OtherBookmark type="tag" otherProfile={otherProfileInfo} />
+          )}
         </PageLayout.Article>
       </PageLayout>
     </>

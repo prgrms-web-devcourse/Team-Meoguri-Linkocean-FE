@@ -66,21 +66,10 @@ const Favorite = () => {
         robots="index, follow"
       />
       <PageLayout>
-        <PageLayout.Aside>
-          {otherProfileInfo !== undefined ? (
-            <>
-              <UserInfo data={otherProfileInfo} />
-              <OtherFilterMenu
-                categoryList={otherProfileInfo.categories}
-                tagList={otherProfileInfo.tags}
-                getCategoryData={setCategory}
-                getTagsData={setTags}
-              />
-            </>
-          ) : null}
-        </PageLayout.Aside>
         <PageLayout.Article>
-          <OtherBookmark PageTitle="즐겨찾기 목록" />
+          {otherProfileInfo && (
+            <OtherBookmark type="favorite" otherProfile={otherProfileInfo} />
+          )}
         </PageLayout.Article>
       </PageLayout>
     </>
