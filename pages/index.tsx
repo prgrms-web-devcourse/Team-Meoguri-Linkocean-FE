@@ -1,58 +1,18 @@
-import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
-import { useEffect, MouseEvent, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
-import { Meta, ErrorText } from "@/components/common";
-import {
-  GoogleLoginButton,
-  KakaoLoginButton,
-  GithubLoginButton,
-} from "@/components/main";
-import profileAPI, { LoginPayload, OauthType } from "@/utils/apis/profile";
+import { Meta } from "@/components/common";
+import { GoogleLoginButton } from "@/components/main";
+import profileAPI from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
-import { handleLogout } from "@/utils/logout";
+
 import * as theme from "@/styles/theme";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   const router = useRouter();
 
-  const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
-    const oauthType = e.currentTarget.name as OauthType;
-    const upperOAuthType = oauthType.toUpperCase();
-    storage.setItem(STORAGE_KEY.oauthType, upperOAuthType);
-
-    (async () => {
-      try {
-        await signIn(oauthType);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  };
-
-  const login = useCallback(async (payload: LoginPayload) => {
-    try {
-      const response = await profileAPI.login(payload);
-      storage.setItem(STORAGE_KEY.token, response.data.token);
-    } catch (error) {
-      handleLogout();
-
-      if (axios.isAxiosError(error) && error.response !== undefined) {
-        const notAllowKakaoEmail =
-          payload.oauthType === "KAKAO" && error.response.status === 400;
-        if (notAllowKakaoEmail) {
-          alert("이메일 제공에 동의하지 않아 회원가입에 실패했습니다.");
-        }
-      }
-
-      console.error(error);
-    }
-  }, []);
   const loginSuccess = useCallback(async () => {
     try {
       const response = await profileAPI.loginSuccess();
@@ -66,24 +26,6 @@ export default function Home() {
   }, [router]);
 
   useEffect(() => {
-    if (!session) {
-      return;
-    }
-
-    (async () => {
-      const oauthType = storage.getItem(STORAGE_KEY.oauthType, "");
-      if (oauthType === "") {
-        return;
-      }
-
-      await login({ email: session?.user?.email as string, oauthType });
-      await loginSuccess();
-    })();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
-
-  useEffect(() => {
     (async () => {
       const { code } = router.query;
       if (typeof code !== "string") {
@@ -92,13 +34,20 @@ export default function Home() {
 
       try {
         const response = await profileAPI.auth(code);
-        storage.setItem(STORAGE_KEY.token, response.data.token);
+        storage.setItem(STORAGE_KEY.token, response.data.accessToken);
+        storage.setItem(STORAGE_KEY.refreshToken, response.data.refreshToken);
         loginSuccess();
       } catch (error) {
         console.error(error);
       }
     })();
   }, [router.query, loginSuccess]);
+
+  useEffect(() => {
+    if (storage.getItem(STORAGE_KEY.token, null)) {
+      loginSuccess();
+    }
+  }, [loginSuccess]);
 
   return (
     <>
@@ -113,7 +62,7 @@ export default function Home() {
       <Section>
         <SectionLayout>
           <LoginContainer>
-            <Logo>
+            <h1>
               <LinkOcean>
                 <Image
                   src="/image/link-ocean.png"
@@ -131,26 +80,9 @@ export default function Home() {
                   height={129}
                 />
               </div>
-            </Logo>
+            </h1>
 
-            <ButtonContainer>
-              <GoogleLoginButton />
-              <GithubLoginButton
-                name="github"
-                onClick={handleLogin}
-                disabled={!!session}
-              />
-              <KakaoLoginButton
-                name="kakao"
-                onClick={handleLogin}
-                disabled={!!session}
-              />
-              <ErrorText style={{ color: "gray" }}>
-                * 카카오 로그인은 개발 단계로 이메일 제공에
-                <br />
-                동의해야 회원가입할 수 있습니다.
-              </ErrorText>
-            </ButtonContainer>
+            <GoogleLoginButton />
           </LoginContainer>
 
           <AboutContainer>
@@ -196,6 +128,9 @@ const SectionLayout = styled.div`
 `;
 
 const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   order: 1;
   width: 380px;
   height: 530px;
@@ -206,20 +141,8 @@ const LoginContainer = styled.div`
   box-sizing: border-box;
 `;
 
-const Logo = styled.h1`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 42px;
-`;
-
 const LinkOcean = styled.div`
   margin-bottom: 8px;
-`;
-
-const ButtonContainer = styled.div`
-  display: inline-flex;
-  flex-direction: column;
-  gap: 8px;
 `;
 
 const AboutContainer = styled.div`
