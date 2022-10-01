@@ -3,11 +3,10 @@ import { useRouter } from "next/router";
 import { useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
 import { Meta } from "@/components/common";
-import { GoogleLoginButton } from "@/components/main";
+import GoogleLoginButton from "@/components/main/googleLoginButton";
 import profileAPI from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
-
 import * as theme from "@/styles/theme";
 
 export default function Home() {
