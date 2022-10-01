@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
-import { handleLogout } from "@/utils/logout";
+import useLogout from "@/hooks/useLogout";
 
 const LogoutTooltip = ({ ...props }) => {
+  const logout = useLogout();
+
   return (
     <Tooltip {...props}>
       <Arrow />
-      <Logout onClick={handleLogout}>logout</Logout>
+      <Logout onClick={logout}>logout</Logout>
     </Tooltip>
   );
 };

@@ -23,7 +23,7 @@ import { usernameRegExp } from "@/utils/validation";
 import profileAPI, { ProfilesPayload } from "@/utils/apis/profile";
 import * as theme from "@/styles/theme";
 import styled from "@emotion/styled";
-import { handleLogout } from "@/utils/logout";
+import useLogout from "@/hooks/useLogout";
 import { LINKOCEAN_PATH } from "@/utils/constants";
 
 const INITIAL_PROFILE = {
@@ -42,6 +42,8 @@ type UserCategory = {
 };
 
 const SignUp = () => {
+  const logout = useLogout();
+
   const [userCategory, setUserCategory] = useState<UserCategory>({
     value: [],
     errorText: "* 1개 이상 선택해주세요.",
@@ -175,7 +177,7 @@ const SignUp = () => {
           </StyledButton>
 
           <Link href="/" passHref>
-            <LinkText onClick={handleLogout}>
+            <LinkText onClick={logout}>
               이미 다른 계정이 있나요? 로그인하러 가기
             </LinkText>
           </Link>
