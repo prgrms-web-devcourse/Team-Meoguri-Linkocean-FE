@@ -26,8 +26,7 @@ import {
   BaseQueryType,
 } from "@/types/type";
 import { getQueryString } from "@/utils/queryString";
-
-const PAGE_SIZE = 8;
+import { PAGE_SIZE } from "@/utils/constants";
 
 interface MyBookmarkProps {
   type: FilterKeyType;
