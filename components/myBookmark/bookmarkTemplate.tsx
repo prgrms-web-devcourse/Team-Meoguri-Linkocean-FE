@@ -321,7 +321,7 @@ export const ContentDiv = styled.div`
 export const PaginationDiv = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 26px;
+  margin-top: 105px;
 `;
 
 export default MyBookmark;
