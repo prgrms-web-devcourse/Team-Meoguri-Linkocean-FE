@@ -37,3 +37,5 @@ export const CATEGORY_MAP = {
   여행: { color: "#82DD4A", fileName: "travel" },
   요리: { color: "#966353", fileName: "cooking" },
 } as const;
+
+export const PAGE_SIZE = 20;
