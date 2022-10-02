@@ -15,10 +15,6 @@ const Header: React.FC = () => {
 
   const { username, imageUrl } = useProfileState();
 
-  // const toggle = () => {
-  //   setShow(!show);
-  // };
-
   useEffect(() => {
     if (!storage.getItem("LINKOCEAN_TOKEN", false)) {
       router.push("/");
@@ -70,11 +66,7 @@ const Header: React.FC = () => {
         >
           {username}
         </UserName>
-        <LogoutTooltip
-          // onMouseLeave={toggle}
-          visible={show}
-          onClose={() => setShow(false)}
-        />
+        <LogoutTooltip visible={show} onClose={() => setShow(false)} />
       </UserWrapper>
     </StyledHeader>
   );

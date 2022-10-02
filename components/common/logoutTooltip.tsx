@@ -33,8 +33,8 @@ export default LogoutTooltip;
 
 const Tooltip = styled.div`
   position: absolute;
-  margin-top: 110px;
-  right: 20px;
+  margin-top: 83px;
+  right: 33px;
 `;
 
 const Arrow = styled.div`
