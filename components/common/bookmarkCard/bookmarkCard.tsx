@@ -82,7 +82,7 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
   }, [isShowShareBookmark]);
 
   return (
-    <Wrapper>
+    <div>
       {isShowShareBookmark ? (
         <ShareBookmark
           bookmarkId={id}
@@ -137,13 +137,9 @@ const BookmarkCard = ({ data, deleteBookmark, isMine }: BookmarkProps) => {
           </div>
         </Contents>
       </Card>
-    </Wrapper>
+    </div>
   );
 };
-
-const Wrapper = styled.div`
-  display: inline-block;
-`;
 
 const Card = styled.div`
   display: inline-flex;

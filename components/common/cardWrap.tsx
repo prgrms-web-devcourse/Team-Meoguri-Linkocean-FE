@@ -4,7 +4,6 @@ const CardWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(5, calc(20% - 20px));
   max-width: 1140px;
-  margin: auto;
   gap: 25px;
   @media (max-width: 1140px) {
     grid-template-columns: repeat(4, calc(25% - 19px));
