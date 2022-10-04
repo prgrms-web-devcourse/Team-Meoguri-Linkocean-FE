@@ -67,15 +67,13 @@ const Button = styled.button`
   padding: 0 11px;
   border-radius: 8px;
   ${text.$subtitle1}
-  font-weight: ${({ toggle }: { toggle: boolean }) =>
-    toggle ? "bold" : "normal"};
+  font-weight: normal;
   cursor: pointer;
   :hover {
-    background-color: ${({ toggle }: { toggle: boolean }) =>
-      toggle ? color.$hoverSkyBlue : "#eee"};
+    background-color: ${color.$skyBlue};
+    color: #fff;
     span {
-      color: ${({ toggle }: { toggle: boolean }) =>
-        toggle ? color.$hoverSkyBlue : color.$gray600};
+      color: ${color.$skyBlue};
     }
   }
   span {
@@ -94,17 +92,17 @@ const Button = styled.button`
 const ListBox = styled.ul`
   position: absolute;
   left: 2px;
-  width: 220px;
+  width: 250px;
   max-height: 280px;
   margin-top: 9px;
   padding: 10px 0;
   overflow-y: auto;
   border: 1px solid ${color.$gray100};
   border-radius: 8px;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 4px rgb(0 0 0 / 15%);
   background-color: #fff;
   overflow: overlay;
-
+  z-index: 10;
   &::-webkit-scrollbar {
     width: 11px;
   }
