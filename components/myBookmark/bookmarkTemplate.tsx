@@ -27,6 +27,7 @@ import {
 } from "@/types/type";
 import { getQueryString } from "@/utils/queryString";
 import { PAGE_SIZE } from "@/utils/constants";
+import TagResetButton from "./tagResetButton";
 
 interface MyBookmarkProps {
   type: FilterKeyType;
@@ -188,7 +189,7 @@ const MyBookmark = ({ type, categories = [], tags = [] }: MyBookmarkProps) => {
         </QueryDiv>
 
         {type === "tag" && (
-          <TagResultDiv>
+          <TagResultDiv hasTag={(state as TagQueryType).tags.length > 0}>
             {(state as TagQueryType).tags.map((curTag) => (
               <TagButton
                 key={curTag}
@@ -204,6 +205,13 @@ const MyBookmark = ({ type, categories = [], tags = [] }: MyBookmarkProps) => {
                 {curTag}
               </TagButton>
             ))}
+            {(state as TagQueryType).tags.length > 0 && (
+              <TagResetButton
+                onClick={() => {
+                  handleChanges([], "tags");
+                }}
+              />
+            )}
           </TagResultDiv>
         )}
       </FilterDiv>
@@ -297,11 +305,11 @@ export const QueryDiv = styled.div`
   gap: 14px;
 `;
 
-export const TagResultDiv = styled.div`
+export const TagResultDiv = styled.div<{ hasTag: boolean }>`
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 10px;
+  margin-top: ${({ hasTag }) => (hasTag ? "10px" : "0px")};
 `;
 
 export const Tag = styled.span``;

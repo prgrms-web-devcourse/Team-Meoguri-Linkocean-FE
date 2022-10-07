@@ -32,6 +32,7 @@ import {
   Title,
   Wrapper,
 } from "../myBookmark/bookmarkTemplate";
+import TagResetButton from "../myBookmark/tagResetButton";
 
 interface OtherBookmarkProps {
   otherProfile: ProfileDetail;
@@ -201,7 +202,7 @@ const OtherBookmark = ({ otherProfile, type }: OtherBookmarkProps) => {
         </QueryDiv>
 
         {type === "tag" && (
-          <TagResultDiv>
+          <TagResultDiv hasTag={(state as TagQueryType).tags.length > 0}>
             {(state as TagQueryType).tags.map((curTag) => (
               <TagButton
                 key={curTag}
@@ -217,6 +218,13 @@ const OtherBookmark = ({ otherProfile, type }: OtherBookmarkProps) => {
                 {curTag}
               </TagButton>
             ))}
+            {(state as TagQueryType).tags.length > 0 && (
+              <TagResetButton
+                onClick={() => {
+                  handleChanges([], "tags");
+                }}
+              />
+            )}
           </TagResultDiv>
         )}
       </FilterDiv>
