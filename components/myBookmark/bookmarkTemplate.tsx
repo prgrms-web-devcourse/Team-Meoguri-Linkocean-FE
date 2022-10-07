@@ -26,8 +26,7 @@ import {
   BaseQueryType,
 } from "@/types/type";
 import { getQueryString } from "@/utils/queryString";
-
-const PAGE_SIZE = 8;
+import { PAGE_SIZE } from "@/utils/constants";
 
 interface MyBookmarkProps {
   type: FilterKeyType;
@@ -322,7 +321,7 @@ export const ContentDiv = styled.div`
 export const PaginationDiv = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 26px;
+  margin-top: 105px;
 `;
 
 export default MyBookmark;

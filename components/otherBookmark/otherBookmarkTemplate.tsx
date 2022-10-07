@@ -12,7 +12,7 @@ import {
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { BookmarkList, ProfileDetail } from "@/types/model";
-import { LINKOCEAN_PATH } from "@/utils/constants";
+import { LINKOCEAN_PATH, PAGE_SIZE } from "@/utils/constants";
 import {
   BaseQueryType,
   CategoryQueryType,
@@ -32,8 +32,6 @@ import {
   Title,
   Wrapper,
 } from "../myBookmark/bookmarkTemplate";
-
-const PAGE_SIZE = 8;
 
 interface OtherBookmarkProps {
   otherProfile: ProfileDetail;
