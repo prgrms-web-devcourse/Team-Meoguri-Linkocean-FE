@@ -62,3 +62,9 @@ export type RobotsType =
   | "index, nofollow";
 
 export type FollowTabType = "follower" | "followee";
+
+export type AuthResponse = {
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+};

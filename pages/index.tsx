@@ -4,17 +4,17 @@ import { useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
 import { Meta } from "@/components/common";
 import GoogleLoginButton from "@/components/main/googleLoginButton";
-import profileAPI from "@/utils/apis/profile";
 import storage from "@/utils/localStorage";
 import { LINKOCEAN_PATH, STORAGE_KEY } from "@/utils/constants";
 import * as theme from "@/styles/theme";
+import authAPI from "@/utils/apis/auth";
 
 export default function Home() {
   const router = useRouter();
 
   const loginSuccess = useCallback(async () => {
     try {
-      const response = await profileAPI.loginSuccess();
+      const response = await authAPI.loginSuccess();
       const nextPage = response.data.hasProfile
         ? LINKOCEAN_PATH.myFavorite
         : LINKOCEAN_PATH.signup;
@@ -32,7 +32,7 @@ export default function Home() {
       }
 
       try {
-        const response = await profileAPI.auth(code);
+        const response = await authAPI.auth(code);
         storage.setItem(STORAGE_KEY.token, response.data.accessToken);
         storage.setItem(STORAGE_KEY.refreshToken, response.data.refreshToken);
         loginSuccess();
