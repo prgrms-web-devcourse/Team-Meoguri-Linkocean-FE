@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { color } from "@/styles/theme";
+import { color, media } from "@/styles/theme";
 import Image from "next/image";
 import ProfileImage from "@/components/common/profileImage";
 import LogoutTooltip from "@/components/common/logoutTooltip";
@@ -96,19 +96,17 @@ const Header: React.FC = () => {
               <Icon src="/icon/bell.svg" alt="alarm" width={30} height={30} />
             </AlarmWrapper>
           </Link>
-          <UserImg onClick={toggle}>
-            <ProfileImage size="sm" src={imageUrl} />
-          </UserImg>
-          <LogoutTooltip
-            onMouseLeave={toggle}
-            style={{ display: show ? "block" : "none" }}
-          />
+          <LogoutTooltip>
+            <UserImg onClick={toggle}>
+              <ProfileImage size="sm" src={imageUrl} />
+            </UserImg>
+          </LogoutTooltip>
           <Link href="/create">
             <Button
               buttonType="large"
               colorType="main-color"
               width="127"
-              style={{ margin: "20px" }}
+              style={{ marginLeft: "20px" }}
             >
               북마크 추가 +
             </Button>
@@ -128,18 +126,21 @@ const StyledHeader = styled.div`
 
 const HeaderWrapper = styled.h1`
   min-width: 820px;
-  max-width: 1130px;
+  max-width: 1240px;
+  padding: 0 50px;
   height: 80px;
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
   margin: auto;
+  box-sizing: border-box;
+  ${media.laptop} {
+    padding: 0 30px;
+  }
 `;
 
 const Logo = styled.a`
   cursor: pointer;
-  padding-top: 25px;
-  padding-left: 20px;
   margin-right: 20px;
 `;
 
@@ -160,6 +161,7 @@ const LinkOcean = styled.h1`
 const NavigatorWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const Navigator = styled.a`
