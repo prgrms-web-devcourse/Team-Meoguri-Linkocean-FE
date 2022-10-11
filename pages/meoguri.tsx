@@ -146,29 +146,16 @@ const Meoguri = () => {
   return (
     <>
       <Meta
-        title="머구리 찾기"
+        title="사용자 검색"
         description="세계 최고의 북마크 공유 & 관리 서비스 링크오션"
         og={{}}
         robots="noindex, nofollow"
       />
 
       <PageLayout>
-        <PageLayout.Aside>
-          <UserInfo />
-          <MyFilterMenu
-            tagList={userProfile.tags}
-            categoryList={userProfile.categories}
-            getCategoryData={(category) => {
-              router.push(`${LINKOCEAN_PATH.myCategory}?category=${category}`);
-            }}
-            getTagsData={(tags) => {
-              router.push(`${LINKOCEAN_PATH.myTag}?tags=${tags[0]}`);
-            }}
-          />
-        </PageLayout.Aside>
         <PageLayout.Article>
           <Layout>
-            <Title>머구리 찾기</Title>
+            <Title>사용자 검색</Title>
 
             <Form onSubmit={handleSubmit}>
               <Input
@@ -187,30 +174,26 @@ const Meoguri = () => {
               </Button>
             </Form>
 
-            <MeoguriCardContainer>
-              {!isLoading &&
+            {!isLoading &&
               router.query.name !== undefined &&
-              profiles.length === 0 ? (
-                <NoResult />
-              ) : (
-                profiles.map(
-                  ({ profileId, imageUrl, isFollow, username }, index) => (
-                    <div
-                      ref={
-                        isLastCard(index, profiles.length) ? setTarget : null
-                      }
-                      key={profileId}
-                    >
-                      <Following
-                        profileId={profileId}
-                        profileImg={imageUrl}
-                        userName={username}
-                        following={isFollow}
-                        handleClick={handleFollow}
-                        isMine={profileId === userProfile.profileId}
-                      />
-                    </div>
-                  )
+              profiles.length === 0 && <NoResult />}
+
+            <MeoguriCardContainer>
+              {profiles.map(
+                ({ profileId, imageUrl, isFollow, username }, index) => (
+                  <div
+                    ref={isLastCard(index, profiles.length) ? setTarget : null}
+                    key={profileId}
+                  >
+                    <Following
+                      profileId={profileId}
+                      profileImg={imageUrl}
+                      userName={username}
+                      following={isFollow}
+                      handleClick={handleFollow}
+                      isMine={profileId === userProfile.profileId}
+                    />
+                  </div>
                 )
               )}
             </MeoguriCardContainer>
@@ -223,7 +206,7 @@ const Meoguri = () => {
 };
 
 const Title = styled.h2`
-  margin: 9px 0 35px 15px;
+  margin: 9px 0 35px 0px;
   color: ${theme.color.$gray800};
   ${theme.text.$headline5};
 `;
