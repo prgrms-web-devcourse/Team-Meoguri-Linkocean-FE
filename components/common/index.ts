@@ -29,5 +29,5 @@ export { default as Star } from "./star";
 export { default as TagButton } from "./tagButton";
 export { default as Textarea } from "./textarea";
 export { default as Top } from "./top";
-export { default as UserInfo } from "./userInfo";
+export { default as UserInfo } from "./userInfo/userInfo";
 export { default as SelectCheckbox } from "./selectCheckbox";

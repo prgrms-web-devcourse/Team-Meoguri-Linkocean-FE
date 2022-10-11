@@ -1,4 +1,4 @@
-import UserInfo, { UserInfoProps } from "@/components/common/userInfo";
+import UserInfo, { UserInfoProps } from "@/components/common/userInfo/userInfo";
 
 export default {
   title: "components/UserInfo",
