@@ -45,7 +45,11 @@ const Tag = () => {
       <PageLayout>
         <PageLayout.Article>
           {otherProfileInfo && (
-            <OtherBookmark type="tag" otherProfile={otherProfileInfo} />
+            <OtherBookmark
+              type="tag"
+              otherProfile={otherProfileInfo}
+              onFollow={setOtherProfileInfo}
+            />
           )}
         </PageLayout.Article>
       </PageLayout>

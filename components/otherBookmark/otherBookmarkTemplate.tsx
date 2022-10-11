@@ -38,9 +38,14 @@ import TagResetButton from "../myBookmark/tagResetButton";
 interface OtherBookmarkProps {
   otherProfile: ProfileDetail;
   type: FilterKeyType;
+  onFollow: (otherProfile: ProfileDetail) => void;
 }
 
-const OtherBookmark = ({ otherProfile, type }: OtherBookmarkProps) => {
+const OtherBookmark = ({
+  otherProfile,
+  type,
+  onFollow,
+}: OtherBookmarkProps) => {
   const router = useRouter();
   const searchTitleRef = useRef<HTMLInputElement>(null);
 
@@ -68,6 +73,21 @@ const OtherBookmark = ({ otherProfile, type }: OtherBookmarkProps) => {
     bookmarks: [],
   });
   const [deleteId, setDeleteId] = useState<number>();
+
+  const handleFollow = () => {
+    const nextOtherProfile = {
+      ...otherProfile,
+      isFollow: !otherProfile.isFollow,
+    };
+
+    if (otherProfile.isFollow) {
+      nextOtherProfile.followerCount -= 1;
+    } else {
+      nextOtherProfile.followerCount += 1;
+    }
+
+    onFollow(nextOtherProfile);
+  };
 
   const handleChanges = (value: string | number | string[], name: string) => {
     if (state[name as keyof typeof state] === value) {
@@ -135,7 +155,7 @@ const OtherBookmark = ({ otherProfile, type }: OtherBookmarkProps) => {
 
   return (
     <Wrapper>
-      <UserInfo data={otherProfile} />
+      <UserInfo data={otherProfile} handleClick={handleFollow} />
 
       <Title>{`${otherProfile.username} 북마크`}</Title>
 

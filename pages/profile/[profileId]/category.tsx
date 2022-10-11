@@ -45,7 +45,11 @@ const Category = () => {
       <PageLayout>
         <PageLayout.Article>
           {otherProfileInfo && (
-            <OtherBookmark type="category" otherProfile={otherProfileInfo} />
+            <OtherBookmark
+              type="category"
+              otherProfile={otherProfileInfo}
+              onFollow={setOtherProfileInfo}
+            />
           )}
         </PageLayout.Article>
       </PageLayout>
