@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 const CardWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(5, calc(20% - 20px));
-  max-width: 1140px;
+  max-width: 1130px;
   gap: 25px;
-  @media (max-width: 1140px) {
+  @media (max-width: 1130px) {
     grid-template-columns: repeat(4, calc(25% - 19px));
     width: 100%;
   }

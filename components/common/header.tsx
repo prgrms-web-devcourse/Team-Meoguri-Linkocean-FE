@@ -126,14 +126,13 @@ const StyledHeader = styled.div`
 
 const HeaderWrapper = styled.h1`
   min-width: 820px;
-  max-width: 1240px;
+  max-width: 1230px;
   padding: 0 50px;
   height: 80px;
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
   margin: auto;
-  box-sizing: border-box;
   ${media.laptop} {
     padding: 0 30px;
   }

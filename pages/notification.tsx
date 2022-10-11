@@ -115,7 +115,7 @@ export default Notifications;
 const Contents = styled.div`
   display: flex;
   flex-direction: column;
-  width: 1140px;
+  width: 1130px;
   margin: auto;
 `;
 
