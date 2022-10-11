@@ -45,7 +45,11 @@ const Favorite = () => {
       <PageLayout>
         <PageLayout.Article>
           {otherProfileInfo && (
-            <OtherBookmark type="favorite" otherProfile={otherProfileInfo} />
+            <OtherBookmark
+              type="favorite"
+              otherProfile={otherProfileInfo}
+              onFollow={setOtherProfileInfo}
+            />
           )}
         </PageLayout.Article>
       </PageLayout>
