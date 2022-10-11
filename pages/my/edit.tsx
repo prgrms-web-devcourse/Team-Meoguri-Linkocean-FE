@@ -71,8 +71,8 @@ const Edit = () => {
         }
         break;
       case "bio":
-        if (value.length > 200) {
-          setBioErrorMsg("* 200글자 이하로 작성해주세요");
+        if (value.length > 160) {
+          setBioErrorMsg("* 160글자 이하로 작성해주세요");
         } else {
           setBioErrorMsg("");
         }
