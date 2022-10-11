@@ -1,7 +1,6 @@
 import "@/styles/reset.css";
 import "@/styles/global.css";
 import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
 import ProfileProvider from "@/store/ProfileProvider";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
@@ -9,11 +8,8 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 }
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    <SessionProvider session={pageProps.session}>
-      <ProfileProvider>
-        <Component {...pageProps} />
-      </ProfileProvider>
-    </SessionProvider>
+    <ProfileProvider>
+      <Component {...pageProps} />
+    </ProfileProvider>
   );
 }

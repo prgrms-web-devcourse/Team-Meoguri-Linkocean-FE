@@ -1,52 +1,34 @@
 import { useRouter } from "next/router";
-import {
-  ChangeEvent,
-  FormEvent,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import { FormEvent, useState, useEffect, useCallback, useRef } from "react";
 import styled from "@emotion/styled";
 import {
   Input,
   PageLayout,
-  Button,
-  Label,
-  Checkbox,
   Select,
   Pagination,
   BookmarkCard,
   NoResult,
   Meta,
+  CardWrap,
 } from "@/components/common";
-import FeedFilterMenu from "@/components/common/filterMenu/feedFilterMenu";
 import { BookmarkList } from "@/types/model";
-import { CATEGORY } from "@/types/type";
+import { CATEGORY, CategoryQueryType, SortType } from "@/types/type";
 import { useProfileState } from "@/hooks/useProfile";
 import bookmarkAPI from "@/utils/apis/bookmark";
 import { getQueryString } from "@/utils/queryString";
-import { LINKOCEAN_PATH } from "@/utils/constants";
-import * as theme from "@/styles/theme";
+import { LINKOCEAN_PATH, PAGE_SIZE } from "@/utils/constants";
 
-const PAGE_SIZE = 8;
+import {
+  FilterDiv,
+  PaginationDiv,
+  SubFilterDiv,
+  Title,
+  Wrapper,
+} from "@/components/myBookmark/bookmarkTemplate";
 
-type CategoryType = "전체" | typeof CATEGORY[number];
-type OrderType = "upload" | "like";
-
-type Filtering = {
-  category: CategoryType;
-  searchTitle: string;
-  follow: boolean;
-  order: OrderType;
-  page: number;
-  size: number;
-};
-
-const INITIAL_FILTERING: Filtering = {
+const INITIAL_FILTERING: CategoryQueryType = {
   category: "전체",
   searchTitle: "",
-  follow: false,
   order: "upload",
   page: 1,
   size: PAGE_SIZE,
@@ -56,7 +38,7 @@ const Feed = () => {
   const router = useRouter();
 
   const { profileId } = useProfileState();
-  const [state, setState] = useState<Filtering>(INITIAL_FILTERING);
+  const [state, setState] = useState<CategoryQueryType>(INITIAL_FILTERING);
   const [feedBookmarks, setFeedBookmarks] = useState<BookmarkList>({
     totalCount: 0,
     bookmarks: [],
@@ -72,7 +54,7 @@ const Feed = () => {
     }
     setSearchTitleInputValue(state.searchTitle);
 
-    const query: Partial<Filtering> = { ...state };
+    const query: Partial<CategoryQueryType> = { ...state };
     if (query.category === "전체") {
       delete query.category;
     }
@@ -85,7 +67,7 @@ const Feed = () => {
   }, [state, isRouterReady]);
 
   const changeRoutePath = useCallback(
-    (nextState: Filtering) => {
+    (nextState: CategoryQueryType) => {
       const { size, searchTitle, ...query } = nextState;
 
       router.push({
@@ -96,38 +78,19 @@ const Feed = () => {
     [router]
   );
 
-  const handleChangeState = (nextState: Filtering) => {
+  const handleChanges = (
+    value: string | number | string[],
+    name: keyof CategoryQueryType
+  ) => {
+    if (state[name] === value) {
+      return;
+    }
+
+    const nextState = { ...state, page: 1, [name]: value };
     setState(nextState);
     changeRoutePath(nextState);
   };
-  const handleChangeFollow = ({
-    target: { checked },
-  }: ChangeEvent<HTMLInputElement>) => {
-    handleChangeState({
-      ...state,
-      page: INITIAL_FILTERING.page,
-      follow: checked,
-    });
-  };
 
-  const handleChangeCategory = (selectedCategory: string) => {
-    handleChangeState({
-      ...state,
-      searchTitle: INITIAL_FILTERING.searchTitle,
-      page: INITIAL_FILTERING.page,
-      category: selectedCategory as CategoryType,
-    });
-  };
-  const handleChangeOrder = (selectedOrder: string) => {
-    handleChangeState({
-      ...state,
-      page: INITIAL_FILTERING.page,
-      order: selectedOrder as OrderType,
-    });
-  };
-  const handleChangePages = (page: number) => {
-    handleChangeState({ ...state, page });
-  };
   const handleChangeSearchTitle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -141,11 +104,7 @@ const Feed = () => {
 
     searchTitleRef?.current?.blur();
 
-    handleChangeState({
-      ...state,
-      page: INITIAL_FILTERING.page,
-      searchTitle: trimmedSearchTitle,
-    });
+    handleChanges(trimmedSearchTitle, "searchTitle");
   };
 
   const handleBookmarkDelete = (id: number) => {
@@ -181,14 +140,12 @@ const Feed = () => {
 
     const searchTitle = query.searchTitle as string;
     const page = parseInt(query.page as string, 10);
-    const follow = (query.follow as string) === "true";
     setIsRouterReady(true);
 
     setState({
       ...INITIAL_FILTERING,
       ...query,
       page,
-      follow,
     });
     setSearchTitleInputValue(searchTitle);
 
@@ -209,7 +166,9 @@ const Feed = () => {
   return (
     <>
       <Meta
-        title={`${state.searchTitle} - 전체 피드 검색`.trim()}
+        title={`${
+          state.searchTitle !== "" ? `${state.searchTitle} -` : ""
+        } 전체 피드 검색`.trim()}
         description={`${
           state.searchTitle !== "" ? `${state.searchTitle} -` : ""
         } LinkOcean 전체 피드 검색 결과입니다.`.trim()}
@@ -221,141 +180,94 @@ const Feed = () => {
       />
 
       <PageLayout>
-        <PageLayout.Aside>
-          {isRouterReady ? (
-            <FeedFilterMenu
-              getCategoryData={handleChangeCategory}
-              category={state.category}
-            />
-          ) : null}
-        </PageLayout.Aside>
-
         <PageLayout.Article>
-          <Layout>
+          <Wrapper>
             <Title>피드 페이지</Title>
+            <FeedFilterDiv>
+              <Select
+                version2
+                selectedOption={{
+                  value: state.category,
+                  text: state.category,
+                }}
+                onChange={(category) => handleChanges(category, "category")}
+              >
+                <Select.Trigger>선택</Select.Trigger>
+                <Select.OptionList>
+                  {["전체", ...CATEGORY].map((category) => (
+                    <Select.Option value={category} key={category}>
+                      {category}
+                    </Select.Option>
+                  ))}
+                </Select.OptionList>
+              </Select>
 
-            <Form action="submit" onSubmit={handleChangeSearchTitle}>
-              <SearchTitle>
+              <form action="submit" onSubmit={handleChangeSearchTitle}>
                 <Input
                   searchIcon
                   name="searchTitle"
                   ref={searchTitleRef}
+                  endIcon
+                  style={{ border: 0 }}
                   value={searchTitleInputValue}
                   onChange={(e) => setSearchTitleInputValue(e.target.value)}
+                  autoFocus
                 />
-                <Button
-                  colorType="main-color"
-                  buttonType="small"
-                  type="submit"
-                  width="82"
-                >
-                  검색
-                </Button>
-              </SearchTitle>
+              </form>
+            </FeedFilterDiv>
 
-              <FormRight>
-                <Follow>
-                  <Label
-                    htmlFor="follow"
-                    style={{ userSelect: "none", cursor: "pointer" }}
-                  >
-                    팔로워 게시글만
-                  </Label>
-                  <Checkbox
-                    name="follow"
-                    id="follow"
-                    on={state.follow}
-                    onChange={handleChangeFollow}
-                  />
-                </Follow>
-
-                <div>
+            {state.searchTitle !== "" && feedBookmarks.totalCount === 0 ? (
+              <NoResult />
+            ) : (
+              <>
+                <SubFilterDiv>
+                  <h2>전체 {feedBookmarks?.totalCount.toLocaleString()}개</h2>
                   <Select
-                    onChange={handleChangeOrder}
+                    onChange={(order) => handleChanges(order, "order")}
                     selectedOption={{
                       value: state.order,
-                      text: state.order === "upload" ? "최신 순" : "좋아요 순",
+                      text: SortType[state.order],
                     }}
+                    version2
                   >
-                    <Select.Trigger>정렬</Select.Trigger>
+                    <Select.Trigger>선택</Select.Trigger>
                     <Select.OptionList>
                       <Select.Option value="upload">최신 순</Select.Option>
                       <Select.Option value="like">좋아요 순</Select.Option>
                     </Select.OptionList>
                   </Select>
-                </div>
-              </FormRight>
-            </Form>
+                </SubFilterDiv>
 
-            <BookmarkContainer>
-              {state.searchTitle !== "" && feedBookmarks.totalCount === 0 ? (
-                <NoResult />
-              ) : (
-                feedBookmarks.bookmarks.map((bookmark) => (
-                  <BookmarkCard
-                    key={bookmark.id}
-                    data={bookmark}
-                    deleteBookmark={handleBookmarkDelete}
-                    isMine={profileId === bookmark.profile?.profileId}
-                  />
-                ))
-              )}
-            </BookmarkContainer>
+                <CardWrap>
+                  {feedBookmarks.bookmarks.map((bookmark) => (
+                    <BookmarkCard
+                      key={bookmark.id}
+                      data={bookmark}
+                      deleteBookmark={handleBookmarkDelete}
+                      isMine={profileId === bookmark.profile?.profileId}
+                    />
+                  ))}
+                </CardWrap>
+              </>
+            )}
 
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <PaginationDiv>
               <Pagination
-                defaultPage={state.page}
                 count={Math.ceil(feedBookmarks.totalCount / state.size)}
-                onChange={handleChangePages}
+                onChange={(pageNum) => handleChanges(pageNum, "page")}
+                defaultPage={state.page}
               />
-            </div>
-          </Layout>
+            </PaginationDiv>
+          </Wrapper>
         </PageLayout.Article>
       </PageLayout>
     </>
   );
 };
 
-const Layout = styled.div`
+const FeedFilterDiv = styled(FilterDiv)`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 835px;
-  margin: 0 auto;
-`;
-
-const Title = styled.h2`
-  margin: 9px 0 35px 15px;
-  color: ${theme.color.$gray800};
-  ${theme.text.$headline5};
-`;
-
-const Form = styled.form`
-  display: inline-flex;
-  justify-content: space-between;
-  margin-bottom: 37px;
-`;
-
-const SearchTitle = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const FormRight = styled.div`
-  display: flex;
-  gap: 27px;
-`;
-
-const Follow = styled.div`
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 12px;
-`;
-
-const BookmarkContainer = styled.div`
-  margin-bottom: 90px;
-  min-height: 288px;
+  gap: 14px;
 `;
 
 export default Feed;

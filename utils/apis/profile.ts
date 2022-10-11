@@ -1,20 +1,13 @@
 import { ProfileDetail, ProfileList } from "@/types/model";
 import { CATEGORY } from "@/types/type";
-import { unauthInstance, authInstance } from "./instance";
+import { authInstance } from "./instance";
 
-export type OauthType = "GOOGLE" | "NAVER" | "KAKAO";
-export type LoginPayload = { email: string; oauthType: OauthType };
 export type ProfilesPayload = {
   username: string;
   categories: typeof CATEGORY[number][];
 };
 
 const profileAPI = {
-  login: (payload: LoginPayload) =>
-    unauthInstance.post<{ token: string }>("/login", payload),
-  loginSuccess: () =>
-    authInstance.get<{ hasProfile: boolean }>("/login/success"),
-  logout: () => authInstance.post("/users/logout"),
   createProfile: (payload: ProfilesPayload) =>
     authInstance.post<{ id: number }>("/profiles", payload),
   getOtherProfile: (profileId: number) =>

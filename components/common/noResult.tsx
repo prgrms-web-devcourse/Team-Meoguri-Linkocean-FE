@@ -17,7 +17,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 835px;
   height: 420px;
   opacity: 0.7;
 `;

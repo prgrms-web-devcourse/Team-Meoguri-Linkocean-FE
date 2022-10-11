@@ -17,7 +17,6 @@ const PageLayout = ({ children }: PageLayoutProps) => {
 const Layout = styled.div`
   min-height: 100vh;
   main {
-    display: flex;
     min-height: calc(100vh - 62px);
   }
   box-sizing: border-box;

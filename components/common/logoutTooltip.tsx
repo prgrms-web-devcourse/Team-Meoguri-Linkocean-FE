@@ -1,12 +1,22 @@
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
-import { handleLogout } from "@/utils/logout";
+import useLogout from "@/hooks/useLogout";
+import { ReactElement } from "react";
+import useToggle from "@/hooks/useToggle";
 
-const LogoutTooltip = ({ ...props }) => {
+const LogoutTooltip = ({ children, ...props }: { children?: ReactElement }) => {
+  const logout = useLogout();
+  const [toggle, setToggle] = useToggle(false);
+
   return (
-    <Tooltip {...props}>
-      <Arrow />
-      <Logout onClick={handleLogout}>logout</Logout>
+    <Tooltip {...props} onClick={setToggle}>
+      {children}
+      {toggle ? (
+        <Wrap>
+          <Arrow />
+          <Logout onClick={logout}>logout</Logout>
+        </Wrap>
+      ) : null}
     </Tooltip>
   );
 };
@@ -14,15 +24,19 @@ const LogoutTooltip = ({ ...props }) => {
 export default LogoutTooltip;
 
 const Tooltip = styled.div`
+  position: relative;
+`;
+
+const Wrap = styled.div`
   position: absolute;
-  margin-top: 110px;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const Arrow = styled.div`
   width: 0;
   height: 0;
-  margin-left: 146px;
+  margin-left: 80px;
   border-bottom: 8px solid ${color.$skyBlue};
   border-top: 8px solid transparent;
   border-left: 8px solid transparent;

@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import MyFilterMenu from "@/components/common/filterMenu/myFilterMenu";
-import FollowRadio from "@/components/follow/followRadio";
 import {
   Following,
   UserInfo,
@@ -15,14 +13,15 @@ import profileAPI from "@/utils/apis/profile";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useProfileState, useProfileDispatch } from "@/hooks/useProfile";
 import { getQueryString } from "@/utils/queryString";
-import { LINKOCEAN_PATH } from "@/utils/constants";
+import { FollowTabType } from "@/types/type";
+import FollowTabList from "../../components/follow/followTabList";
 
 const PAGE_SIZE = 8;
 export const isLastCard = (index: number, length: number) =>
   index === Math.max(0, length - 1);
 
 type Filtering = {
-  tab: "follower" | "followee";
+  tab: FollowTabType;
   page: number;
   size: number;
 };
@@ -42,10 +41,9 @@ const Follow = () => {
     isLoading: boolean;
   }>({ value: [], isLoading: false });
   const [isEndPage, setIsEndPage] = useState(false);
-  const router = useRouter();
 
-  const handleChange = (type: string, value: string | number) => {
-    setState({ ...state, [type]: value, page: INITIAL_FILTERING.page });
+  const handleChange = (tab: FollowTabType) => {
+    setState({ ...state, tab, page: INITIAL_FILTERING.page });
     setIsEndPage(false);
   };
   const handleFollow = (profileId: number) => {
@@ -131,41 +129,11 @@ const Follow = () => {
       />
 
       <PageLayout>
-        <PageLayout.Aside>
-          <UserInfo />
-          <MyFilterMenu
-            tagList={userProfile.tags}
-            categoryList={userProfile.categories}
-            getCategoryData={(category: string) => {
-              router.push(`${LINKOCEAN_PATH.myCategory}?category=${category}`);
-            }}
-            getTagsData={(tags: string[]) => {
-              router.push(`${LINKOCEAN_PATH.myCategory}?tags=${tags[0]}`);
-            }}
-          />
-        </PageLayout.Aside>
         <PageLayout.Article>
           <Layout>
-            <Form>
-              <FollowRadio
-                name="follow"
-                id="follower"
-                text={`팔로워 (${userProfile.followerCount})`}
-                checked={state.tab === "follower"}
-                onChange={() => {
-                  handleChange("tab", "follower");
-                }}
-              />
-              <FollowRadio
-                name="follow"
-                id="followee"
-                text={`팔로잉 (${userProfile.followeeCount})`}
-                checked={state.tab === "followee"}
-                onChange={() => {
-                  handleChange("tab", "followee");
-                }}
-              />
-            </Form>
+            <UserInfo />
+
+            <FollowTabList profile={userProfile} onClick={handleChange} />
 
             <FollowCardContainer>
               {followProfiles.value.map(
@@ -201,21 +169,18 @@ export const Layout = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 835px;
-  margin: 0 auto;
-`;
-
-export const Form = styled.form`
-  margin-bottom: 37px;
-  text-align: center;
+  margin: auto;
+  max-width: 1130px;
 `;
 
 export const FollowCardContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 31px;
-  width: 835px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 20px 15px;
+  @media (max-width: 1209px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export default Follow;

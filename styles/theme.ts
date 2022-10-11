@@ -82,9 +82,17 @@ export const shortenOneLine = `
   overflow: hidden;
 `;
 
+export const shortenNLine = (n: number) => `
+  overflow: hidden;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: ${n};
+  -webkit-box-orient: vertical;
+`;
+
 export const media = {
-  desktop: `@media only screen and (max-width: ${size.desktop})`,
-  laptop: `@media only screen and (max-width: ${size.laptop})`,
-  tablet: `@media only screen and (max-width: ${size.tablet})`,
-  mobile: `@media only screen and (max-width: ${size.mobile})`,
+  desktop: `@media (max-width: ${size.desktop})`,
+  laptop: `@media (max-width: ${size.laptop})`,
+  tablet: `@media (max-width: ${size.tablet})`,
+  mobile: `@media (max-width: ${size.mobile})`,
 };
