@@ -8,6 +8,7 @@ import {
   SelectCheckbox,
   CardWrap,
   TagButton,
+  UserInfo,
 } from "@/components/common";
 import { useRouter } from "next/router";
 import bookmarkAPI from "@/utils/apis/bookmark";
@@ -134,7 +135,10 @@ const OtherBookmark = ({ otherProfile, type }: OtherBookmarkProps) => {
 
   return (
     <Wrapper>
+      <UserInfo data={otherProfile} />
+
       <Title>{`${otherProfile.username} 북마크`}</Title>
+
       <FilterDiv>
         <QueryDiv>
           <Select

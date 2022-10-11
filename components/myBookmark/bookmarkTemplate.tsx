@@ -8,6 +8,7 @@ import {
   NoResult,
   SelectCheckbox,
   TagButton,
+  UserInfo,
 } from "@/components/common";
 import styled from "@emotion/styled";
 import { color, text } from "@/styles/theme";
@@ -124,7 +125,10 @@ const MyBookmark = ({ type, categories = [], tags = [] }: MyBookmarkProps) => {
 
   return (
     <Wrapper>
+      <UserInfo />
+
       <Title>내 북마크</Title>
+
       <FilterDiv>
         <QueryDiv>
           <Select
@@ -277,7 +281,7 @@ export const Wrapper = styled.div`
 export const Title = styled.h1`
   ${text.$headline5}
   color:${color.$gray800};
-  margin: 9px 0 28px 0;
+  margin: 26px 0 28px 0;
 `;
 
 export const FilterDiv = styled.div`
@@ -311,8 +315,6 @@ export const TagResultDiv = styled.div<{ hasTag: boolean }>`
   gap: 6px;
   margin-top: ${({ hasTag }) => (hasTag ? "10px" : "0px")};
 `;
-
-export const Tag = styled.span``;
 
 export const SubFilterDiv = styled.div`
   display: flex;
