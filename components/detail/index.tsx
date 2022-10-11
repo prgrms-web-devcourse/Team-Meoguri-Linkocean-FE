@@ -165,7 +165,7 @@ const DetailPage = ({ data, id }: { data: BookmarkDetail; id: number }) => {
 };
 
 const Page = styled.div`
-  width: 835px;
+  width: 1130px;
   margin: auto;
   cursor: default;
   ${media.desktop} {
