@@ -170,7 +170,7 @@ export const Layout = styled.div`
   flex-direction: column;
   justify-content: center;
   margin: auto;
-  max-width: 1140px;
+  max-width: 1130px;
 `;
 
 export const FollowCardContainer = styled.div`

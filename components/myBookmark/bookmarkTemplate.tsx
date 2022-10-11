@@ -273,7 +273,7 @@ const MyBookmark = ({ type, categories = [], tags = [] }: MyBookmarkProps) => {
 
 export const Wrapper = styled.div`
   margin: auto;
-  max-width: 1140px;
+  max-width: 1130px;
   display: flex;
   flex-direction: column;
 `;
