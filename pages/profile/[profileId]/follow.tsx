@@ -7,7 +7,6 @@ import {
   Top,
   Meta,
 } from "@/components/common";
-import OtherFilterMenu from "@/components/common/filterMenu/otherFilterMenu";
 import { FollowCardContainer, isLastCard, Layout } from "@/pages/my/follow";
 import { Profile, ProfileDetail } from "@/types/model";
 import profileAPI from "@/utils/apis/profile";
@@ -201,31 +200,10 @@ const Follow = () => {
       />
 
       <PageLayout>
-        <PageLayout.Aside>
-          {userProfile ? (
-            <>
-              <UserInfo data={userProfile} handleClick={handleUserInfo} />
-              <OtherFilterMenu
-                tagList={userProfile.tags}
-                categoryList={userProfile.categories}
-                getCategoryData={(category) => {
-                  router.push(
-                    `${LINKOCEAN_PATH.other}/${userProfile.profileId}/category?category=${category}`
-                  );
-                }}
-                getTagsData={(tags) => {
-                  router.push(
-                    `${LINKOCEAN_PATH.other}/${userProfile.profileId}/tag?tags=${tags[0]}`
-                  );
-                }}
-              />
-            </>
-          ) : (
-            "로딩 중..."
-          )}
-        </PageLayout.Aside>
         <PageLayout.Article>
           <Layout>
+            <UserInfo data={userProfile} handleClick={handleUserInfo} />
+
             <FollowTabList profile={userProfile} onClick={handleChange} />
 
             <FollowCardContainer>
