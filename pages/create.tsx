@@ -115,25 +115,6 @@ const Create = () => {
     }
   };
 
-  const AsideMemo = React.useMemo(
-    () => (
-      <PageLayout.Aside>
-        <UserInfo data={userProfile} />
-        <MyFilterMenu
-          tagList={userProfile.tags}
-          categoryList={userProfile.categories}
-          getCategoryData={(category) => {
-            router.push(`/my/category?category=${category}`);
-          }}
-          getTagsData={(tags) => {
-            router.push(`/my/tag?tags=${tags[0]}`);
-          }}
-        />
-      </PageLayout.Aside>
-    ),
-    [userProfile, router]
-  );
-
   return (
     <>
       <Meta
@@ -142,7 +123,6 @@ const Create = () => {
         robots="noindex, nofollow"
       />
       <PageLayout>
-        {AsideMemo}
         <PageLayout.Article>
           <Contents>
             <DivWrapper>
