@@ -7,10 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import bookmarkAPI, { EditBookmarkPayload } from "@/utils/apis/bookmark";
 import { CATEGORY, OpenType } from "@/types/type";
-import { useProfileDispatch, useProfileState } from "@/hooks/useProfile";
+import { useProfileDispatch } from "@/hooks/useProfile";
 import {
-  UserInfo,
-  MyFilterMenu,
   PageLayout,
   Input,
   Label,
@@ -25,7 +23,6 @@ import {
 type EditCategoryType = typeof CATEGORY[number] | "no-category";
 
 const Edit = () => {
-  const userProfile = useProfileState();
   const router = useRouter();
   const dispatch = useProfileDispatch();
   const [priorTag, setPriorTag] = useState<string[]>();
@@ -115,25 +112,6 @@ const Edit = () => {
     }
   };
 
-  const AsideMemo = React.useMemo(
-    () => (
-      <PageLayout.Aside>
-        <UserInfo data={userProfile} />
-        <MyFilterMenu
-          tagList={userProfile.tags}
-          categoryList={userProfile.categories}
-          getCategoryData={(category) => {
-            router.push(`/my/category?category=${category}`);
-          }}
-          getTagsData={(tags) => {
-            router.push(`/my/tag?tags=${tags[0]}`);
-          }}
-        />
-      </PageLayout.Aside>
-    ),
-    [userProfile, router]
-  );
-
   return (
     <>
       <Meta
@@ -142,7 +120,6 @@ const Edit = () => {
         robots="noindex, nofollow"
       />
       <PageLayout>
-        {AsideMemo}
         <PageLayout.Article>
           <Contents>
             <DivWrapper>
@@ -263,15 +240,6 @@ const Edit = () => {
                     onChange={radioHandler}
                   />
                 </Contents>
-                <Contents>
-                  <OptionLabel>일부공개</OptionLabel>
-                  <StyledRadio
-                    name="openType"
-                    value="partial"
-                    checked={openType === "partial"}
-                    onChange={radioHandler}
-                  />
-                </Contents>
               </RadioWrapper>
 
               <ButtonWrapper>
@@ -351,7 +319,7 @@ const StyledSelect = styled.div`
 
 const RadioWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 30%;
   width: 470px;
   margin: 10px 0 0 2px;
 `;
