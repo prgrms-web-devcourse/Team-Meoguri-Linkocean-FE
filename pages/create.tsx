@@ -248,15 +248,6 @@ const Create = () => {
                     onChange={radioHandler}
                   />
                 </Contents>
-                <Contents>
-                  <OptionLabel>일부공개</OptionLabel>
-                  <StyledRadio
-                    name="openType"
-                    value="partial"
-                    checked={openType === "partial"}
-                    onChange={radioHandler}
-                  />
-                </Contents>
               </RadioWrapper>
               {submit && openType === undefined ? (
                 <StyledErrorText>
@@ -334,7 +325,7 @@ const StyledInput = styled(Input)`
 
 const RadioWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 30%;
   width: 470px;
   margin: 10px 0 0 2px;
 `;

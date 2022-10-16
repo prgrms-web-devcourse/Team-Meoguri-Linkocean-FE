@@ -263,15 +263,6 @@ const Edit = () => {
                     onChange={radioHandler}
                   />
                 </Contents>
-                <Contents>
-                  <OptionLabel>일부공개</OptionLabel>
-                  <StyledRadio
-                    name="openType"
-                    value="partial"
-                    checked={openType === "partial"}
-                    onChange={radioHandler}
-                  />
-                </Contents>
               </RadioWrapper>
 
               <ButtonWrapper>
@@ -351,7 +342,7 @@ const StyledSelect = styled.div`
 
 const RadioWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 30%;
   width: 470px;
   margin: 10px 0 0 2px;
 `;
