@@ -1,6 +1,9 @@
 import { media } from "@/styles/theme";
 import styled from "@emotion/styled";
-import { PageLayoutProps } from "./aside";
+
+export interface PageLayoutProps {
+  children: React.ReactNode;
+}
 
 const Article = ({ children }: PageLayoutProps) => {
   return <ArticleBox>{children}</ArticleBox>;

@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import Header from "../header";
-import Article from "./article";
-import Aside, { PageLayoutProps } from "./aside";
+import Article, { PageLayoutProps } from "./article";
 
 const PageLayout = ({ children }: PageLayoutProps) => {
   const HeaderMemo = React.useMemo(() => <Header />, []);
@@ -23,6 +22,5 @@ const Layout = styled.div`
 `;
 
 PageLayout.Article = Article;
-PageLayout.Aside = Aside;
 
 export default PageLayout;
